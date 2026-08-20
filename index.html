@@ -279,7 +279,6 @@
     z-index: 2;
   }
   
-  /* History Section - Retro Style */
   .history-section {
     margin-top: 80px;
     padding: 60px 40px;
@@ -574,6 +573,19 @@
     max-height: 150px;
     overflow-y: auto;
     border-left: 3px solid var(--purple);
+  }
+  
+  .media-frame {
+    width: 100%;
+    height: 200px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    background: linear-gradient(135deg, #2a2540, #1a1530);
+    border: 3px solid rgba(145, 70, 255, 0.4);
+    border-radius: 10px;
   }
   
   .vote-actions {
@@ -949,7 +961,6 @@
       <div class="featured-grid" id="featured-home"></div>
     </div>
     
-    <!-- History Section -->
     <div class="history-section">
       <h2 class="history-title">📜 История 25-го года</h2>
       <div class="history-grid">
@@ -992,7 +1003,7 @@
         <div class="history-card slay-king">
           <div class="crown-icon">👑</div>
           <div class="history-photo">🏆</div>
-          <div class="history-nom">SLAY RING</div>
+          <div class="history-nom">SLAY KING</div>
           <div class="history-winner">Александр Шамбасов</div>
         </div>
       </div>
@@ -1010,9 +1021,8 @@
       <div class="featured-grid" id="featured-full"></div>
     </div>
     
-    <!-- History Section -->
     <div class="history-section">
-      <h2 class="history-title">📜 История 25-го года</h2>
+      <h2 class="history-title">📜 История 2025-го года</h2>
       <div class="history-grid">
         <div class="history-card">
           <div class="history-photo">🎮</div>
@@ -1027,7 +1037,7 @@
         </div>
         
         <div class="history-card">
-          <div class="history-photo">👔</div>
+          <div class="history-photo"></div>
           <div class="history-nom">Модник года</div>
           <div class="history-winner">Арсений Юсупов</div>
         </div>
@@ -1039,7 +1049,7 @@
         </div>
         
         <div class="history-card">
-          <div class="history-photo"></div>
+          <div class="history-photo">📍</div>
           <div class="history-nom">Место года</div>
           <div class="history-winner">Марата</div>
         </div>
@@ -1053,7 +1063,7 @@
         <div class="history-card slay-king">
           <div class="crown-icon">👑</div>
           <div class="history-photo">🏆</div>
-          <div class="history-nom">SLAY RING</div>
+          <div class="history-nom">SLAY KING</div>
           <div class="history-winner">Александр Шамбасов</div>
         </div>
       </div>
@@ -1110,7 +1120,7 @@
     </div>
     
     <div class="section-card">
-      <h3>️ Мои голоса</h3>
+      <h3>🗳️ Мои голоса</h3>
       <div id="my-votes-list"></div>
     </div>
     
@@ -1157,7 +1167,7 @@
     </div>
     
     <div class="section-card">
-      <h3> Управление пользователями</h3>
+      <h3>👥 Управление пользователями</h3>
       <div style="overflow-x:auto;">
         <table class="admin-table">
           <thead>
@@ -1232,49 +1242,56 @@ const NOMINATIONS = [
     title: '🎮 CS-2 игрок года',
     desc: 'Лучший киберспортсмен в Counter-Strike 2. Тот, чьи хедшоты решают судьбу матчей.',
     participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов'],
-    featured: false
+    featured: false,
+    icon: ''
   },
   {
     id: 'dota2',
     title: '⚔️ Dota 2 игрок года',
     desc: 'Магистр стратегии и микроконтроля. Герой, который тащит катки даже когда всё против него.',
     participants: ['Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Александр Пеняев'],
-    featured: false
+    featured: false,
+    icon: '⚔️'
   },
   {
     id: 'style',
     title: '👔 Стиль года',
     desc: 'Человек, одевающийся стильнее всех. Имеет самые крутые шмотки и безупречный вкус.',
     participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
-    featured: false
+    featured: false,
+    icon: '👔'
   },
   {
     id: 'incel',
     title: '🤡 Инцел года',
     desc: 'Сигма, автор книги "как смешить и не ебать"',
     participants: ['Андрей Владыко','Шурик'],
-    featured: false
+    featured: false,
+    icon: '🤡'
   },
   {
     id: 'charisma',
     title: '✨ Харизма года',
     desc: 'Человек с самой ебанутой аурой. Огромный авторитет, магнетизм и харизма, которая притягивает как магнит.',
     participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
-    featured: false
+    featured: false,
+    icon: '✨'
   },
   {
     id: '2008',
     title: '👶 2008 этого года',
     desc: 'Самый лучший человек, родившийся в 2008 году.',
     participants: ['Семён Ефремов','Шурик'],
-    featured: false
+    featured: false,
+    icon: '👶'
   },
   {
-  id: 'alcoholic',
-  title: '🍺 Алкаш года',
-  desc: 'Человек, который пьёт больше всех. Легенда вечеринок и мастер похмелья.',
-  participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
-  featured: false
+    id: 'alcoholic',
+    title: '🍺 Алкаш года',
+    desc: 'Человек, который пьёт больше всех. Легенда вечеринок и мастер похмелья.',
+    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
+    featured: false,
+    icon: '🍺'
   },
   {
     id: 'meme',
@@ -1291,11 +1308,12 @@ const NOMINATIONS = [
       'Александр Шамбасов',
       'Александр Пеняев'
     ],
-    featured: false
+    featured: false,
+    icon: '😂'
   },
   {
     id: 'anecdote',
-    title: '🎭 Анекдот года',
+    title: ' Анекдот года',
     desc: 'Лучший анекдот, который разорвал зал.',
     participants: [
       { title: 'Бипки', text: 'Стоят пассажиры в аэропорту, посадочный досмотр проходят. Дошла очередь до мужика с чемоданом.\n— Пожалуйста, приготовьте чемодан к осмотру.\n— Не могу.\n— Почему?\n— А у меня там бипки!\n— А что это?\n— Ну, отсосёте — покажу!\nСлужба безопасности шутку не поняла, вызвала наряд полиции:\n— Гражданин, открывайте чемодан.\n— Но я не могу!\n— Почему не можете?\n— Потому что у меня там бипки!\n— «Бипки»? Что это?\n— Так отсосите мне, и я покажу!\nОтобрали чемодан, а открыть никто не может. Повезли мужика в СИЗО. В камере сидельцы расспрашивают:\n— Братуха, за что тебя?\n— Да чемодан отказался открывать.\n— А что там?\n— Да бипки там.\n— Какие нахуй «бипки»?\n— Ну отсосите мне, тогда и расскажу.\nИ вот угодил мужик в лазарет, с побоями да синяками по всему телу, весь перебинтован, еле дышит. Следователи вызвали группу специалистов для вскрытия чемодана. Час, два, три пыхтели. Кое-как разворотили, смотрят — а там бипки.' },
@@ -1310,28 +1328,49 @@ const NOMINATIONS = [
       { title: 'Соленые бананы', text: 'Едет мужик в поезде. Напротив него сосед достает банан, солит его и выкидывает в окно. Достает следующий банан, проделывает все тоже самое. Мужик ничего не понимает. Когда сосед в очередной раз достал банан, посолил и выкинул в окно, то решился спросить:\n- Извините, но что вы делаете? Зачем вы солите бананы и выбрасываете?\n- Вы знаете, терпеть не могу соленые бананы.' },
       { title: 'Мужик после зоны едет в поезде с чурками', text: 'Вышел мужик из тюрьмы после групповогo yбийства. Едет домой в поезде. Заходит в свое купе, а там — три армянина. Двое сидят за столом, едят, а третий на полке лежит.\nАрмяне приглашают мужика за стол, тот с радостью соглашается. Сидят они, кушают, коньячок пьют, веселятся. Вот армяне выходят покурить, мужик остается в купе.\nВнезапно поезд дергается, армянин падает с верхней полки и бьется головой об стол. Мужик бросается к нему, проверяет пульс — мертв. Он в ужасе, хватается за голову. В голове мысли: кто ж поверит, что не я, только после отсидки. Он, не долго думая, открывает окно и армянина туда выталкивает. Садится за стол и, как ни в чем не бывало, продолжает есть.\nВозвращаются армяне.\n— Слюшай, а тут наш друг лежал. Гдэ он?\n— Да он сразу за вами вышел...\n- Как вышэл, мы же эго в Эреван хороныть вэзем...' }
     ],
-    featured: false
+    featured: false,
+    icon: '🎭'
   },
   {
     id: 'situation',
     title: '📱 Ситуация года',
     desc: 'Самое смешное событие этого года.',
-    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов'],
-    featured: false
+    participants: [
+      'Шурику разбили телефон на ДР',
+      'Семён порвал барабанную перепонку плавая в бассейне на новый год',
+      'Проект Z на ДР шурика',
+      'Маскарад на новый год, когда снимали дом',
+      'Человек Чекушка на ДР шурика',
+      'Человек Чекушка ходил по городу Ульяновску',
+      'Андрей, Данил и Саша сняли тик токи',
+      'Андрей сломал руку на футболе',
+      'Сосиски 67',
+      'Данил уснул в клубнике',
+      'Данил оставил граффити на Мариинской гимназии',
+      'У Шурика спиздили лавочку',
+      'Данил подстригся как Whole Lotta Swag',
+      'Арсена Ашотовича посадили',
+      'Рождение lil gin',
+      'Гравитационная башня во вкусно и точка'
+    ],
+    featured: false,
+    icon: '📱'
   },
   {
     id: 'couple',
     title: '💕 Пара года',
     desc: 'Самая крутая пара, которая зажигает вместе. Любовь, химия и вайб — всё в одном.',
     participants: ['Андрей Владыко + Даниил Постоев','Тимур Насретдинов + Шурик','Арсений Юсупов + Матвей Чернышов','Семён Ефремов + Александр Шамбасов','Александр Пеняев + Андрей Владыко','Даниил Постоев + Тимур Насретдинов','Шурик + Арсений Юсупов','Матвей Чернышов + Семён Ефремов'],
-    featured: true
+    featured: true,
+    icon: '💕'
   },
   {
     id: 'slayking',
-    title: '👑 SLAY KING',
+    title: ' SLAY KING',
     desc: 'Самый лучший человек этого года. Абсолютный победитель. Король вайпер шмайпер.',
     participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
-    featured: true
+    featured: true,
+    icon: '👑'
   }
 ];
 
@@ -1479,7 +1518,7 @@ function login() {
   const user = DB.getUserByUsername(username);
   
   if (!user) { 
-    toast('❌ Пользователь не найден. Зарегистрируйся сначала!'); 
+    toast(' Пользователь не найден. Зарегистрируйся сначала!'); 
     return; 
   }
   
@@ -1493,10 +1532,10 @@ function login() {
   updateUI();
   
   if (user.status === 'pending') {
-    toast(' Твой аккаунт ожидает подтверждения админом');
+    toast('⏳ Твой аккаунт ожидает подтверждения админом');
     showPage('profile');
   } else if (user.status === 'banned') {
-    toast('🚫 Твой аккаунт заблокирован');
+    toast(' Твой аккаунт заблокирован');
     showPage('profile');
   } else {
     toast('✅ С возвращением, ' + user.name + '!');
@@ -1597,7 +1636,7 @@ function renderCategories() {
   
   const regularHtml = regular.map(nom => `
     <div class="category-card" onclick="openCategory('${nom.id}')">
-      <div class="category-icon">${nom.title.split(' ')[0]}</div>
+      <div class="category-icon">${nom.icon || '🏆'}</div>
       <div class="category-title">${nom.title.substring(nom.title.indexOf(' ') + 1)}</div>
       <div class="category-desc">${nom.desc}</div>
     </div>
@@ -1606,7 +1645,7 @@ function renderCategories() {
   const featuredHtml = featured.map(nom => `
     <div class="featured-card" onclick="openCategory('${nom.id}')">
       <div class="featured-label">★ Главная номинация</div>
-      <div class="category-icon">${nom.title.split(' ')[0]}</div>
+      <div class="category-icon">${nom.icon || '🏆'}</div>
       <div class="category-title">${nom.title.substring(nom.title.indexOf(' ') + 1)}</div>
       <div class="category-desc">${nom.desc}</div>
     </div>
@@ -1647,7 +1686,6 @@ function renderVotePage() {
   
   for (let p = 1; p <= 3; p++) {
     const el = document.getElementById('choice-' + p);
-    const slot = document.getElementById('slot-' + p);
     if (vote[p]) {
       const participant = getParticipantName(vote[p]);
       el.textContent = participant;
@@ -1659,6 +1697,9 @@ function renderVotePage() {
   }
   
   const canVote = user && user.role !== 'admin' && user.status === 'approved';
+  const isAnecdote = currentCategory.id === 'anecdote';
+  const isFeatured = currentCategory.featured;
+  const showMediaFrame = !isAnecdote && !isFeatured;
   
   const list = document.getElementById('participants-list');
   list.innerHTML = currentCategory.participants.map(p => {
@@ -1672,16 +1713,22 @@ function renderVotePage() {
     const badge = place === 1 ? '🥇' : place === 2 ? '🥈' : place === 3 ? '🥉' : '';
     const initial = participantName.charAt(0).toUpperCase();
     
-    const isAnecdote = typeof p === 'object' && p.title && p.text;
+    const isAnecdoteItem = typeof p === 'object' && p.title && p.text;
     
     return `
       <div class="participant-card ${placeClass}">
         <div class="participant-header">
           <div class="participant-avatar">${initial}</div>
-          <div class="participant-name">${isAnecdote ? p.title : p}</div>
+          <div class="participant-name">${isAnecdoteItem ? p.title : participantName}</div>
           ${badge ? `<div class="participant-badge">${badge}</div>` : ''}
         </div>
-        ${isAnecdote ? `<div class="anecdote-text">${p.text}</div>` : ''}
+        
+        ${showMediaFrame ? `
+          <div class="media-frame">📸</div>
+        ` : ''}
+        
+        ${isAnecdoteItem ? `<div class="anecdote-text">${p.text}</div>` : ''}
+        
         ${canVote ? `
           <div class="vote-actions">
             <button class="medal-btn gold-btn ${place === 1 ? 'active' : ''}" onclick="setPlace(1, '${escapeString(p)}')" title="1 место">🥇</button>
@@ -1723,7 +1770,7 @@ function renderProfile() {
   if (user.role === 'admin') {
     bannerContainer.innerHTML = `<div class="status-banner status-approved"><span class="status-icon">👑</span>Ты — администратор.</div>`;
   } else if (user.status === 'pending') {
-    bannerContainer.innerHTML = `<div class="status-banner status-pending"> Твой аккаунт ожидает подтверждения администратором.</div>`;
+    bannerContainer.innerHTML = `<div class="status-banner status-pending">⏳ Твой аккаунт ожидает подтверждения администратором.</div>`;
   } else if (user.status === 'banned') {
     bannerContainer.innerHTML = `<div class="status-banner status-banned">🚫 Твой аккаунт заблокирован.</div>`;
   } else {
@@ -1745,7 +1792,7 @@ function renderProfile() {
     
     html += `
       <div style="padding:15px; margin-bottom:10px; background:rgba(0,0,0,0.3); border-radius:10px;">
-        <div style="font-weight:700; margin-bottom:10px; color:var(--cyan);">${nom.title}</div>
+        <div style="font-weight:700; margin-bottom:10px; color:var(--cyan);">${nom.icon || '🏆'} ${nom.title}</div>
         <div style="display:flex; gap:10px; flex-wrap:wrap; font-size:14px;">
           ${v[1] ? `<span>🥇 ${getParticipantName(v[1])}</span>` : ''}
           ${v[2] ? `<span>🥈 ${getParticipantName(v[2])}</span>` : ''}
@@ -1799,7 +1846,7 @@ function renderAdmin() {
     
     const rows = results.slice(0, 10).map((r, i) => {
       const rank = i + 1;
-      const medal = rank === 1 ? '' : rank === 2 ? '' : rank === 3 ? '' : `#${rank}`;
+      const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
       return `
         <div class="result-row">
           <div class="result-rank">${medal}</div>
@@ -1816,7 +1863,7 @@ function renderAdmin() {
     
     return `
       <div class="result-nom">
-        <h4>${nom.title} <span style="color:var(--text-dim); font-size:13px; font-weight:400;">(проголосовало: ${totalVoters.size})</span></h4>
+        <h4>${nom.icon || '🏆'} ${nom.title} <span style="color:var(--text-dim); font-size:13px; font-weight:400;">(проголосовало: ${totalVoters.size})</span></h4>
         ${rows || '<div style="color:var(--text-dim); padding:10px;">Пока нет голосов</div>'}
       </div>
     `;
@@ -1828,7 +1875,7 @@ function renderAdmin() {
   tbody.innerHTML = users.map(u => {
     let statusBadge = '';
     if (u.status === 'approved') statusBadge = '<span class="badge badge-approved">✅ Одобрен</span>';
-    else if (u.status === 'pending') statusBadge = '<span class="badge badge-pending">⏳ Ожидает</span>';
+    else if (u.status === 'pending') statusBadge = '<span class="badge badge-pending"> Ожидает</span>';
     else statusBadge = '<span class="badge badge-banned">🚫 Забанен</span>';
     
     let actions = '';
