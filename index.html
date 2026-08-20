@@ -910,7 +910,33 @@
     min-width: 60px;
     text-align: right;
   }
-  
+
+
+    .media-frame {
+        width: 100%;
+        height: auto;
+        min-height: 200px;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #2a2540, #1a1530);
+        border: 3px solid rgba(145, 70, 255, 0.4);
+        border-radius: 10px;
+        overflow: hidden;
+        padding: 5px;
+    }
+
+        .media-frame img {
+            width: 100%;
+            height: auto;
+            /* max-height: 350px; */ /* ← УБЕРИТЕ эту строку */
+            object-fit: contain;
+            display: block;
+            border-radius: 8px;
+        }
+
+ 
   @media (max-width: 768px) {
     .hero h1 { font-size: 40px; letter-spacing: 4px; }
     header { padding: 15px 20px; }
@@ -1231,17 +1257,29 @@
 <div class="toast" id="toast"></div>
 
 <footer>
-  © 2026 SLAY — Вайпер Шмайпер. Все права защищены.<br>
-  <small style="color:var(--purple);">Сделано с 💜 для стримерского комьюнити</small>
+  © 2026 SLAY — Вайпер Шмайпер. Все права защищены. Клянусь мамой.<br>
+  <small style="color:var(--purple);">Сделано богами компьютерных технологий</small>
 </footer>
 
 <script>
 const NOMINATIONS = [
-  {
+
+
+
+ {
     id: 'cs2',
     title: '🎮 CS-2 игрок года',
     desc: 'Лучший киберспортсмен в Counter-Strike 2. Тот, чьи хедшоты решают судьбу матчей.',
-    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов'],
+    participants: [
+      { name: 'Андрей Владыко', photo: 'images/andrey.png' },
+      { name: 'Даниил Постоев', photo: 'images/daniil.png' },
+      { name: 'Тимур Насретдинов', photo: 'images/timur.png' },
+      { name: 'Шурик', photo: 'images/shurik.png' },
+      { name: 'Арсений Юсупов', photo: 'images/arseniy.png' },
+      { name: 'Матвей Чернышов', photo: 'images/matvey.png' },
+      { name: 'Семён Ефремов', photo: 'images/semen.png' },
+      { name: 'Александр Шамбасов', photo: 'images/ssasha.png' }
+    ],
     featured: false,
     icon: ''
   },
@@ -1249,7 +1287,16 @@ const NOMINATIONS = [
     id: 'dota2',
     title: '⚔️ Dota 2 игрок года',
     desc: 'Магистр стратегии и микроконтроля. Герой, который тащит катки даже когда всё против него.',
-    participants: ['Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Александр Пеняев'],
+    participants: [
+      { name: 'Матвей Чернышов', photo: 'images/matvey.png' },
+      { name: 'Семён Ефремов', photo: 'images/semen.png' },
+      { name: 'Александр Шамбасов', photo: 'images/ssasha.png' },
+      { name: 'Андрей Владыко', photo: 'images/andrey.png' },
+      { name: 'Даниил Постоев', photo: 'images/daniil.png' },
+      { name: 'Тимур Насретдинов', photo: 'images/timur.png' },
+      { name: 'Шурик', photo: 'images/shurik.png' },
+      { name: 'Александр Пеняев', photo: 'images/psasha.png' }
+    ],
     featured: false,
     icon: '⚔️'
   },
@@ -1257,7 +1304,17 @@ const NOMINATIONS = [
     id: 'style',
     title: '👔 Стиль года',
     desc: 'Человек, одевающийся стильнее всех. Имеет самые крутые шмотки и безупречный вкус.',
-    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
+    participants: [
+      { name: 'Андрей Владыко', photo: 'images/andrey.png' },
+      { name: 'Даниил Постоев', photo: 'images/daniil.png' },
+      { name: 'Тимур Насретдинов', photo: 'images/timur.png' },
+      { name: 'Шурик', photo: 'images/shurik.png' },
+      { name: 'Арсений Юсупов', photo: 'images/arseniy.png' },
+      { name: 'Матвей Чернышов', photo: 'images/matvey.png' },
+      { name: 'Семён Ефремов', photo: 'images/semen.png' },
+      { name: 'Александр Шамбасов', photo: 'images/ssasha.png' },
+      { name: 'Александр Пеняев', photo: 'images/psasha.png' }
+    ],
     featured: false,
     icon: '👔'
   },
@@ -1265,7 +1322,10 @@ const NOMINATIONS = [
     id: 'incel',
     title: '🤡 Инцел года',
     desc: 'Сигма, автор книги "как смешить и не ебать"',
-    participants: ['Андрей Владыко','Шурик'],
+    participants: [
+      { name: 'Андрей Владыко', photo: 'images/andrey.png' },
+      { name: 'Шурик', photo: 'images/shurik.png' }
+    ],
     featured: false,
     icon: '🤡'
   },
@@ -1273,7 +1333,17 @@ const NOMINATIONS = [
     id: 'charisma',
     title: '✨ Харизма года',
     desc: 'Человек с самой ебанутой аурой. Огромный авторитет, магнетизм и харизма, которая притягивает как магнит.',
-    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
+    participants: [
+      { name: 'Андрей Владыко', photo: 'images/andrey.png' },
+      { name: 'Даниил Постоев', photo: 'images/daniil.png' },
+      { name: 'Тимур Насретдинов', photo: 'images/timur.png' },
+      { name: 'Шурик', photo: 'images/shurik.png' },
+      { name: 'Арсений Юсупов', photo: 'images/arseniy.png' },
+      { name: 'Матвей Чернышов', photo: 'images/matvey.png' },
+      { name: 'Семён Ефремов', photo: 'images/semen.png' },
+      { name: 'Александр Шамбасов', photo: 'images/ssasha.png' },
+      { name: 'Александр Пеняев', photo: 'images/psasha.png' }
+    ],
     featured: false,
     icon: '✨'
   },
@@ -1281,7 +1351,10 @@ const NOMINATIONS = [
     id: '2008',
     title: '👶 2008 этого года',
     desc: 'Самый лучший человек, родившийся в 2008 году.',
-    participants: ['Семён Ефремов','Шурик'],
+    participants: [
+      { name: 'Семён Ефремов', photo: 'images/semen.png' },
+      { name: 'Шурик', photo: 'images/shurik.png' }
+    ],
     featured: false,
     icon: '👶'
   },
@@ -1289,7 +1362,17 @@ const NOMINATIONS = [
     id: 'alcoholic',
     title: '🍺 Алкаш года',
     desc: 'Человек, который пьёт больше всех. Легенда вечеринок и мастер похмелья.',
-    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
+    participants: [
+      { name: 'Андрей Владыко', photo: 'images/andrey.png' },
+      { name: 'Даниил Постоев', photo: 'images/daniil.png' },
+      { name: 'Тимур Насретдинов', photo: 'images/timur.png' },
+      { name: 'Шурик', photo: 'images/shurik.png' },
+      { name: 'Арсений Юсупов', photo: 'images/arseniy.png' },
+      { name: 'Матвей Чернышов', photo: 'images/matvey.png' },
+      { name: 'Семён Ефремов', photo: 'images/semen.png' },
+      { name: 'Александр Шамбасов', photo: 'images/ssasha.png' },
+      { name: 'Александр Пеняев', photo: 'images/psasha.png' }
+    ],
     featured: false,
     icon: '🍺'
   },
@@ -1298,15 +1381,15 @@ const NOMINATIONS = [
     title: '😂 Человек-мем года',
     desc: 'Самый юморной, самый завозной. Легенда мемов и вирусного контента.',
     participants: [
-      'Андрей Владыко',
-      'Даниил Постоев',
-      'Тимур Насретдинов',
-      'Шурик',
-      'Арсений Юсупов',
-      'Матвей Чернышов',
-      'Семён Ефремов',
-      'Александр Шамбасов',
-      'Александр Пеняев'
+      { name: 'Андрей Владыко', photo: 'images/andrey.png' },
+      { name: 'Даниил Постоев', photo: 'images/daniil.png' },
+      { name: 'Тимур Насретдинов', photo: 'images/timur.png' },
+      { name: 'Шурик', photo: 'images/shurik.png' },
+      { name: 'Арсений Юсупов', photo: 'images/arseniy.png' },
+      { name: 'Матвей Чернышов', photo: 'images/matvey.png' },
+      { name: 'Семён Ефремов', photo: 'images/semen.png' },
+      { name: 'Александр Шамбасов', photo: 'images/ssasha.png' },
+      { name: 'Александр Пеняев', photo: 'images/psasha.png' }
     ],
     featured: false,
     icon: '😂'
@@ -1323,7 +1406,7 @@ const NOMINATIONS = [
       { title: 'Минуточка', text: 'Внук просит деда показать фотки с войны. Дед достает пыльный альбом показывает и коментирует:\n-Вот это внучек мы в атаку идем, а вот это я в окопе сижу.\nОткрывает следующую страницу,а на фотке молодой дед стоит перед Гитлером с вытянутой рукой(Hail Hitler).\nВнук:-Дед а это Гитлер?\nДед:-Да.\nВ.:-А че он говорит?\nД.:-Он говорит-евреев в печку,славян в печку,завоевание всего мира.\nВ.:-Дед,а это рядом ты стоишь?\nД.:-Я.\nВ.:-А че ты руку так держишь?\nД.:-А я ему говорю -минуточку.' },
       { title: 'Рядовой табуретка', text: 'Подходит рядовой к сержанту и говорит: товарищ командир там в казарме один рядовой табуретку ебет.\nКомандир: ну и что я и не такое видел.\nЧерез некоторое время опять рядовой прибегает и говорит: товарищ командир там в казарме весь взвод табуретку ебет.\nКомандир: а вот это можно и посмотреть. Приходит в казарму, всех построил и говорит: кто ебал табуретку шаг вперед. Все вышли кроме одного, ну вот хоть один нормальный солдат. Рядовой как твоя фамилия, Табуретка товарищ сержант......' },
       { title: 'Боцман', text: 'Плывeт пo мopю тяжeлый крейсер. На мостике стоит капитан и смотрит в бинокль на водную гладь. Вдруг он замечает под водой торпеду, идущую прямо в борт. Капитан зовет боцмана: — Боцман, пoйди в трюм и отвлеки кoмандy, чтобы никто панику не поднял. Боцман спускается вниз и говорит матросам: — Спорим, что я хуем по стене ебну и корaбль развaлитcя. Koманда соглашается. Боцман достает свой хуй, бьет им по стене. БАБАХ!!! Крейсер вдребезги. Среди обломков и человеческих тел за спасательный круг держится уцелевший боцман. К нему пoдплывает капитан: -НУ, БЛЯДЬ, И УРОД ТЫ, БОЦМАН!!!ТОРПЕДА МИМO ПPOШЛА!!!!!' },
-      { title: 'Армянин нашел золотую лампу', text: '...' },
+      { title: 'Армянин нашел золотую лампу', text: 'нашел армянин в песке золотую лампу, потёр ее и оттуда джин вылезает. Джин говорит: я могу исполнить 3 твоих желания. Армянин немного подумал и говорит, хочу машину, семёрку! Перед ним в ту же секунду появляется новенькая семёрка. Джин говорит у тебя еще осталось 2 желания! Армянин еще немного подумал, бороду почесал и говорит, хочу себе машину! Семёрку! Перед ним тут же появляется вторая семёрка, Джин говорит у тебя осталось последнее желание, используй его с умом! Армянин немного погодя говорит: придумал! Хочу себе машину, семёрку. Перед ним появляется третья точно такая же семёрка. Джин говорит армянину: почему ты так распорядился своими желаниями? Почему ты три раза загадал себе одну и ту же машину? Армянин говорит: да я их продам и приору куплю' },
       { title: 'Номера анекдотов на зоне', text: 'Лежат зеки на нарах после отбоя.\nВдруг из одного угла слышится: 27.\nВся камера: бу-га-га!\nИз другого угла: 34.\nКамера опять ржет.\nНовенький зек спрашивает у лежащего рядом старожила: А че это за цифры из-за которых все в камере смеются?\nСтарый отвечает: Понимаешь, кореш, давно тут сидим, все анекдоты уже рассказали и, чтобы не повторять каждый раз, присвоили им номера. Называет кто-то номер анекдота, а все остальные вспоминают и смеются.\nНовенький на всю камеру: 17.\nТишина, никто не смеётся.\nОн опять к старожилу: А что анекдот под №17 не смешной?\nСтарожил: Понимаешь, анекдот то смешной, просто есть люди которые умеют анекдоты рассказывать, а есть те которые не умеют!' },
       { title: 'Соленые бананы', text: 'Едет мужик в поезде. Напротив него сосед достает банан, солит его и выкидывает в окно. Достает следующий банан, проделывает все тоже самое. Мужик ничего не понимает. Когда сосед в очередной раз достал банан, посолил и выкинул в окно, то решился спросить:\n- Извините, но что вы делаете? Зачем вы солите бананы и выбрасываете?\n- Вы знаете, терпеть не могу соленые бананы.' },
       { title: 'Мужик после зоны едет в поезде с чурками', text: 'Вышел мужик из тюрьмы после групповогo yбийства. Едет домой в поезде. Заходит в свое купе, а там — три армянина. Двое сидят за столом, едят, а третий на полке лежит.\nАрмяне приглашают мужика за стол, тот с радостью соглашается. Сидят они, кушают, коньячок пьют, веселятся. Вот армяне выходят покурить, мужик остается в купе.\nВнезапно поезд дергается, армянин падает с верхней полки и бьется головой об стол. Мужик бросается к нему, проверяет пульс — мертв. Он в ужасе, хватается за голову. В голове мысли: кто ж поверит, что не я, только после отсидки. Он, не долго думая, открывает окно и армянина туда выталкивает. Садится за стол и, как ни в чем не бывало, продолжает есть.\nВозвращаются армяне.\n— Слюшай, а тут наш друг лежал. Гдэ он?\n— Да он сразу за вами вышел...\n- Как вышэл, мы же эго в Эреван хороныть вэзем...' }
@@ -1365,13 +1448,23 @@ const NOMINATIONS = [
     icon: '💕'
   },
   {
-    id: 'slayking',
-    title: ' SLAY KING',
-    desc: 'Самый лучший человек этого года. Абсолютный победитель. Король вайпер шмайпер.',
-    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
-    featured: true,
-    icon: '👑'
-  }
+  id: 'slayking',
+  title: '👑 SLAY KING',
+  desc: 'Самый лучший человек этого года. Абсолютный победитель. Король вайпер шмайпер.',
+  participants: [
+    { name: 'Андрей Владыко', photo: 'images/andrey.png' },
+    { name: 'Даниил Постоев', photo: 'images/daniil.png' },
+    { name: 'Тимур Насретдинов', photo: 'images/timur.png' },
+    { name: 'Шурик', photo: 'images/shurik.png' },
+    { name: 'Арсений Юсупов', photo: 'images/arseniy.png' },
+    { name: 'Матвей Чернышов', photo: 'images/matvey.png' },
+    { name: 'Семён Ефремов', photo: 'images/semen.png' },
+    { name: 'Александр Шамбасов', photo: 'images/ssasha.png' },
+    { name: 'Александр Пеняев', photo: 'images/psasha.png' }
+  ],
+  featured: true,
+  icon: '👑'
+}
 ];
 
 let currentCategory = null;
@@ -1699,7 +1792,7 @@ function renderVotePage() {
   const canVote = user && user.role !== 'admin' && user.status === 'approved';
   const isAnecdote = currentCategory.id === 'anecdote';
   const isFeatured = currentCategory.featured;
-  const showMediaFrame = !isAnecdote && !isFeatured;
+  const showMediaFrame = !isAnecdote;
   
   const list = document.getElementById('participants-list');
   list.innerHTML = currentCategory.participants.map(p => {
@@ -1724,8 +1817,13 @@ function renderVotePage() {
         </div>
         
         ${showMediaFrame ? `
-          <div class="media-frame">📸</div>
-        ` : ''}
+  <div class="media-frame">
+    ${getParticipantPhoto(p) ? 
+      `<img src="${getParticipantPhoto(p)}" alt="${getParticipantName(p)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333355%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2260%22 fill=%22%239992b8%22 font-family=%22Arial%22%3E📸%3C/text%3E%3C/svg%3E'">` 
+      : '📸'
+    }
+  </div>
+` : ''}
         
         ${isAnecdoteItem ? `<div class="anecdote-text">${p.text}</div>` : ''}
         
@@ -1745,7 +1843,21 @@ function getParticipantName(p) {
   if (typeof p === 'object' && p.title) {
     return p.title;
   }
+  if (typeof p === 'object' && p.name) {
+    return p.name;
+  }
   return p;
+}
+function getParticipantPhoto(p) {
+  if (typeof p === 'object' && p.photo) {
+    return p.photo;
+  }
+  return null;
+}
+
+function getParticipantInitial(p) {
+  const name = getParticipantName(p);
+  return name.charAt(0).toUpperCase();
 }
 
 function escapeString(str) {
