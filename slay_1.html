@@ -1,0 +1,1940 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>SLAY — Вайпер Шмайпер</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  :root {
+    --bg-dark: #0a0a14;
+    --bg-card: rgba(25, 20, 45, 0.7);
+    --purple: #9146ff;
+    --pink: #ff2d95;
+    --cyan: #00e5ff;
+    --gold: #ffd700;
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
+    --green: #00ff88;
+    --red: #ff3860;
+    --text: #e8e6f0;
+    --text-dim: #9992b8;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image: 
+      radial-gradient(circle at 20% 30%, rgba(145, 70, 255, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(255, 45, 149, 0.12) 0%, transparent 50%),
+      radial-gradient(circle at 50% 100%, rgba(0, 229, 255, 0.08) 0%, transparent 50%);
+  }
+  
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+      linear-gradient(rgba(145, 70, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(145, 70, 255, 0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(20px);
+    background: rgba(10, 10, 20, 0.8);
+    border-bottom: 1px solid rgba(145, 70, 255, 0.3);
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    background: linear-gradient(90deg, var(--purple), var(--pink), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    cursor: pointer;
+  }
+  
+  .logo-sub {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 2px;
+    margin-left: 10px;
+    text-transform: uppercase;
+  }
+  
+  nav { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
+  
+  .nav-btn {
+    background: transparent;
+    border: 1px solid rgba(145, 70, 255, 0.4);
+    color: var(--text);
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+  }
+  
+  .nav-btn:hover {
+    background: rgba(145, 70, 255, 0.2);
+    border-color: var(--purple);
+    box-shadow: 0 0 20px rgba(145, 70, 255, 0.4);
+  }
+  
+  .nav-btn.primary {
+    background: linear-gradient(90deg, var(--purple), var(--pink));
+    border: none;
+    font-weight: 600;
+  }
+  
+  .hero {
+    padding: 80px 40px;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .hero h1 {
+    font-size: 72px;
+    font-weight: 900;
+    letter-spacing: 8px;
+    background: linear-gradient(90deg, #fff, var(--pink), var(--purple), var(--cyan));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    animation: glow 3s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow {
+    from { filter: drop-shadow(0 0 20px rgba(145, 70, 255, 0.5)); }
+    to { filter: drop-shadow(0 0 40px rgba(255, 45, 149, 0.7)); }
+  }
+  
+  .hero .subtitle {
+    font-size: 20px;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+  
+  .hero .date {
+    font-size: 16px;
+    color: var(--cyan);
+    margin-bottom: 40px;
+    letter-spacing: 2px;
+  }
+  
+  .section {
+    padding: 60px 40px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .section-title {
+    font-size: 36px;
+    font-weight: 800;
+    margin-bottom: 40px;
+    text-align: center;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  
+  .section-title span {
+    background: linear-gradient(90deg, var(--purple), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .section-title.gold span {
+    background: linear-gradient(90deg, var(--gold), #ff8800, var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: goldShine 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes goldShine {
+    from { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
+    to { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9)); }
+  }
+  
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .category-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(145, 70, 255, 0.3);
+    border-radius: 20px;
+    padding: 40px 30px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .category-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--purple);
+    box-shadow: 0 15px 50px rgba(145, 70, 255, 0.4);
+  }
+  
+  .category-icon { font-size: 56px; margin-bottom: 15px; }
+  .category-title { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+  .category-desc { color: var(--text-dim); font-size: 14px; line-height: 1.5; }
+  
+  .featured-section {
+    margin-top: 60px;
+  }
+  
+  .featured-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .featured-card {
+    background: linear-gradient(135deg, rgba(40, 25, 70, 0.9), rgba(20, 10, 40, 0.9));
+    border: 2px solid transparent;
+    border-image: linear-gradient(90deg, var(--gold), var(--pink), var(--gold)) 1;
+    border-radius: 0;
+    padding: 50px 40px;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s;
+    cursor: pointer;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .featured-card::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: conic-gradient(from 0deg, transparent, rgba(255, 215, 0, 0.1), transparent, rgba(255, 45, 149, 0.1), transparent);
+    animation: rotate 8s linear infinite;
+    z-index: 0;
+  }
+  
+  @keyframes rotate {
+    to { transform: rotate(360deg); }
+  }
+  
+  .featured-card > * { position: relative; z-index: 1; }
+  
+  .featured-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 80px rgba(255, 215, 0, 0.4), 0 0 40px rgba(255, 45, 149, 0.3);
+  }
+  
+  .featured-card .category-icon { font-size: 90px; margin-bottom: 20px; }
+  .featured-card .category-title { font-size: 36px; font-weight: 900; letter-spacing: 3px; }
+  .featured-card .category-desc { font-size: 16px; max-width: 600px; }
+  
+  .featured-label {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: linear-gradient(90deg, var(--gold), #ff8800);
+    color: #000;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    z-index: 2;
+  }
+  
+  /* History Section - Retro Style */
+  .history-section {
+    margin-top: 80px;
+    padding: 60px 40px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .history-title {
+    font-size: 42px;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 50px;
+    letter-spacing: 4px;
+    background: linear-gradient(90deg, var(--gold), #ff8800, var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-transform: uppercase;
+    animation: goldShine 2s ease-in-out infinite alternate;
+  }
+  
+  .history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  .history-card {
+    background: linear-gradient(135deg, #1a1525, #0f0a1a);
+    border: 3px solid #4a3f5f;
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(145, 70, 255, 0.1);
+    transition: all 0.3s;
+  }
+  
+  .history-card::before {
+    content: '';
+    position: absolute;
+    top: 5px; left: 5px; right: 5px; bottom: 5px;
+    border: 2px dashed rgba(145, 70, 255, 0.3);
+    border-radius: 10px;
+    pointer-events: none;
+  }
+  
+  .history-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--purple);
+    box-shadow: 0 15px 40px rgba(145, 70, 255, 0.4), inset 0 0 30px rgba(145, 70, 255, 0.2);
+  }
+  
+  .history-card.slay-king {
+    background: linear-gradient(135deg, #2a2040, #1a1530);
+    border: 4px solid var(--gold);
+    grid-column: 1 / -1;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 15px 50px rgba(255, 215, 0, 0.3), inset 0 0 30px rgba(255, 215, 0, 0.1);
+  }
+  
+  .history-card.slay-king::before {
+    border-color: rgba(255, 215, 0, 0.5);
+  }
+  
+  .history-card.slay-king:hover {
+    box-shadow: 0 20px 60px rgba(255, 215, 0, 0.5), inset 0 0 40px rgba(255, 215, 0, 0.2);
+  }
+  
+  .history-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2a2540, #1a1530);
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    border: 3px solid rgba(145, 70, 255, 0.4);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+  }
+  
+  .history-card.slay-king .history-photo {
+    width: 180px;
+    height: 180px;
+    border-color: var(--gold);
+    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
+  }
+  
+  .history-card .history-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .history-nom {
+    font-size: 14px;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  
+  .history-winner {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  
+  .history-card.slay-king .history-nom {
+    font-size: 16px;
+    color: var(--gold);
+  }
+  
+  .history-card.slay-king .history-winner {
+    font-size: 28px;
+    color: var(--gold);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  }
+  
+  .crown-icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+  }
+  
+  .vote-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid rgba(145, 70, 255, 0.4);
+    color: var(--text);
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-bottom: 20px;
+    transition: all 0.3s;
+  }
+  
+  .back-btn:hover {
+    background: rgba(145, 70, 255, 0.2);
+    border-color: var(--purple);
+  }
+  
+  .reset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 56, 96, 0.15);
+    border: 1px solid var(--red);
+    color: var(--red);
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 10px;
+    transition: all 0.3s;
+  }
+  
+  .reset-btn:hover {
+    background: var(--red);
+    color: white;
+  }
+  
+  .current-choices {
+    background: var(--bg-card);
+    border: 1px solid rgba(145, 70, 255, 0.3);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+  }
+  
+  .current-choices h3 {
+    color: var(--cyan);
+    margin-bottom: 15px;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  
+  .choices-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .choice-slot {
+    flex: 1;
+    min-width: 200px;
+    padding: 15px;
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+  }
+  
+  .choice-slot.gold { border-color: var(--gold); background: rgba(255, 215, 0, 0.08); }
+  .choice-slot.silver { border-color: var(--silver); background: rgba(192, 192, 192, 0.08); }
+  .choice-slot.bronze { border-color: var(--bronze); background: rgba(205, 127, 50, 0.08); }
+  .choice-slot.hidden { display: none; }
+  
+  .choice-slot .medal { font-size: 28px; margin-bottom: 5px; }
+  .choice-slot .place-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .choice-slot .place-name { font-weight: 700; font-size: 15px; min-height: 20px; }
+  .choice-slot .place-name.empty { color: var(--text-dim); font-style: italic; }
+  
+  .participants-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+  }
+  
+  .participant-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(145, 70, 255, 0.2);
+    border-radius: 14px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+    position: relative;
+  }
+  
+  .participant-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--purple);
+    box-shadow: 0 8px 25px rgba(145, 70, 255, 0.3);
+  }
+  
+  .participant-card.placed-1 { border-color: var(--gold); background: rgba(255, 215, 0, 0.08); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
+  .participant-card.placed-2 { border-color: var(--silver); background: rgba(192, 192, 192, 0.08); }
+  .participant-card.placed-3 { border-color: var(--bronze); background: rgba(205, 127, 50, 0.08); }
+  
+  .participant-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  
+  .participant-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    font-size: 20px;
+    color: white;
+    flex-shrink: 0;
+  }
+  
+  .participant-name { font-weight: 700; font-size: 16px; flex: 1; }
+  
+  .participant-badge {
+    font-size: 24px;
+    font-weight: 900;
+  }
+  
+  .participant-desc {
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 12px;
+    min-height: 40px;
+  }
+  
+  .anecdote-text {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    max-height: 150px;
+    overflow-y: auto;
+    border-left: 3px solid var(--purple);
+  }
+  
+  .vote-actions {
+    display: flex;
+    gap: 8px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  
+  .participant-card:hover .vote-actions {
+    opacity: 1;
+  }
+  
+  .medal-btn {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s;
+  }
+  
+  .medal-btn:hover {
+    transform: scale(1.1);
+  }
+  
+  .medal-btn.gold-btn:hover, .medal-btn.gold-btn.active {
+    background: rgba(255, 215, 0, 0.3);
+    border-color: var(--gold);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+  }
+  
+  .medal-btn.silver-btn:hover, .medal-btn.silver-btn.active {
+    background: rgba(192, 192, 192, 0.3);
+    border-color: var(--silver);
+    box-shadow: 0 0 15px rgba(192, 192, 192, 0.5);
+  }
+  
+  .medal-btn.bronze-btn:hover, .medal-btn.bronze-btn.active {
+    background: rgba(205, 127, 50, 0.3);
+    border-color: var(--bronze);
+    box-shadow: 0 0 15px rgba(205, 127, 50, 0.5);
+  }
+  
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .modal-overlay.active { display: flex; }
+  
+  .modal {
+    background: linear-gradient(135deg, rgba(30, 20, 60, 0.95), rgba(15, 10, 35, 0.95));
+    border: 1px solid rgba(145, 70, 255, 0.4);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 450px;
+    width: 100%;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(145, 70, 255, 0.3);
+  }
+  
+  .modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .modal h2 {
+    font-size: 28px;
+    margin-bottom: 25px;
+    background: linear-gradient(90deg, var(--purple), var(--pink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .form-group { margin-bottom: 18px; }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(145, 70, 255, 0.3);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 15px;
+    transition: all 0.2s;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 15px rgba(145, 70, 255, 0.3);
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(90deg, var(--purple), var(--pink));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.3s;
+  }
+  
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(255, 45, 149, 0.4);
+  }
+  
+  .switch-form {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  
+  .switch-form a {
+    color: var(--cyan);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .profile-page, .admin-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .profile-header, .section-card {
+    background: var(--bg-card);
+    border: 1px solid rgba(145, 70, 255, 0.2);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+  }
+  
+  .profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--pink), var(--cyan));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 0 30px rgba(145, 70, 255, 0.5);
+  }
+  
+  .status-banner {
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 15px;
+  }
+  
+  .status-pending { background: rgba(255, 215, 0, 0.15); border: 1px solid var(--gold); color: var(--gold); }
+  .status-banned { background: rgba(255, 56, 96, 0.15); border: 1px solid var(--red); color: var(--red); }
+  .status-approved { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--green); color: var(--green); }
+  
+  .admin-table { width: 100%; border-collapse: collapse; }
+  .admin-table th {
+    text-align: left;
+    padding: 12px;
+    background: rgba(145, 70, 255, 0.15);
+    color: var(--cyan);
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(145, 70, 255, 0.3);
+  }
+  .admin-table td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+  
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  
+  .badge-admin { background: linear-gradient(90deg, var(--gold), #ff8800); color: #000; }
+  .badge-user { background: rgba(145, 70, 255, 0.3); color: var(--text); }
+  .badge-approved { background: rgba(0, 255, 136, 0.2); color: var(--green); }
+  .badge-pending { background: rgba(255, 215, 0, 0.2); color: var(--gold); }
+  .badge-banned { background: rgba(255, 56, 96, 0.2); color: var(--red); }
+  
+  .action-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-right: 5px;
+    transition: all 0.2s;
+  }
+  
+  .btn-approve { background: var(--green); color: #000; }
+  .btn-ban { background: var(--red); color: white; }
+  
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: linear-gradient(90deg, var(--purple), var(--pink));
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s;
+    font-weight: 600;
+  }
+  
+  .toast.show { opacity: 1; transform: translateY(0); }
+  .hidden { display: none !important; }
+  
+  footer {
+    text-align: center;
+    padding: 40px;
+    color: var(--text-dim);
+    border-top: 1px solid rgba(145, 70, 255, 0.2);
+    margin-top: 60px;
+    font-size: 13px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .result-nom {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .result-nom h4 {
+    color: var(--pink);
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+  
+  .result-row {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    gap: 15px;
+  }
+  
+  .result-rank {
+    font-size: 24px;
+    font-weight: 900;
+    width: 40px;
+    text-align: center;
+  }
+  
+  .result-name { flex: 1; font-weight: 600; }
+  
+  .result-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  
+  .result-stats span { white-space: nowrap; }
+  
+  .result-score {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--gold);
+    min-width: 60px;
+    text-align: right;
+  }
+  
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 40px; letter-spacing: 4px; }
+    header { padding: 15px 20px; }
+    .section { padding: 40px 20px; }
+    .profile-header { flex-direction: column; text-align: center; }
+    .featured-card { padding: 30px 20px; }
+    .featured-card .category-title { font-size: 24px; }
+    .vote-page { padding: 20px; }
+    .vote-actions { opacity: 1; }
+    .history-title { font-size: 28px; }
+    .history-card.slay-king { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div style="display:flex; align-items:center;">
+    <div class="logo" onclick="showPage('home')">SLAY</div>
+    <span class="logo-sub">вайпер шмайпер</span>
+  </div>
+  <nav id="nav">
+    <button class="nav-btn" onclick="showPage('home')">Главная</button>
+    <button class="nav-btn" onclick="showPage('categories')">Номинации</button>
+    <button class="nav-btn hidden" id="profileBtn" onclick="showPage('profile')">Кабинет</button>
+    <button class="nav-btn hidden" id="adminBtn" onclick="showPage('admin')">Админ</button>
+    <button class="nav-btn primary" id="loginBtn" onclick="openModal('login')">Войти</button>
+    <button class="nav-btn hidden" id="logoutBtn" onclick="logout()">Выйти</button>
+  </nav>
+</header>
+
+<div id="page-home">
+  <section class="hero">
+    <div class="subtitle">Ежегодная премия ВАЙПЕР ШМАЙПЕР</div>
+    <h1>SLAY ВАЙПЕР ШМПАЙПЕР</h1>
+    <div class="date">🏆 31 ДЕКАБРЯ 2026 • МАРАТА</div>
+    <p style="max-width:600px; margin:0 auto; color:var(--text-dim); line-height:1.6;">
+      Главная награда вайпер шмайпер. Голосуй за своих любимцев, определяй лучших из лучших и стань частью истории!
+    </p>
+  </section>
+  
+  <section class="section">
+    <h2 class="section-title"><span>Номинации</span> 2026</h2>
+    <div class="categories-grid" id="categories-home"></div>
+    
+    <div class="featured-section">
+      <h2 class="section-title gold"><span>Главные</span> номинации</h2>
+      <div class="featured-grid" id="featured-home"></div>
+    </div>
+    
+    <!-- History Section -->
+    <div class="history-section">
+      <h2 class="history-title">📜 История 25-го года</h2>
+      <div class="history-grid">
+        <div class="history-card">
+          <div class="history-photo">🎮</div>
+          <div class="history-nom">CS-2 игрок года</div>
+          <div class="history-winner">Тимур Насретдинов</div>
+        </div>
+        
+        <div class="history-card">
+          <div class="history-photo">⚔️</div>
+          <div class="history-nom">Dota 2 игрок года</div>
+          <div class="history-winner">Андрей Владыко</div>
+        </div>
+        
+        <div class="history-card">
+          <div class="history-photo">👔</div>
+          <div class="history-nom">Модник года</div>
+          <div class="history-winner">Арсений Юсупов</div>
+        </div>
+        
+        <div class="history-card">
+          <div class="history-photo">🍺</div>
+          <div class="history-nom">Алкаш года</div>
+          <div class="history-winner">Даниил Постоев</div>
+        </div>
+        
+        <div class="history-card">
+          <div class="history-photo">📍</div>
+          <div class="history-nom">Место года</div>
+          <div class="history-winner">Марата</div>
+        </div>
+        
+        <div class="history-card">
+          <div class="history-photo">😂</div>
+          <div class="history-nom">Мем года</div>
+          <div class="history-winner">Матвей Чернышов</div>
+        </div>
+        
+        <div class="history-card slay-king">
+          <div class="crown-icon">👑</div>
+          <div class="history-photo">🏆</div>
+          <div class="history-nom">SLAY RING</div>
+          <div class="history-winner">Александр Шамбасов</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-categories" class="hidden">
+  <section class="section">
+    <h2 class="section-title"><span>Все</span> номинации</h2>
+    <div class="categories-grid" id="categories-full"></div>
+    
+    <div class="featured-section">
+      <h2 class="section-title gold"><span>Главные</span> номинации</h2>
+      <div class="featured-grid" id="featured-full"></div>
+    </div>
+    
+    <!-- History Section -->
+    <div class="history-section">
+      <h2 class="history-title">📜 История 25-го года</h2>
+      <div class="history-grid">
+        <div class="history-card">
+          <div class="history-photo">🎮</div>
+          <div class="history-nom">CS-2 игрок года</div>
+          <div class="history-winner">Тимур Насретдинов</div>
+        </div>
+        
+        <div class="history-card">
+          <div class="history-photo">⚔️</div>
+          <div class="history-nom">Dota 2 игрок года</div>
+          <div class="history-winner">Андрей Владыко</div>
+        </div>
+        
+        <div class="history-card">
+          <div class="history-photo">👔</div>
+          <div class="history-nom">Модник года</div>
+          <div class="history-winner">Арсений Юсупов</div>
+        </div>
+        
+        <div class="history-card">
+          <div class="history-photo">🍺</div>
+          <div class="history-nom">Алкаш года</div>
+          <div class="history-winner">Даниил Постоев</div>
+        </div>
+        
+        <div class="history-card">
+          <div class="history-photo"></div>
+          <div class="history-nom">Место года</div>
+          <div class="history-winner">Марата</div>
+        </div>
+        
+        <div class="history-card">
+          <div class="history-photo">😂</div>
+          <div class="history-nom">Мем года</div>
+          <div class="history-winner">Матвей Чернышов</div>
+        </div>
+        
+        <div class="history-card slay-king">
+          <div class="crown-icon">👑</div>
+          <div class="history-photo">🏆</div>
+          <div class="history-nom">SLAY RING</div>
+          <div class="history-winner">Александр Шамбасов</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-vote" class="hidden">
+  <div class="vote-page">
+    <div>
+      <button class="back-btn" onclick="showPage('categories')">← Назад к номинациям</button>
+      <button class="reset-btn" onclick="resetVotes()">🔄 Сбросить всё</button>
+    </div>
+    
+    <h2 class="section-title" id="vote-title"><span>Номинация</span></h2>
+    <p id="vote-desc" style="text-align:center; color:var(--text-dim); margin-bottom:30px; max-width:700px; margin-left:auto; margin-right:auto;"></p>
+    
+    <div class="current-choices">
+      <h3>🏆 Твой выбор</h3>
+      <div class="choices-row">
+        <div class="choice-slot gold" id="slot-1">
+          <div class="medal">🥇</div>
+          <div class="place-label">1 место · 3 балла</div>
+          <div class="place-name empty" id="choice-1">Не выбрано</div>
+        </div>
+        <div class="choice-slot silver" id="slot-2">
+          <div class="medal">🥈</div>
+          <div class="place-label">2 место · 2 балла</div>
+          <div class="place-name empty" id="choice-2">Не выбрано</div>
+        </div>
+        <div class="choice-slot bronze" id="slot-3">
+          <div class="medal">🥉</div>
+          <div class="place-label">3 место · 1 балл</div>
+          <div class="place-name empty" id="choice-3">Не выбрано</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="participants-list" id="participants-list"></div>
+  </div>
+</div>
+
+<div id="page-profile" class="hidden">
+  <div class="profile-page">
+    <div id="status-banner-container"></div>
+    
+    <div class="profile-header">
+      <div class="profile-avatar" id="prof-avatar">U</div>
+      <div class="profile-info">
+        <h2 id="prof-name">Пользователь</h2>
+        <p id="prof-login">login</p>
+        <div style="margin-top:10px; color:var(--text-dim); font-size:13px;" id="prof-date"></div>
+      </div>
+    </div>
+    
+    <div class="section-card">
+      <h3>️ Мои голоса</h3>
+      <div id="my-votes-list"></div>
+    </div>
+    
+    <div class="section-card">
+      <h3>⚙️ Настройки</h3>
+      <div class="form-group">
+        <label>Отображаемое имя</label>
+        <input type="text" id="prof-display-name" placeholder="Твой ник">
+      </div>
+      <button class="submit-btn" onclick="updateProfile()" style="max-width:200px;">Сохранить</button>
+    </div>
+  </div>
+</div>
+
+<div id="page-admin" class="hidden">
+  <div class="admin-page">
+    <h2 class="section-title"><span>Панель</span> администратора</h2>
+    
+    <div class="section-card">
+      <h3>📊 Общая статистика</h3>
+      <div style="display:flex; gap:40px; flex-wrap:wrap;">
+        <div>
+          <div style="font-size:32px; font-weight:900; color:var(--gold);" id="adm-users">0</div>
+          <div style="font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px;">Пользователей</div>
+        </div>
+        <div>
+          <div style="font-size:32px; font-weight:900; color:var(--green);" id="adm-approved">0</div>
+          <div style="font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px;">Одобрено</div>
+        </div>
+        <div>
+          <div style="font-size:32px; font-weight:900; color:var(--gold);" id="adm-pending">0</div>
+          <div style="font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px;">Ожидают</div>
+        </div>
+        <div>
+          <div style="font-size:32px; font-weight:900; color:var(--red);" id="adm-banned">0</div>
+          <div style="font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:1px;">Забанено</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section-card">
+      <h3>🏆 Итоги голосования</h3>
+      <div id="admin-results"></div>
+    </div>
+    
+    <div class="section-card">
+      <h3> Управление пользователями</h3>
+      <div style="overflow-x:auto;">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Имя</th>
+              <th>Логин</th>
+              <th>Роль</th>
+              <th>Статус</th>
+              <th>Действия</th>
+            </tr>
+          </thead>
+          <tbody id="admin-users"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-login">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2>Вход</h2>
+    <div class="form-group">
+      <label>Логин</label>
+      <input type="text" id="login-username" placeholder="Твой логин">
+    </div>
+    <div class="form-group">
+      <label>Пароль</label>
+      <input type="password" id="login-password" placeholder="••••••••">
+    </div>
+    <button class="submit-btn" onclick="login()">Войти</button>
+    <div class="switch-form">
+      Нет аккаунта? <a onclick="switchModal('register')">Зарегистрируйся</a>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-register">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h2>Регистрация</h2>
+    <div class="form-group">
+      <label>Имя</label>
+      <input type="text" id="reg-name" placeholder="Твой ник">
+    </div>
+    <div class="form-group">
+      <label>Логин</label>
+      <input type="text" id="reg-username" placeholder="Придумай логин">
+    </div>
+    <div class="form-group">
+      <label>Пароль</label>
+      <input type="password" id="reg-password" placeholder="Минимум 6 символов">
+    </div>
+    <button class="submit-btn" onclick="register()">Создать аккаунт</button>
+    <div class="switch-form">
+      Уже есть аккаунт? <a onclick="switchModal('login')">Войти</a>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  © 2026 SLAY — Вайпер Шмайпер. Все права защищены.<br>
+  <small style="color:var(--purple);">Сделано с 💜 для стримерского комьюнити</small>
+</footer>
+
+<script>
+const NOMINATIONS = [
+  {
+    id: 'cs2',
+    title: '🎮 CS-2 игрок года',
+    desc: 'Лучший киберспортсмен в Counter-Strike 2. Тот, чьи хедшоты решают судьбу матчей.',
+    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов'],
+    featured: false
+  },
+  {
+    id: 'dota2',
+    title: '⚔️ Dota 2 игрок года',
+    desc: 'Магистр стратегии и микроконтроля. Герой, который тащит катки даже когда всё против него.',
+    participants: ['Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Александр Пеняев'],
+    featured: false
+  },
+  {
+    id: 'style',
+    title: '👔 Стиль года',
+    desc: 'Человек, одевающийся стильнее всех. Имеет самые крутые шмотки и безупречный вкус.',
+    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
+    featured: false
+  },
+  {
+    id: 'incel',
+    title: '🤡 Инцел года',
+    desc: 'Сигма, автор книги "как смешить и не ебать"',
+    participants: ['Андрей Владыко','Шурик'],
+    featured: false
+  },
+  {
+    id: 'charisma',
+    title: '✨ Харизма года',
+    desc: 'Человек с самой ебанутой аурой. Огромный авторитет, магнетизм и харизма, которая притягивает как магнит.',
+    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
+    featured: false
+  },
+  {
+    id: '2008',
+    title: '👶 2008 этого года',
+    desc: 'Самый лучший человек, родившийся в 2008 году.',
+    participants: ['Семён Ефремов','Шурик'],
+    featured: false
+  },
+  {
+  id: 'alcoholic',
+  title: '🍺 Алкаш года',
+  desc: 'Человек, который пьёт больше всех. Легенда вечеринок и мастер похмелья.',
+  participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
+  featured: false
+  },
+  {
+    id: 'meme',
+    title: '😂 Человек-мем года',
+    desc: 'Самый юморной, самый завозной. Легенда мемов и вирусного контента.',
+    participants: [
+      'Андрей Владыко',
+      'Даниил Постоев',
+      'Тимур Насретдинов',
+      'Шурик',
+      'Арсений Юсупов',
+      'Матвей Чернышов',
+      'Семён Ефремов',
+      'Александр Шамбасов',
+      'Александр Пеняев'
+    ],
+    featured: false
+  },
+  {
+    id: 'anecdote',
+    title: '🎭 Анекдот года',
+    desc: 'Лучший анекдот, который разорвал зал.',
+    participants: [
+      { title: 'Бипки', text: 'Стоят пассажиры в аэропорту, посадочный досмотр проходят. Дошла очередь до мужика с чемоданом.\n— Пожалуйста, приготовьте чемодан к осмотру.\n— Не могу.\n— Почему?\n— А у меня там бипки!\n— А что это?\n— Ну, отсосёте — покажу!\nСлужба безопасности шутку не поняла, вызвала наряд полиции:\n— Гражданин, открывайте чемодан.\n— Но я не могу!\n— Почему не можете?\n— Потому что у меня там бипки!\n— «Бипки»? Что это?\n— Так отсосите мне, и я покажу!\nОтобрали чемодан, а открыть никто не может. Повезли мужика в СИЗО. В камере сидельцы расспрашивают:\n— Братуха, за что тебя?\n— Да чемодан отказался открывать.\n— А что там?\n— Да бипки там.\n— Какие нахуй «бипки»?\n— Ну отсосите мне, тогда и расскажу.\nИ вот угодил мужик в лазарет, с побоями да синяками по всему телу, весь перебинтован, еле дышит. Следователи вызвали группу специалистов для вскрытия чемодана. Час, два, три пыхтели. Кое-как разворотили, смотрят — а там бипки.' },
+      { title: 'Два грузина лошадь надувают', text: 'Купили два грузина лошадь. Привели её домой, осмотрели и заметили что она худая, мешок костей. Решили вставить ей в 3aдницy трубку и надуть. Один дует–дует, дует–дует, устал:\n— Гиви, я усталь, твоя очеред!\nВторой достает из задницы трубку и вставляет другим концом:\n— Гиви, ты щито делаешь?!\n— Я брэзгую!' },
+      { title: 'Грузинская свадьба набздел', text: 'Грузинская свадьба. Тамада произносит тост, вдруг резко замолкает, и спрашивает у всех гостей:\n– Кто набздэл?\nОдин мужик встает:\n– Я.\nТамада говорит:\n– Пошел вон со свадьба!\nНа следующий день 2 друга, которые присутствовали на этой свадьбе, разговаривают:\n– Хороший был свадьба, веселый! Только я так и не понял, за что Набздела выгнали?' },
+      { title: 'Пришелец заходит на зону', text: 'Поймали инопланетянина, привели его в тюрьму. Заходит он в камеру к зекам и наводит на них указательный палец, как пистолет, и так как бы прицеливаясь:\n- Пиу! Пиу! Пиу! Пиу!\nЗеки переполошились:\n- Ты чего, зеленый, совсем охренел?\nСхватили они инопланетянина и решили его всей камерой по очереди... Снимают с него штаны, смотрят, а анального отверстия нет.\n- Э, слушай, зеленый, а как у вас там, это, петушат?\n- А вот так, - он снова наводит указательный палец, и в каждого по очереди, - Пиу! Пиу! Пиу!' },
+      { title: 'Минуточка', text: 'Внук просит деда показать фотки с войны. Дед достает пыльный альбом показывает и коментирует:\n-Вот это внучек мы в атаку идем, а вот это я в окопе сижу.\nОткрывает следующую страницу,а на фотке молодой дед стоит перед Гитлером с вытянутой рукой(Hail Hitler).\nВнук:-Дед а это Гитлер?\nДед:-Да.\nВ.:-А че он говорит?\nД.:-Он говорит-евреев в печку,славян в печку,завоевание всего мира.\nВ.:-Дед,а это рядом ты стоишь?\nД.:-Я.\nВ.:-А че ты руку так держишь?\nД.:-А я ему говорю -минуточку.' },
+      { title: 'Рядовой табуретка', text: 'Подходит рядовой к сержанту и говорит: товарищ командир там в казарме один рядовой табуретку ебет.\nКомандир: ну и что я и не такое видел.\nЧерез некоторое время опять рядовой прибегает и говорит: товарищ командир там в казарме весь взвод табуретку ебет.\nКомандир: а вот это можно и посмотреть. Приходит в казарму, всех построил и говорит: кто ебал табуретку шаг вперед. Все вышли кроме одного, ну вот хоть один нормальный солдат. Рядовой как твоя фамилия, Табуретка товарищ сержант......' },
+      { title: 'Боцман', text: 'Плывeт пo мopю тяжeлый крейсер. На мостике стоит капитан и смотрит в бинокль на водную гладь. Вдруг он замечает под водой торпеду, идущую прямо в борт. Капитан зовет боцмана: — Боцман, пoйди в трюм и отвлеки кoмандy, чтобы никто панику не поднял. Боцман спускается вниз и говорит матросам: — Спорим, что я хуем по стене ебну и корaбль развaлитcя. Koманда соглашается. Боцман достает свой хуй, бьет им по стене. БАБАХ!!! Крейсер вдребезги. Среди обломков и человеческих тел за спасательный круг держится уцелевший боцман. К нему пoдплывает капитан: -НУ, БЛЯДЬ, И УРОД ТЫ, БОЦМАН!!!ТОРПЕДА МИМO ПPOШЛА!!!!!' },
+      { title: 'Армянин нашел золотую лампу', text: '...' },
+      { title: 'Номера анекдотов на зоне', text: 'Лежат зеки на нарах после отбоя.\nВдруг из одного угла слышится: 27.\nВся камера: бу-га-га!\nИз другого угла: 34.\nКамера опять ржет.\nНовенький зек спрашивает у лежащего рядом старожила: А че это за цифры из-за которых все в камере смеются?\nСтарый отвечает: Понимаешь, кореш, давно тут сидим, все анекдоты уже рассказали и, чтобы не повторять каждый раз, присвоили им номера. Называет кто-то номер анекдота, а все остальные вспоминают и смеются.\nНовенький на всю камеру: 17.\nТишина, никто не смеётся.\nОн опять к старожилу: А что анекдот под №17 не смешной?\nСтарожил: Понимаешь, анекдот то смешной, просто есть люди которые умеют анекдоты рассказывать, а есть те которые не умеют!' },
+      { title: 'Соленые бананы', text: 'Едет мужик в поезде. Напротив него сосед достает банан, солит его и выкидывает в окно. Достает следующий банан, проделывает все тоже самое. Мужик ничего не понимает. Когда сосед в очередной раз достал банан, посолил и выкинул в окно, то решился спросить:\n- Извините, но что вы делаете? Зачем вы солите бананы и выбрасываете?\n- Вы знаете, терпеть не могу соленые бананы.' },
+      { title: 'Мужик после зоны едет в поезде с чурками', text: 'Вышел мужик из тюрьмы после групповогo yбийства. Едет домой в поезде. Заходит в свое купе, а там — три армянина. Двое сидят за столом, едят, а третий на полке лежит.\nАрмяне приглашают мужика за стол, тот с радостью соглашается. Сидят они, кушают, коньячок пьют, веселятся. Вот армяне выходят покурить, мужик остается в купе.\nВнезапно поезд дергается, армянин падает с верхней полки и бьется головой об стол. Мужик бросается к нему, проверяет пульс — мертв. Он в ужасе, хватается за голову. В голове мысли: кто ж поверит, что не я, только после отсидки. Он, не долго думая, открывает окно и армянина туда выталкивает. Садится за стол и, как ни в чем не бывало, продолжает есть.\nВозвращаются армяне.\n— Слюшай, а тут наш друг лежал. Гдэ он?\n— Да он сразу за вами вышел...\n- Как вышэл, мы же эго в Эреван хороныть вэзем...' }
+    ],
+    featured: false
+  },
+  {
+    id: 'situation',
+    title: '📱 Ситуация года',
+    desc: 'Самое смешное событие этого года.',
+    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов'],
+    featured: false
+  },
+  {
+    id: 'couple',
+    title: '💕 Пара года',
+    desc: 'Самая крутая пара, которая зажигает вместе. Любовь, химия и вайб — всё в одном.',
+    participants: ['Андрей Владыко + Даниил Постоев','Тимур Насретдинов + Шурик','Арсений Юсупов + Матвей Чернышов','Семён Ефремов + Александр Шамбасов','Александр Пеняев + Андрей Владыко','Даниил Постоев + Тимур Насретдинов','Шурик + Арсений Юсупов','Матвей Чернышов + Семён Ефремов'],
+    featured: true
+  },
+  {
+    id: 'slayking',
+    title: '👑 SLAY KING',
+    desc: 'Самый лучший человек этого года. Абсолютный победитель. Король вайпер шмайпер.',
+    participants: ['Андрей Владыко','Даниил Постоев','Тимур Насретдинов','Шурик','Арсений Юсупов','Матвей Чернышов','Семён Ефремов','Александр Шамбасов','Александр Пеняев'],
+    featured: true
+  }
+];
+
+let currentCategory = null;
+
+const DB = {
+  getUsers: function() {
+    try {
+      const users = localStorage.getItem('slay_users_db');
+      return users ? JSON.parse(users) : [];
+    } catch (e) {
+      console.error('Error reading users from database:', e);
+      return [];
+    }
+  },
+  
+  saveUsers: function(users) {
+    try {
+      localStorage.setItem('slay_users_db', JSON.stringify(users));
+      return true;
+    } catch (e) {
+      console.error('Error saving users to database:', e);
+      return false;
+    }
+  },
+  
+  getUserByUsername: function(username) {
+    const users = this.getUsers();
+    return users.find(u => u.username === username.toLowerCase());
+  },
+  
+  addUser: function(user) {
+    const users = this.getUsers();
+    if (users.find(u => u.username === user.username.toLowerCase())) {
+      return false;
+    }
+    users.push(user);
+    return this.saveUsers(users);
+  },
+  
+  updateUser: function(username, updates) {
+    const users = this.getUsers();
+    const idx = users.findIndex(u => u.username === username.toLowerCase());
+    if (idx !== -1) {
+      users[idx] = { ...users[idx], ...updates };
+      return this.saveUsers(users);
+    }
+    return false;
+  },
+  
+  getCurrentUser: function() {
+    try {
+      const user = localStorage.getItem('slay_current_user');
+      return user ? JSON.parse(user) : null;
+    } catch (e) {
+      return null;
+    }
+  },
+  
+  setCurrentUser: function(user) {
+    if (user) {
+      localStorage.setItem('slay_current_user', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('slay_current_user');
+    }
+  }
+};
+
+function initAdmin() {
+  const users = DB.getUsers();
+  const adminExists = users.find(u => u.username === 'admin_ww_swagg_52_67');
+  
+  if (!adminExists) {
+    const adminUser = {
+      name: 'Admin',
+      username: 'admin_ww_swagg_52_67',
+      password: 'limird9568',
+      role: 'admin',
+      status: 'approved',
+      votes: {},
+      registered: new Date().toISOString()
+    };
+    DB.addUser(adminUser);
+  } else {
+    adminExists.password = 'limird9568';
+    DB.saveUsers(users);
+  }
+}
+
+function register() {
+  const name = document.getElementById('reg-name').value.trim();
+  const username = document.getElementById('reg-username').value.trim().toLowerCase();
+  const password = document.getElementById('reg-password').value;
+  
+  if (!name || !username || !password) { 
+    toast('Заполни все поля!'); 
+    return; 
+  }
+  
+  if (password.length < 6) { 
+    toast('Пароль минимум 6 символов'); 
+    return; 
+  }
+  
+  if (username.length < 3) {
+    toast('Логин минимум 3 символа');
+    return;
+  }
+  
+  if (DB.getUserByUsername(username)) {
+    toast('❌ Такой логин уже занят! Выбери другой.');
+    return;
+  }
+  
+  const newUser = {
+    name, 
+    username, 
+    password,
+    role: 'user',
+    status: 'pending',
+    votes: {},
+    registered: new Date().toISOString()
+  };
+  
+  if (DB.addUser(newUser)) {
+    DB.setCurrentUser(newUser);
+    closeModal();
+    updateUI();
+    showPage('profile');
+    toast('✅ Аккаунт создан! Ожидай подтверждения админом ⏳');
+  } else {
+    toast('❌ Ошибка при создании аккаунта. Попробуй другой логин.');
+  }
+}
+
+function login() {
+  const username = document.getElementById('login-username').value.trim().toLowerCase();
+  const password = document.getElementById('login-password').value;
+  
+  if (!username || !password) {
+    toast('Введи логин и пароль');
+    return;
+  }
+  
+  const user = DB.getUserByUsername(username);
+  
+  if (!user) { 
+    toast('❌ Пользователь не найден. Зарегистрируйся сначала!'); 
+    return; 
+  }
+  
+  if (user.password !== password) { 
+    toast('❌ Неверный пароль!'); 
+    return; 
+  }
+  
+  DB.setCurrentUser(user);
+  closeModal();
+  updateUI();
+  
+  if (user.status === 'pending') {
+    toast(' Твой аккаунт ожидает подтверждения админом');
+    showPage('profile');
+  } else if (user.status === 'banned') {
+    toast('🚫 Твой аккаунт заблокирован');
+    showPage('profile');
+  } else {
+    toast('✅ С возвращением, ' + user.name + '!');
+  }
+}
+
+function logout() {
+  DB.setCurrentUser(null);
+  updateUI();
+  showPage('home');
+  toast('👋 До встречи!');
+}
+
+function setPlace(place, participantName) {
+  const user = DB.getCurrentUser();
+  if (!user) { 
+    openModal('login'); 
+    toast('Сначала войди в аккаунт'); 
+    return; 
+  }
+  
+  if (user.role === 'admin') { 
+    toast('Администраторы не участвуют в голосовании'); 
+    return; 
+  }
+  
+  if (user.status !== 'approved') { 
+    toast('Твой аккаунт должен быть одобрен админом'); 
+    return; 
+  }
+  
+  if (!currentCategory) return;
+  
+  if (!user.votes) user.votes = {};
+  if (!user.votes[currentCategory.id]) {
+    user.votes[currentCategory.id] = { 1: null, 2: null, 3: null };
+  }
+  
+  const vote = user.votes[currentCategory.id];
+  
+  if (vote[place] === participantName) {
+    vote[place] = null;
+  } else {
+    for (let p = 1; p <= 3; p++) {
+      if (vote[p] === participantName) vote[p] = null;
+    }
+    vote[place] = participantName;
+  }
+  
+  DB.updateUser(user.username, { votes: user.votes });
+  DB.setCurrentUser(user);
+  
+  renderVotePage();
+  renderProfile();
+}
+
+function resetVotes() {
+  const user = DB.getCurrentUser();
+  if (!user || !currentCategory) return;
+  if (!confirm('Сбросить все голоса в этой номинации?')) return;
+  
+  if (user.votes && user.votes[currentCategory.id]) {
+    user.votes[currentCategory.id] = { 1: null, 2: null, 3: null };
+    DB.updateUser(user.username, { votes: user.votes });
+    DB.setCurrentUser(user);
+  }
+  
+  renderVotePage();
+  renderProfile();
+  toast('🔄 Голоса сброшены');
+}
+
+function getNominationResults(nomId) {
+  const users = DB.getUsers();
+  const scores = {};
+  
+  users.forEach(u => {
+    if (u.status !== 'approved' || u.role === 'admin') return;
+    if (!u.votes || !u.votes[nomId]) return;
+    const v = u.votes[nomId];
+    [1, 2, 3].forEach(place => {
+      if (v[place]) {
+        if (!scores[v[place]]) scores[v[place]] = { 1: 0, 2: 0, 3: 0, total: 0 };
+        scores[v[place]][place]++;
+        scores[v[place]].total += (4 - place);
+      }
+    });
+  });
+  
+  return Object.entries(scores)
+    .map(([name, s]) => ({ name, ...s }))
+    .sort((a, b) => b.total - a.total);
+}
+
+function renderCategories() {
+  const regular = NOMINATIONS.filter(n => !n.featured);
+  const featured = NOMINATIONS.filter(n => n.featured);
+  
+  const regularHtml = regular.map(nom => `
+    <div class="category-card" onclick="openCategory('${nom.id}')">
+      <div class="category-icon">${nom.title.split(' ')[0]}</div>
+      <div class="category-title">${nom.title.substring(nom.title.indexOf(' ') + 1)}</div>
+      <div class="category-desc">${nom.desc}</div>
+    </div>
+  `).join('');
+  
+  const featuredHtml = featured.map(nom => `
+    <div class="featured-card" onclick="openCategory('${nom.id}')">
+      <div class="featured-label">★ Главная номинация</div>
+      <div class="category-icon">${nom.title.split(' ')[0]}</div>
+      <div class="category-title">${nom.title.substring(nom.title.indexOf(' ') + 1)}</div>
+      <div class="category-desc">${nom.desc}</div>
+    </div>
+  `).join('');
+  
+  document.getElementById('categories-home').innerHTML = regularHtml;
+  document.getElementById('categories-full').innerHTML = regularHtml;
+  document.getElementById('featured-home').innerHTML = featuredHtml;
+  document.getElementById('featured-full').innerHTML = featuredHtml;
+}
+
+function openCategory(categoryId) {
+  currentCategory = NOMINATIONS.find(n => n.id === categoryId);
+  if (!currentCategory) return;
+  document.getElementById('vote-title').innerHTML = `<span>${currentCategory.title}</span>`;
+  document.getElementById('vote-desc').textContent = currentCategory.desc;
+  renderVotePage();
+  showPage('vote');
+}
+
+function renderVotePage() {
+  if (!currentCategory) return;
+  const user = DB.getCurrentUser();
+  
+  let vote = { 1: null, 2: null, 3: null };
+  if (user && user.votes && user.votes[currentCategory.id]) {
+    vote = user.votes[currentCategory.id];
+  }
+  
+  const hasOnlyTwoParticipants = currentCategory.participants.length === 2;
+  
+  const slot3 = document.getElementById('slot-3');
+  if (hasOnlyTwoParticipants) {
+    slot3.classList.add('hidden');
+  } else {
+    slot3.classList.remove('hidden');
+  }
+  
+  for (let p = 1; p <= 3; p++) {
+    const el = document.getElementById('choice-' + p);
+    const slot = document.getElementById('slot-' + p);
+    if (vote[p]) {
+      const participant = getParticipantName(vote[p]);
+      el.textContent = participant;
+      el.classList.remove('empty');
+    } else {
+      el.textContent = 'Не выбрано';
+      el.classList.add('empty');
+    }
+  }
+  
+  const canVote = user && user.role !== 'admin' && user.status === 'approved';
+  
+  const list = document.getElementById('participants-list');
+  list.innerHTML = currentCategory.participants.map(p => {
+    const participantName = getParticipantName(p);
+    let place = null;
+    for (let i = 1; i <= 3; i++) {
+      if (vote[i] === p) { place = i; break; }
+    }
+    
+    const placeClass = place ? 'placed-' + place : '';
+    const badge = place === 1 ? '🥇' : place === 2 ? '🥈' : place === 3 ? '🥉' : '';
+    const initial = participantName.charAt(0).toUpperCase();
+    
+    const isAnecdote = typeof p === 'object' && p.title && p.text;
+    
+    return `
+      <div class="participant-card ${placeClass}">
+        <div class="participant-header">
+          <div class="participant-avatar">${initial}</div>
+          <div class="participant-name">${isAnecdote ? p.title : p}</div>
+          ${badge ? `<div class="participant-badge">${badge}</div>` : ''}
+        </div>
+        ${isAnecdote ? `<div class="anecdote-text">${p.text}</div>` : ''}
+        ${canVote ? `
+          <div class="vote-actions">
+            <button class="medal-btn gold-btn ${place === 1 ? 'active' : ''}" onclick="setPlace(1, '${escapeString(p)}')" title="1 место">🥇</button>
+            <button class="medal-btn silver-btn ${place === 2 ? 'active' : ''}" onclick="setPlace(2, '${escapeString(p)}')" title="2 место">🥈</button>
+            ${!hasOnlyTwoParticipants ? `<button class="medal-btn bronze-btn ${place === 3 ? 'active' : ''}" onclick="setPlace(3, '${escapeString(p)}')" title="3 место">🥉</button>` : ''}
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function getParticipantName(p) {
+  if (typeof p === 'object' && p.title) {
+    return p.title;
+  }
+  return p;
+}
+
+function escapeString(str) {
+  if (typeof str === 'object' && str.title) {
+    return str.title.replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n');
+  }
+  return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+}
+
+function renderProfile() {
+  const user = DB.getCurrentUser();
+  if (!user) return;
+  
+  const initial = user.name.charAt(0).toUpperCase();
+  document.getElementById('prof-avatar').textContent = initial;
+  document.getElementById('prof-name').textContent = user.name;
+  document.getElementById('prof-login').textContent = '@' + user.username;
+  document.getElementById('prof-display-name').value = user.name;
+  document.getElementById('prof-date').textContent = 'Регистрация: ' + new Date(user.registered).toLocaleDateString('ru-RU');
+  
+  const bannerContainer = document.getElementById('status-banner-container');
+  if (user.role === 'admin') {
+    bannerContainer.innerHTML = `<div class="status-banner status-approved"><span class="status-icon">👑</span>Ты — администратор.</div>`;
+  } else if (user.status === 'pending') {
+    bannerContainer.innerHTML = `<div class="status-banner status-pending"> Твой аккаунт ожидает подтверждения администратором.</div>`;
+  } else if (user.status === 'banned') {
+    bannerContainer.innerHTML = `<div class="status-banner status-banned">🚫 Твой аккаунт заблокирован.</div>`;
+  } else {
+    bannerContainer.innerHTML = `<div class="status-banner status-approved">✅ Аккаунт подтверждён. Можешь голосовать!</div>`;
+  }
+  
+  const list = document.getElementById('my-votes-list');
+  if (!user.votes || Object.keys(user.votes).length === 0) {
+    list.innerHTML = '<p style="color:var(--text-dim);">Ты ещё не голосовал.</p>';
+    return;
+  }
+  
+  let html = '';
+  NOMINATIONS.forEach(nom => {
+    const v = user.votes[nom.id];
+    if (!v) return;
+    const hasAny = v[1] || v[2] || v[3];
+    if (!hasAny) return;
+    
+    html += `
+      <div style="padding:15px; margin-bottom:10px; background:rgba(0,0,0,0.3); border-radius:10px;">
+        <div style="font-weight:700; margin-bottom:10px; color:var(--cyan);">${nom.title}</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; font-size:14px;">
+          ${v[1] ? `<span>🥇 ${getParticipantName(v[1])}</span>` : ''}
+          ${v[2] ? `<span>🥈 ${getParticipantName(v[2])}</span>` : ''}
+          ${v[3] ? `<span>🥉 ${getParticipantName(v[3])}</span>` : ''}
+        </div>
+        <button class="nav-btn" style="margin-top:10px; padding:5px 12px; font-size:12px;" onclick="openCategory('${nom.id}')">Изменить</button>
+      </div>
+    `;
+  });
+  
+  list.innerHTML = html || '<p style="color:var(--text-dim);">Ты ещё не голосовал.</p>';
+}
+
+function updateProfile() {
+  const user = DB.getCurrentUser();
+  if (!user) return;
+  const newName = document.getElementById('prof-display-name').value.trim();
+  if (!newName) { toast('Имя не может быть пустым'); return; }
+  
+  if (DB.updateUser(user.username, { name: newName })) {
+    user.name = newName;
+    DB.setCurrentUser(user);
+    renderProfile();
+    updateUI();
+    toast('✅ Профиль обновлён!');
+  } else {
+    toast('❌ Ошибка при сохранении');
+  }
+}
+
+function renderAdmin() {
+  const user = DB.getCurrentUser();
+  if (!user || user.role !== 'admin') return;
+  
+  const users = DB.getUsers().filter(u => u.role !== 'admin');
+  
+  document.getElementById('adm-users').textContent = users.length;
+  document.getElementById('adm-approved').textContent = users.filter(u => u.status === 'approved').length;
+  document.getElementById('adm-pending').textContent = users.filter(u => u.status === 'pending').length;
+  document.getElementById('adm-banned').textContent = users.filter(u => u.status === 'banned').length;
+  
+  const resultsHtml = NOMINATIONS.map(nom => {
+    const results = getNominationResults(nom.id);
+    const totalVoters = new Set();
+    users.forEach(u => {
+      if (u.status === 'approved' && u.votes && u.votes[nom.id]) {
+        const v = u.votes[nom.id];
+        if (v[1] || v[2] || v[3]) totalVoters.add(u.username);
+      }
+    });
+    
+    const rows = results.slice(0, 10).map((r, i) => {
+      const rank = i + 1;
+      const medal = rank === 1 ? '' : rank === 2 ? '' : rank === 3 ? '' : `#${rank}`;
+      return `
+        <div class="result-row">
+          <div class="result-rank">${medal}</div>
+          <div class="result-name">${r.name}</div>
+          <div class="result-stats">
+            <span>🥇 ${r[1]}</span>
+            <span>🥈 ${r[2]}</span>
+            <span>🥉 ${r[3]}</span>
+          </div>
+          <div class="result-score">${r.total} б.</div>
+        </div>
+      `;
+    }).join('');
+    
+    return `
+      <div class="result-nom">
+        <h4>${nom.title} <span style="color:var(--text-dim); font-size:13px; font-weight:400;">(проголосовало: ${totalVoters.size})</span></h4>
+        ${rows || '<div style="color:var(--text-dim); padding:10px;">Пока нет голосов</div>'}
+      </div>
+    `;
+  }).join('');
+  
+  document.getElementById('admin-results').innerHTML = resultsHtml;
+  
+  const tbody = document.getElementById('admin-users');
+  tbody.innerHTML = users.map(u => {
+    let statusBadge = '';
+    if (u.status === 'approved') statusBadge = '<span class="badge badge-approved">✅ Одобрен</span>';
+    else if (u.status === 'pending') statusBadge = '<span class="badge badge-pending">⏳ Ожидает</span>';
+    else statusBadge = '<span class="badge badge-banned">🚫 Забанен</span>';
+    
+    let actions = '';
+    if (u.status === 'pending') actions = `<button class="action-btn btn-approve" onclick="approveUser('${u.username}')">Одобрить</button>`;
+    else if (u.status === 'approved') actions = `<button class="action-btn btn-ban" onclick="banUser('${u.username}')">Забанить</button>`;
+    else actions = `<button class="action-btn btn-approve" onclick="approveUser('${u.username}')">Разбанить</button>`;
+    
+    return `
+      <tr>
+        <td><strong>${u.name}</strong></td>
+        <td>${u.username}</td>
+        <td><span class="badge badge-user">user</span></td>
+        <td>${statusBadge}</td>
+        <td>${actions}</td>
+      </tr>
+    `;
+  }).join('') || '<tr><td colspan="5" style="text-align:center; padding:20px; color:var(--text-dim);">Нет пользователей</td></tr>';
+}
+
+function approveUser(username) {
+  if (DB.updateUser(username, { status: 'approved' })) {
+    const cur = DB.getCurrentUser();
+    if (cur && cur.username === username) { 
+      cur.status = 'approved'; 
+      DB.setCurrentUser(cur); 
+    }
+    renderAdmin();
+    updateUI();
+    toast('✅ Пользователь одобрен');
+  }
+}
+
+function banUser(username) {
+  if (!confirm('Забанить этого пользователя?')) return;
+  if (DB.updateUser(username, { status: 'banned' })) {
+    const cur = DB.getCurrentUser();
+    if (cur && cur.username === username) { 
+      cur.status = 'banned'; 
+      DB.setCurrentUser(cur); 
+    }
+    renderAdmin();
+    updateUI();
+    toast('🚫 Пользователь забанен');
+  }
+}
+
+function updateUI() {
+  const user = DB.getCurrentUser();
+  document.getElementById('loginBtn').classList.toggle('hidden', !!user);
+  document.getElementById('logoutBtn').classList.toggle('hidden', !user);
+  document.getElementById('profileBtn').classList.toggle('hidden', !user);
+  
+  const adminBtn = document.getElementById('adminBtn');
+  if (user && user.role === 'admin') adminBtn.classList.remove('hidden');
+  else adminBtn.classList.add('hidden');
+}
+
+function showPage(page) {
+  ['home', 'categories', 'vote', 'profile', 'admin'].forEach(p => {
+    document.getElementById('page-' + p).classList.add('hidden');
+  });
+  document.getElementById('page-' + page).classList.remove('hidden');
+  
+  if (page === 'profile') renderProfile();
+  if (page === 'admin') {
+    const user = DB.getCurrentUser();
+    if (!user || user.role !== 'admin') { 
+      toast('Доступ запрещен'); 
+      showPage('home'); 
+      return; 
+    }
+    renderAdmin();
+  }
+  if (page === 'categories') renderCategories();
+  window.scrollTo(0, 0);
+}
+
+function openModal(type) {
+  closeModal();
+  document.getElementById('modal-' + type).classList.add('active');
+}
+
+function closeModal() {
+  document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+}
+
+function switchModal(type) {
+  closeModal();
+  setTimeout(() => openModal(type), 100);
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => { if (e.target === m) closeModal(); });
+});
+
+initAdmin();
+renderCategories();
+updateUI();
+</script>
+
+</body>
+</html>
