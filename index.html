@@ -1025,8 +1025,8 @@
           <div class="history-nom">Мем года</div>
           <div class="history-winner">Матвей Чернышов</div>
         </div>
-        
-        <div class="history-card slay-king">
+
+        <div class="history-card slay-king" onclick="openEasterEgg()" style="cursor: pointer;">
           <div class="crown-icon">👑</div>
           <div class="history-photo">🏆</div>
           <div class="history-nom">SLAY KING</div>
@@ -1085,8 +1085,8 @@
           <div class="history-nom">Мем года</div>
           <div class="history-winner">Матвей Чернышов</div>
         </div>
-        
-        <div class="history-card slay-king">
+
+        <div class="history-card slay-king" onclick="openEasterEgg()" style="cursor: pointer;">
           <div class="crown-icon">👑</div>
           <div class="history-photo">🏆</div>
           <div class="history-nom">SLAY KING</div>
@@ -1255,6 +1255,21 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="modal-overlay" id="modal-easter-egg">
+  <div class="modal" style="max-width: 600px;">
+    <button class="modal-close" onclick="closeEasterEgg()">×</button>
+    <h2 style="text-align: center; margin-bottom: 30px;">матвей чернышов сосун</h2>
+    <div style="text-align: center;">
+      <img id="easter-egg-image" src="images/krol.jpg" alt="Пасхалка" style="max-width: 100%; height: auto; border-radius: 15px; box-shadow: 0 10px 40px rgba(145, 70, 255, 0.5);" onerror="this.style.display='none'; document.getElementById('easter-egg-placeholder').style.display='block';">
+      <div id="easter-egg-placeholder" style="display: none; padding: 60px; background: rgba(255, 215, 0, 0.1); border: 2px dashed var(--gold); border-radius: 15px; color: var(--gold);">
+        <div style="font-size: 72px; margin-bottom: 20px;">🏆</div>
+        <div style="font-size: 18px; font-weight: 600;">Место для пасхалки</div>
+        <div style="font-size: 13px; color: var(--text-dim); margin-top: 10px;">Добавь картинку: images/easter-egg.png</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <footer>
   © 2026 SLAY — Вайпер Шмайпер. Все права защищены. Клянусь мамой.<br>
@@ -2378,6 +2393,14 @@ function openModal(type) {
 
 function closeModal() {
   document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+}
+
+function openEasterEgg() {
+  document.getElementById('modal-easter-egg').classList.add('active');
+}
+
+function closeEasterEgg() {
+  document.getElementById('modal-easter-egg').classList.remove('active');
 }
 
 function switchModal(type) {
