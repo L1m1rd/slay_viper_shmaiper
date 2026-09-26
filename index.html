@@ -1217,8 +1217,8 @@
     <button class="modal-close" onclick="closeModal()">×</button>
     <h2>Вход</h2>
     <div class="form-group">
-      <label>Логин</label>
-      <input type="text" id="login-username" placeholder="Твой логин">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
     </div>
     <div class="form-group">
       <label>Пароль</label>
@@ -1237,11 +1237,15 @@
     <h2>Регистрация</h2>
     <div class="form-group">
       <label>Имя</label>
-      <input type="text" id="reg-name" placeholder="Твой ник">
+      <input type="text" id="reg-name" placeholder="Твой ник" maxlength="50" autocomplete="nickname">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email">
     </div>
     <div class="form-group">
       <label>Логин</label>
-      <input type="text" id="reg-username" placeholder="Придумай логин">
+      <input type="text" id="reg-username" placeholder="Латиница, цифры и _" maxlength="30" autocomplete="username">
     </div>
     <div class="form-group">
       <label>Пароль</label>
@@ -1277,32 +1281,6 @@
 </footer>
 
 <script>
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzwV3rYuhwBjqc5isbhs11rZyzDMitrOAPBIM6nZSo-fmg9idm2ccZRy6KanSsA4Goc/exec';
-
-function sendVoteToGoogleSheets(username, name, category, vote) {
-  const data = {
-    username: username,
-    name: name,
-    category: category,
-    vote: vote
-  };
-
-  fetch(GOOGLE_SHEET_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data)
-  })
-  .then(() => {
-    console.log('✅ Голос отправлен в Google Sheets');
-  })
-  .catch(error => {
-    console.error('❌ Ошибка отправки в Google Sheets:', error);
-  });
-}
-
 const COUPLE_VOTES_LIMIT = 3;
 
 const NOMINATIONS = [
@@ -1658,26 +1636,7 @@ const DB = {
   }
 };
 
-function initAdmin() {
-  const users = DB.getUsers();
-  const adminExists = users.find(u => u.username === 'admin_ww_swagg_52_67');
-  
-  if (!adminExists) {
-    const adminUser = {
-      name: 'Admin',
-      username: 'admin_ww_swagg_52_67',
-      password: 'limird9568',
-      role: 'admin',
-      status: 'approved',
-      votes: {},
-      registered: new Date().toISOString()
-    };
-    DB.addUser(adminUser);
-  } else {
-    adminExists.password = 'limird9568';
-    DB.saveUsers(users);
-  }
-}
+function initAdmin() {}
 
 function register() {
   const name = document.getElementById('reg-name').value.trim();
@@ -2081,7 +2040,7 @@ function renderPlacesVotePage(user) {
     const participantName = getParticipantName(p);
     let place = null;
     for (let i = 1; i <= 3; i++) {
-      if (vote[i] === p) { place = i; break; }
+      if (vote[i] === participantName) { place = i; break; }
     }
 
     const placeClass = place ? 'placed-' + place : '';
@@ -2419,10 +2378,11 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) closeModal(); });
 });
 
-initAdmin();
 renderCategories();
 updateUI();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-app.js"></script>
 
 </body>
 </html>
