@@ -1217,8 +1217,8 @@
     <button class="modal-close" onclick="closeModal()">×</button>
     <h2>Вход</h2>
     <div class="form-group">
-      <label>Логин</label>
-      <input type="text" id="login-username" placeholder="Твой логин">
+      <label>Email</label>
+      <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email">
     </div>
     <div class="form-group">
       <label>Пароль</label>
@@ -1237,11 +1237,15 @@
     <h2>Регистрация</h2>
     <div class="form-group">
       <label>Имя</label>
-      <input type="text" id="reg-name" placeholder="Твой ник">
+      <input type="text" id="reg-name" placeholder="Твой ник" maxlength="50" autocomplete="nickname">
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email">
     </div>
     <div class="form-group">
       <label>Логин</label>
-      <input type="text" id="reg-username" placeholder="Придумай логин">
+      <input type="text" id="reg-username" placeholder="Латиница, цифры и _" maxlength="30" autocomplete="username">
     </div>
     <div class="form-group">
       <label>Пароль</label>
@@ -1277,35 +1281,9 @@
 </footer>
 
 <script>
-const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbzwV3rYuhwBjqc5isbhs11rZyzDMitrOAPBIM6nZSo-fmg9idm2ccZRy6KanSsA4Goc/exec';
+window.COUPLE_VOTES_LIMIT = 3;
 
-function sendVoteToGoogleSheets(username, name, category, vote) {
-  const data = {
-    username: username,
-    name: name,
-    category: category,
-    vote: vote
-  };
-
-  fetch(GOOGLE_SHEET_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data)
-  })
-  .then(() => {
-    console.log('✅ Голос отправлен в Google Sheets');
-  })
-  .catch(error => {
-    console.error('❌ Ошибка отправки в Google Sheets:', error);
-  });
-}
-
-const COUPLE_VOTES_LIMIT = 3;
-
-const NOMINATIONS = [
+window.NOMINATIONS = [
 
 
 
@@ -1593,339 +1571,31 @@ const NOMINATIONS = [
 }
 ];
 
-let currentCategory = null;
+window.currentCategory = null;
 
-const DB = {
-  getUsers: function() {
-    try {
-      const users = localStorage.getItem('slay_users_db');
-      return users ? JSON.parse(users) : [];
-    } catch (e) {
-      console.error('Error reading users from database:', e);
-      return [];
-    }
-  },
-  
-  saveUsers: function(users) {
-    try {
-      localStorage.setItem('slay_users_db', JSON.stringify(users));
-      return true;
-    } catch (e) {
-      console.error('Error saving users to database:', e);
-      return false;
-    }
-  },
-  
-  getUserByUsername: function(username) {
-    const users = this.getUsers();
-    return users.find(u => u.username === username.toLowerCase());
-  },
-  
-  addUser: function(user) {
-    const users = this.getUsers();
-    if (users.find(u => u.username === user.username.toLowerCase())) {
-      return false;
-    }
-    users.push(user);
-    return this.saveUsers(users);
-  },
-  
-  updateUser: function(username, updates) {
-    const users = this.getUsers();
-    const idx = users.findIndex(u => u.username === username.toLowerCase());
-    if (idx !== -1) {
-      users[idx] = { ...users[idx], ...updates };
-      return this.saveUsers(users);
-    }
-    return false;
-  },
-  
-  getCurrentUser: function() {
-    try {
-      const user = localStorage.getItem('slay_current_user');
-      return user ? JSON.parse(user) : null;
-    } catch (e) {
-      return null;
-    }
-  },
-  
-  setCurrentUser: function(user) {
-    if (user) {
-      localStorage.setItem('slay_current_user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('slay_current_user');
-    }
-  }
+window.DB = {
+  getUsers: function() { return []; },
+  saveUsers: function() { return false; },
+  getUserByUsername: function() { return null; },
+  addUser: function() { return false; },
+  updateUser: function() { return false; },
+  getCurrentUser: function() { return null; },
+  setCurrentUser: function() {}
 };
 
-function initAdmin() {
-  const users = DB.getUsers();
-  const adminExists = users.find(u => u.username === 'admin_ww_swagg_52_67');
-  
-  if (!adminExists) {
-    const adminUser = {
-      name: 'Admin',
-      username: 'admin_ww_swagg_52_67',
-      password: 'limird9568',
-      role: 'admin',
-      status: 'approved',
-      votes: {},
-      registered: new Date().toISOString()
-    };
-    DB.addUser(adminUser);
-  } else {
-    adminExists.password = 'limird9568';
-    DB.saveUsers(users);
-  }
+function initAdmin() {}
+
+function authLoadingFallback() {
+  toast('Система авторизации загружается. Попробуй ещё раз.');
 }
 
-function register() {
-  const name = document.getElementById('reg-name').value.trim();
-  const username = document.getElementById('reg-username').value.trim().toLowerCase();
-  const password = document.getElementById('reg-password').value;
-  
-  if (!name || !username || !password) { 
-    toast('Заполни все поля!'); 
-    return; 
-  }
-  
-  if (password.length < 6) { 
-    toast('Пароль минимум 6 символов'); 
-    return; 
-  }
-  
-  if (username.length < 3) {
-    toast('Логин минимум 3 символа');
-    return;
-  }
-  
-  if (DB.getUserByUsername(username)) {
-    toast('❌ Такой логин уже занят! Выбери другой.');
-    return;
-  }
-  
-  const newUser = {
-    name, 
-    username, 
-    password,
-    role: 'user',
-    status: 'pending',
-    votes: {},
-    registered: new Date().toISOString()
-  };
-  
-  if (DB.addUser(newUser)) {
-    DB.setCurrentUser(newUser);
-    closeModal();
-    updateUI();
-    showPage('profile');
-    toast('✅ Аккаунт создан! Ожидай подтверждения админом ⏳');
-  } else {
-    toast('❌ Ошибка при создании аккаунта. Попробуй другой логин.');
-  }
-}
-
-function login() {
-  const username = document.getElementById('login-username').value.trim().toLowerCase();
-  const password = document.getElementById('login-password').value;
-  
-  if (!username || !password) {
-    toast('Введи логин и пароль');
-    return;
-  }
-  
-  const user = DB.getUserByUsername(username);
-  
-  if (!user) { 
-    toast(' Пользователь не найден. Зарегистрируйся сначала!'); 
-    return; 
-  }
-  
-  if (user.password !== password) { 
-    toast('❌ Неверный пароль!'); 
-    return; 
-  }
-  
-  DB.setCurrentUser(user);
-  closeModal();
-  updateUI();
-  
-  if (user.status === 'pending') {
-    toast('⏳ Твой аккаунт ожидает подтверждения админом');
-    showPage('profile');
-  } else if (user.status === 'banned') {
-    toast(' Твой аккаунт заблокирован');
-    showPage('profile');
-  } else {
-    toast('✅ С возвращением, ' + user.name + '!');
-  }
-}
-
-function logout() {
-  DB.setCurrentUser(null);
-  updateUI();
-  showPage('home');
-  toast('👋 До встречи!');
-}
-
-function toggleVoteForCouple(participantName) {
-  const user = DB.getCurrentUser();
-  if (!user) {
-    openModal('login');
-    toast('Сначала войди в аккаунт');
-    return;
-  }
-
-  if (user.role === 'admin') {
-    toast('Администраторы не участвуют в голосовании');
-    return;
-  }
-
-  if (user.status !== 'approved') {
-    toast('Твой аккаунт должен быть одобрен админом');
-    return;
-  }
-
-  if (!currentCategory) return;
-
-  if (!user.votes) user.votes = {};
-  if (!user.votes[currentCategory.id]) {
-    user.votes[currentCategory.id] = [];
-  }
-
-  const votes = user.votes[currentCategory.id];
-  const index = votes.indexOf(participantName);
-
-  if (index !== -1) {
-    votes.splice(index, 1);
-    toast('✅ Голос убран');
-  } else {
-    if (votes.length >= COUPLE_VOTES_LIMIT) {
-      toast(`❌ Можно отдать максимум ${COUPLE_VOTES_LIMIT} голоса`);
-      return;
-    }
-    votes.push(participantName);
-    toast('✅ Голос отдан');
-  }
-
-  DB.updateUser(user.username, { votes: user.votes });
-  DB.setCurrentUser(user);
-
-  // Отправляем голос в Google Sheets
-  sendVoteToGoogleSheets(user.username, user.name, currentCategory.id, votes);
-
-  renderVotePage();
-  renderProfile();
-}
-
-function setPlace(place, participantName) {
-  const user = DB.getCurrentUser();
-  if (!user) {
-    openModal('login');
-    toast('Сначала войди в аккаунт');
-    return;
-  }
-
-  if (user.role === 'admin') {
-    toast('Администраторы не участвуют в голосовании');
-    return;
-  }
-
-  if (user.status !== 'approved') {
-    toast('Твой аккаунт должен быть одобрен админом');
-    return;
-  }
-
-  if (!currentCategory) return;
-
-  if (!user.votes) user.votes = {};
-  if (!user.votes[currentCategory.id]) {
-    user.votes[currentCategory.id] = { 1: null, 2: null, 3: null };
-  }
-
-  const vote = user.votes[currentCategory.id];
-
-  if (vote[place] === participantName) {
-    vote[place] = null;
-  } else {
-    for (let p = 1; p <= 3; p++) {
-      if (vote[p] === participantName) vote[p] = null;
-    }
-    vote[place] = participantName;
-  }
-
-  DB.updateUser(user.username, { votes: user.votes });
-  DB.setCurrentUser(user);
-
-  // Отправляем голос в Google Sheets
-  sendVoteToGoogleSheets(user.username, user.name, currentCategory.id, vote);
-
-  renderVotePage();
-  renderProfile();
-}
-
-function resetVotes() {
-  const user = DB.getCurrentUser();
-  if (!user || !currentCategory) return;
-  if (!confirm('Сбросить все голоса в этой номинации?')) return;
-
-  if (user.votes && user.votes[currentCategory.id]) {
-    const isMultiVote = currentCategory.votingType === 'multi-vote';
-    user.votes[currentCategory.id] = isMultiVote ? [] : { 1: null, 2: null, 3: null };
-    DB.updateUser(user.username, { votes: user.votes });
-    DB.setCurrentUser(user);
-  }
-
-  renderVotePage();
-  renderProfile();
-  toast('🔄 Голоса сброшены');
-}
-
-function getNominationResults(nomId) {
-  const users = DB.getUsers();
-  const nomination = NOMINATIONS.find(n => n.id === nomId);
-  const isMultiVote = nomination && nomination.votingType === 'multi-vote';
-
-  if (isMultiVote) {
-    const voteCount = {};
-
-    users.forEach(u => {
-      if (u.status !== 'approved' || u.role === 'admin') return;
-      if (!u.votes || !u.votes[nomId]) return;
-      const votes = u.votes[nomId];
-
-      if (Array.isArray(votes)) {
-        votes.forEach(vote => {
-          if (!voteCount[vote]) voteCount[vote] = 0;
-          voteCount[vote]++;
-        });
-      }
-    });
-
-    return Object.entries(voteCount)
-      .map(([name, count]) => ({ name, total: count, votes: count }))
-      .sort((a, b) => b.total - a.total);
-  } else {
-    const scores = {};
-
-    users.forEach(u => {
-      if (u.status !== 'approved' || u.role === 'admin') return;
-      if (!u.votes || !u.votes[nomId]) return;
-      const v = u.votes[nomId];
-      [1, 2, 3].forEach(place => {
-        if (v[place]) {
-          if (!scores[v[place]]) scores[v[place]] = { 1: 0, 2: 0, 3: 0, total: 0 };
-          scores[v[place]][place]++;
-          scores[v[place]].total += (4 - place);
-        }
-      });
-    });
-
-    return Object.entries(scores)
-      .map(([name, s]) => ({ name, ...s }))
-      .sort((a, b) => b.total - a.total);
-  }
-}
+function register() { authLoadingFallback(); }
+function login() { authLoadingFallback(); }
+function logout() { authLoadingFallback(); }
+function toggleVoteForCouple() { authLoadingFallback(); }
+function setPlace() { authLoadingFallback(); }
+function resetVotes() { authLoadingFallback(); }
+function getNominationResults() { return []; }
 
 function renderCategories() {
   const regular = NOMINATIONS.filter(n => !n.featured);
@@ -2081,7 +1751,7 @@ function renderPlacesVotePage(user) {
     const participantName = getParticipantName(p);
     let place = null;
     for (let i = 1; i <= 3; i++) {
-      if (vote[i] === p) { place = i; break; }
+      if (vote[i] === participantName) { place = i; break; }
     }
 
     const placeClass = place ? 'placed-' + place : '';
@@ -2419,10 +2089,11 @@ document.querySelectorAll('.modal-overlay').forEach(m => {
   m.addEventListener('click', e => { if (e.target === m) closeModal(); });
 });
 
-initAdmin();
 renderCategories();
 updateUI();
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-app.js"></script>
 
 </body>
 </html>
