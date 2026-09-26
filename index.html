@@ -1281,9 +1281,9 @@
 </footer>
 
 <script>
-const COUPLE_VOTES_LIMIT = 3;
+window.COUPLE_VOTES_LIMIT = 3;
 
-const NOMINATIONS = [
+window.NOMINATIONS = [
 
 
 
@@ -1571,9 +1571,9 @@ const NOMINATIONS = [
 }
 ];
 
-let currentCategory = null;
+window.currentCategory = null;
 
-const DB = {
+window.DB = {
   getUsers: function() {
     try {
       const users = localStorage.getItem('slay_users_db');
