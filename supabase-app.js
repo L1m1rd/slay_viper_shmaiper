@@ -578,6 +578,27 @@
       .replaceAll("'", '&#039;');
   }
 
+  function openAdminSection(section) {
+    const menu = document.getElementById('admin-menu');
+    const users = document.getElementById('admin-section-users');
+    const results = document.getElementById('admin-section-results');
+    const presentation = document.getElementById('admin-section-presentation');
+
+    if (!menu || !users || !results || !presentation) return;
+
+    menu.classList.add('hidden');
+    users.classList.add('hidden');
+    results.classList.add('hidden');
+    presentation.classList.add('hidden');
+
+    if (section === 'users') users.classList.remove('hidden');
+    else if (section === 'results') results.classList.remove('hidden');
+    else if (section === 'presentation') presentation.classList.remove('hidden');
+    else menu.classList.remove('hidden');
+
+    window.scrollTo(0, 0);
+  }
+
   async function renderAdmin() {
     const user = getCurrentUser();
 
@@ -846,6 +867,7 @@
     }
 
     if (page === 'admin') {
+      openAdminSection('menu');
       await renderAdmin();
     }
 
@@ -906,6 +928,7 @@
   window.getNominationResults = getNominationResults;
   window.updateProfile = updateProfile;
   window.renderAdmin = renderAdmin;
+  window.openAdminSection = openAdminSection;
   window.approveUser = approveUser;
   window.banUser = banUser;
   window.updateUI = updateUI;
