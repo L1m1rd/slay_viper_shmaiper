@@ -991,6 +991,15 @@
             border-radius: 8px;
         }
 
+        .media-frame video {
+            width: 100%;
+            max-height: 560px;
+            object-fit: contain;
+            display: block;
+            border-radius: 8px;
+            background: #000;
+        }
+
  
   @media (max-width: 768px) {
     .hero h1 { font-size: 40px; letter-spacing: 4px; }
@@ -1554,16 +1563,13 @@ window.NOMINATIONS = [
     title: '📱 Тикток года',
     desc: 'Лучший тикток года. То самое видео, которое разорвало ленту и стало легендой.',
     participants: [
-      { title: 'Тикток 1', video: 'placeholder' },
-      { title: 'Тикток 2', video: 'placeholder' },
-      { title: 'Тикток 3', video: 'placeholder' },
-      { title: 'Тикток 4', video: 'placeholder' },
-      { title: 'Тикток 5', video: 'placeholder' },
-      { title: 'Тикток 6', video: 'placeholder' },
-      { title: 'Тикток 7', video: 'placeholder' },
-      { title: 'Тикток 8', video: 'placeholder' },
-      { title: 'Тикток 9', video: 'placeholder' },
-      { title: 'Тикток 10', video: 'placeholder' }
+      { title: 'ААААААААААААААА - тимур', video: 'videos/tiktok/ААААААААААААААА - тимур.mp4' },
+      { title: 'больно не больно, страшно не страшно - данил, андрей', video: 'videos/tiktok/больно не больно, страшно не страшно - данил, андрей.mp4' },
+      { title: 'жидкий липсинг - саша', video: 'videos/tiktok/жидкий липсинг - саша.mp4' },
+      { title: 'матвей с красотками', video: 'videos/tiktok/матвей с красотками.mp4' },
+      { title: 'тебя манят мои мани только не любовь', video: 'videos/tiktok/тебя манят мои мани только не любовь.mp4' },
+      { title: 'тренд с котятами - данил, саша, андрей', video: 'videos/tiktok/тренд с котятами - данил, саша, андрей.mp4' },
+      { title: 'электрощиток - андрей, данил, саша', video: 'videos/tiktok/электрощиток - андрей, данил, саша.mp4' }
     ],
     featured: false,
     icon: '📱'
@@ -1837,9 +1843,11 @@ function renderPlacesVotePage(user) {
 
         ${showMediaFrame ? `
   <div class="media-frame">
-    ${getParticipantPhoto(p) ?
-      `<img src="${getParticipantPhoto(p)}" alt="${getParticipantName(p)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333355%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2260%22 fill=%22%239992b8%22 font-family=%22Arial%22%3E📸%3C/text%3E%3C/svg%3E'">`
-      : '📸'
+    ${getParticipantVideo(p) ?
+      `<video src="${getParticipantVideo(p)}" controls playsinline preload="metadata" aria-label="${getParticipantName(p)}"></video>`
+      : getParticipantPhoto(p) ?
+        `<img src="${getParticipantPhoto(p)}" alt="${getParticipantName(p)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333355%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2260%22 fill=%22%239992b8%22 font-family=%22Arial%22%3E📸%3C/text%3E%3C/svg%3E'">`
+        : '📸'
     }
   </div>
 ` : ''}
@@ -1870,6 +1878,13 @@ function getParticipantName(p) {
 function getParticipantPhoto(p) {
   if (typeof p === 'object' && p.photo) {
     return p.photo;
+  }
+  return null;
+}
+
+function getParticipantVideo(p) {
+  if (typeof p === 'object' && p.video && p.video !== 'placeholder') {
+    return p.video;
   }
   return null;
 }
