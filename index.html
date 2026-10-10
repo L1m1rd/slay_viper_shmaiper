@@ -2,1060 +2,67 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>SLAY — Вайпер Шмайпер</title>
+<title>SLAY AWARD 2026 — Вайпер Шмайпер</title>
+<meta name="theme-color" content="#edc52b">
+<meta name="description" content="Свои награждают своих. SLAY AWARD 2026: участники, номинации и голосование за лучших в Вайпер Шмайпер.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  :root {
-    --bg-dark: #0a0a14;
-    --bg-card: rgba(25, 20, 45, 0.7);
-    --purple: #9146ff;
-    --pink: #ff2d95;
-    --cyan: #00e5ff;
-    --gold: #ffd700;
-    --silver: #c0c0c0;
-    --bronze: #cd7f32;
-    --green: #00ff88;
-    --red: #ff3860;
-    --text: #e8e6f0;
-    --text-dim: #9992b8;
-  }
-  
-  body {
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg-dark);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
-    background-image: 
-      radial-gradient(circle at 20% 30%, rgba(145, 70, 255, 0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 70%, rgba(255, 45, 149, 0.12) 0%, transparent 50%),
-      radial-gradient(circle at 50% 100%, rgba(0, 229, 255, 0.08) 0%, transparent 50%);
-  }
-  
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-image: 
-      linear-gradient(rgba(145, 70, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(145, 70, 255, 0.03) 1px, transparent 1px);
-    background-size: 50px 50px;
-    pointer-events: none;
-    z-index: 0;
-  }
-  
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(20px);
-    background: rgba(10, 10, 20, 0.8);
-    border-bottom: 1px solid rgba(145, 70, 255, 0.3);
-    padding: 15px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .logo {
-    font-size: 28px;
-    font-weight: 900;
-    letter-spacing: 3px;
-    background: linear-gradient(90deg, var(--purple), var(--pink), var(--cyan));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    cursor: pointer;
-  }
-  
-  .logo-sub {
-    font-size: 11px;
-    color: var(--text-dim);
-    letter-spacing: 2px;
-    margin-left: 10px;
-    text-transform: uppercase;
-  }
-  
-  nav { display: flex; gap: 15px; align-items: center; flex-wrap: wrap; }
-  
-  .nav-btn {
-    background: transparent;
-    border: 1px solid rgba(145, 70, 255, 0.4);
-    color: var(--text);
-    padding: 8px 18px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.3s;
-  }
-  
-  .nav-btn:hover {
-    background: rgba(145, 70, 255, 0.2);
-    border-color: var(--purple);
-    box-shadow: 0 0 20px rgba(145, 70, 255, 0.4);
-  }
-  
-  .nav-btn.primary {
-    background: linear-gradient(90deg, var(--purple), var(--pink));
-    border: none;
-    font-weight: 600;
-  }
-  
-  .hero {
-    padding: 80px 40px;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-  }
-  
-  .hero h1 {
-    font-size: 72px;
-    font-weight: 900;
-    letter-spacing: 8px;
-    background: linear-gradient(90deg, #fff, var(--pink), var(--purple), var(--cyan));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 20px;
-    animation: glow 3s ease-in-out infinite alternate;
-  }
-  
-  @keyframes glow {
-    from { filter: drop-shadow(0 0 20px rgba(145, 70, 255, 0.5)); }
-    to { filter: drop-shadow(0 0 40px rgba(255, 45, 149, 0.7)); }
-  }
-  
-  .hero .subtitle {
-    font-size: 20px;
-    color: var(--text-dim);
-    margin-bottom: 10px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-  }
-  
-  .hero .date {
-    font-size: 16px;
-    color: var(--cyan);
-    margin-bottom: 40px;
-    letter-spacing: 2px;
-  }
-  
-  .section {
-    padding: 60px 40px;
-    position: relative;
-    z-index: 1;
-  }
-  
-  .section-title {
-    font-size: 36px;
-    font-weight: 800;
-    margin-bottom: 40px;
-    text-align: center;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-  }
-  
-  .section-title span {
-    background: linear-gradient(90deg, var(--purple), var(--pink));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .section-title.gold span {
-    background: linear-gradient(90deg, var(--gold), #ff8800, var(--gold));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: goldShine 2s ease-in-out infinite alternate;
-  }
-  
-  @keyframes goldShine {
-    from { filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
-    to { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.9)); }
-  }
-  
-  .categories-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .category-card {
-    background: var(--bg-card);
-    border: 1px solid rgba(145, 70, 255, 0.3);
-    border-radius: 20px;
-    padding: 40px 30px;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s;
-    cursor: pointer;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .category-card:hover {
-    transform: translateY(-8px);
-    border-color: var(--purple);
-    box-shadow: 0 15px 50px rgba(145, 70, 255, 0.4);
-  }
-  
-  .category-icon { font-size: 56px; margin-bottom: 15px; }
-  .category-title { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
-  .category-desc { color: var(--text-dim); font-size: 14px; line-height: 1.5; }
-  
-  .featured-section {
-    margin-top: 60px;
-  }
-  
-  .featured-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
-    max-width: 1000px;
-    margin: 0 auto;
-  }
-  
-  .featured-card {
-    background: linear-gradient(135deg, rgba(40, 25, 70, 0.9), rgba(20, 10, 40, 0.9));
-    border: 2px solid transparent;
-    border-image: linear-gradient(90deg, var(--gold), var(--pink), var(--gold)) 1;
-    border-radius: 0;
-    padding: 50px 40px;
-    backdrop-filter: blur(10px);
-    transition: all 0.4s;
-    cursor: pointer;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    min-height: 280px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .featured-card::before {
-    content: '';
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    background: conic-gradient(from 0deg, transparent, rgba(255, 215, 0, 0.1), transparent, rgba(255, 45, 149, 0.1), transparent);
-    animation: rotate 8s linear infinite;
-    z-index: 0;
-  }
-  
-  @keyframes rotate {
-    to { transform: rotate(360deg); }
-  }
-  
-  .featured-card > * { position: relative; z-index: 1; }
-  
-  .featured-card:hover {
-    transform: scale(1.03);
-    box-shadow: 0 0 80px rgba(255, 215, 0, 0.4), 0 0 40px rgba(255, 45, 149, 0.3);
-  }
-  
-  .featured-card .category-icon { font-size: 90px; margin-bottom: 20px; }
-  .featured-card .category-title { font-size: 36px; font-weight: 900; letter-spacing: 3px; }
-  .featured-card .category-desc { font-size: 16px; max-width: 600px; }
-  
-  .featured-label {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: linear-gradient(90deg, var(--gold), #ff8800);
-    color: #000;
-    padding: 5px 15px;
-    border-radius: 15px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    z-index: 2;
-  }
-  
-  .history-section {
-    margin-top: 80px;
-    padding: 60px 40px;
-    position: relative;
-    z-index: 1;
-  }
-  
-  .history-title {
-    font-size: 42px;
-    font-weight: 900;
-    text-align: center;
-    margin-bottom: 50px;
-    letter-spacing: 4px;
-    background: linear-gradient(90deg, var(--gold), #ff8800, var(--gold));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-transform: uppercase;
-    animation: goldShine 2s ease-in-out infinite alternate;
-  }
-  
-  .history-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-  
-  .history-card {
-    background: linear-gradient(135deg, #1a1525, #0f0a1a);
-    border: 3px solid #4a3f5f;
-    border-radius: 15px;
-    padding: 30px;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(145, 70, 255, 0.1);
-    transition: all 0.3s;
-  }
-  
-  .history-card::before {
-    content: '';
-    position: absolute;
-    top: 5px; left: 5px; right: 5px; bottom: 5px;
-    border: 2px dashed rgba(145, 70, 255, 0.3);
-    border-radius: 10px;
-    pointer-events: none;
-  }
-  
-  .history-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--purple);
-    box-shadow: 0 15px 40px rgba(145, 70, 255, 0.4), inset 0 0 30px rgba(145, 70, 255, 0.2);
-  }
-  
-  .history-card.slay-king {
-    background: linear-gradient(135deg, #2a2040, #1a1530);
-    border: 4px solid var(--gold);
-    grid-column: 1 / -1;
-    max-width: 600px;
-    margin: 0 auto;
-    box-shadow: 0 15px 50px rgba(255, 215, 0, 0.3), inset 0 0 30px rgba(255, 215, 0, 0.1);
-  }
-  
-  .history-card.slay-king::before {
-    border-color: rgba(255, 215, 0, 0.5);
-  }
-  
-  .history-card.slay-king:hover {
-    box-shadow: 0 20px 60px rgba(255, 215, 0, 0.5), inset 0 0 40px rgba(255, 215, 0, 0.2);
-  }
-  
-  .history-photo {
-    width: 150px;
-    height: 150px;
-    border-radius: 10px;
-    background: linear-gradient(135deg, #2a2540, #1a1530);
-    margin: 0 auto 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 60px;
-    border: 3px solid rgba(145, 70, 255, 0.4);
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
-    overflow: hidden;
-  }
-  
-  .history-card.slay-king .history-photo {
-    width: 180px;
-    height: 180px;
-    border-color: var(--gold);
-    box-shadow: 0 8px 30px rgba(255, 215, 0, 0.4);
-  }
-  
-  .history-card .history-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .history-nom {
-    font-size: 14px;
-    color: var(--cyan);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-  
-  .history-winner {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
-  }
-  
-  .history-card.slay-king .history-nom {
-    font-size: 16px;
-    color: var(--gold);
-  }
-  
-  .history-card.slay-king .history-winner {
-    font-size: 28px;
-    color: var(--gold);
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-  }
-  
-  .crown-icon {
-    font-size: 40px;
-    margin-bottom: 10px;
-  }
-  
-  .vote-page {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 40px;
-    position: relative;
-    z-index: 1;
-  }
-  
-  .back-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: transparent;
-    border: 1px solid rgba(145, 70, 255, 0.4);
-    color: var(--text);
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-bottom: 20px;
-    transition: all 0.3s;
-  }
-  
-  .back-btn:hover {
-    background: rgba(145, 70, 255, 0.2);
-    border-color: var(--purple);
-  }
-  
-  .reset-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255, 56, 96, 0.15);
-    border: 1px solid var(--red);
-    color: var(--red);
-    padding: 10px 20px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    margin-left: 10px;
-    transition: all 0.3s;
-  }
-  
-  .reset-btn:hover {
-    background: var(--red);
-    color: white;
-  }
-  
-  .current-choices {
-    background: var(--bg-card);
-    border: 1px solid rgba(145, 70, 255, 0.3);
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 30px;
-    backdrop-filter: blur(10px);
-  }
-  
-  .current-choices h3 {
-    color: var(--cyan);
-    margin-bottom: 15px;
-    font-size: 16px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  
-  .choices-row {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-  }
-  
-  .choice-slot {
-    flex: 1;
-    min-width: 200px;
-    padding: 15px;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    text-align: center;
-  }
-  
-  .choice-slot.gold { border-color: var(--gold); background: rgba(255, 215, 0, 0.08); }
-  .choice-slot.silver { border-color: var(--silver); background: rgba(192, 192, 192, 0.08); }
-  .choice-slot.bronze { border-color: var(--bronze); background: rgba(205, 127, 50, 0.08); }
-  .choice-slot.hidden { display: none; }
-  
-  .choice-slot .medal { font-size: 28px; margin-bottom: 5px; }
-  .choice-slot .place-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-  .choice-slot .place-name { font-weight: 700; font-size: 15px; min-height: 20px; }
-  .choice-slot .place-name.empty { color: var(--text-dim); font-style: italic; }
-  
-  .participants-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 15px;
-  }
-  
-  .participant-card {
-    background: var(--bg-card);
-    border: 1px solid rgba(145, 70, 255, 0.2);
-    border-radius: 14px;
-    padding: 20px;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s;
-    position: relative;
-  }
-  
-  .participant-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--purple);
-    box-shadow: 0 8px 25px rgba(145, 70, 255, 0.3);
-  }
-  
-  .participant-card.placed-1 { border-color: var(--gold); background: rgba(255, 215, 0, 0.08); box-shadow: 0 0 20px rgba(255, 215, 0, 0.3); }
-  .participant-card.placed-2 { border-color: var(--silver); background: rgba(192, 192, 192, 0.08); }
-  .participant-card.placed-3 { border-color: var(--bronze); background: rgba(205, 127, 50, 0.08); }
-  
-  .participant-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-  }
-  
-  .participant-avatar {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--purple), var(--pink));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    font-size: 20px;
-    color: white;
-    flex-shrink: 0;
-  }
-  
-  .participant-name { font-weight: 700; font-size: 16px; flex: 1; }
-  
-  .participant-badge {
-    font-size: 24px;
-    font-weight: 900;
-  }
-  
-  .participant-desc {
-    color: var(--text-dim);
-    font-size: 13px;
-    line-height: 1.5;
-    margin-bottom: 12px;
-    min-height: 40px;
-  }
-  
-  .anecdote-text {
-    background: rgba(0, 0, 0, 0.3);
-    padding: 12px;
-    border-radius: 8px;
-    font-size: 13px;
-    line-height: 1.6;
-    margin-bottom: 12px;
-    max-height: 150px;
-    overflow-y: auto;
-    border-left: 3px solid var(--purple);
-  }
-  
-  .media-frame {
-    width: 100%;
-    height: 200px;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 80px;
-    background: linear-gradient(135deg, #2a2540, #1a1530);
-    border: 3px solid rgba(145, 70, 255, 0.4);
-    border-radius: 10px;
-  }
-  
-  .vote-actions {
-    display: flex;
-    gap: 8px;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  
-  .participant-card:hover .vote-actions {
-    opacity: 1;
-  }
-  
-  .medal-btn {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    background: rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    font-size: 18px;
-    transition: all 0.2s;
-  }
-  
-  .medal-btn:hover {
-    transform: scale(1.1);
-  }
-  
-  .medal-btn.gold-btn:hover, .medal-btn.gold-btn.active {
-    background: rgba(255, 215, 0, 0.3);
-    border-color: var(--gold);
-    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-  }
-  
-  .medal-btn.silver-btn:hover, .medal-btn.silver-btn.active {
-    background: rgba(192, 192, 192, 0.3);
-    border-color: var(--silver);
-    box-shadow: 0 0 15px rgba(192, 192, 192, 0.5);
-  }
-  
-  .medal-btn.bronze-btn:hover, .medal-btn.bronze-btn.active {
-    background: rgba(205, 127, 50, 0.3);
-    border-color: var(--bronze);
-    box-shadow: 0 0 15px rgba(205, 127, 50, 0.5);
-  }
-  
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-  }
-  
-  .modal-overlay.active { display: flex; }
-  
-  .modal {
-    background: linear-gradient(135deg, rgba(30, 20, 60, 0.95), rgba(15, 10, 35, 0.95));
-    border: 1px solid rgba(145, 70, 255, 0.4);
-    border-radius: 20px;
-    padding: 40px;
-    max-width: 450px;
-    width: 100%;
-    position: relative;
-    box-shadow: 0 20px 60px rgba(145, 70, 255, 0.3);
-  }
-  
-  .modal-close {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    background: none;
-    border: none;
-    color: var(--text-dim);
-    font-size: 24px;
-    cursor: pointer;
-  }
-  
-  .modal h2 {
-    font-size: 28px;
-    margin-bottom: 25px;
-    background: linear-gradient(90deg, var(--purple), var(--pink));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .form-group { margin-bottom: 18px; }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 6px;
-    font-size: 13px;
-    color: var(--text-dim);
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 12px 16px;
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(145, 70, 255, 0.3);
-    border-radius: 10px;
-    color: var(--text);
-    font-size: 15px;
-    transition: all 0.2s;
-  }
-  
-  .form-group input:focus {
-    outline: none;
-    border-color: var(--purple);
-    box-shadow: 0 0 15px rgba(145, 70, 255, 0.3);
-  }
-  
-  .submit-btn {
-    width: 100%;
-    padding: 14px;
-    background: linear-gradient(90deg, var(--purple), var(--pink));
-    border: none;
-    border-radius: 10px;
-    color: white;
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.3s;
-  }
-  
-  .submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(255, 45, 149, 0.4);
-  }
-  
-  .switch-form {
-    text-align: center;
-    margin-top: 20px;
-    color: var(--text-dim);
-    font-size: 14px;
-  }
-  
-  .switch-form a {
-    color: var(--cyan);
-    cursor: pointer;
-    text-decoration: none;
-    font-weight: 600;
-  }
-  
-  .profile-page, .admin-page {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px;
-    position: relative;
-    z-index: 1;
-  }
-  
-  .profile-header, .section-card {
-    background: var(--bg-card);
-    border: 1px solid rgba(145, 70, 255, 0.2);
-    border-radius: 16px;
-    padding: 25px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(10px);
-  }
-  
-  .profile-header {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-  }
-  
-  .profile-avatar {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--purple), var(--pink), var(--cyan));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 40px;
-    font-weight: 900;
-    color: white;
-    flex-shrink: 0;
-    box-shadow: 0 0 30px rgba(145, 70, 255, 0.5);
-  }
-  
-  .status-banner {
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    text-align: center;
-    font-weight: 600;
-    font-size: 15px;
-  }
-  
-  .status-pending { background: rgba(255, 215, 0, 0.15); border: 1px solid var(--gold); color: var(--gold); }
-  .status-banned { background: rgba(255, 56, 96, 0.15); border: 1px solid var(--red); color: var(--red); }
-  .status-approved { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--green); color: var(--green); }
-  
-  .admin-table { width: 100%; border-collapse: collapse; }
-  .admin-table th {
-    text-align: left;
-    padding: 12px;
-    background: rgba(145, 70, 255, 0.15);
-    color: var(--cyan);
-    font-size: 12px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    border-bottom: 1px solid rgba(145, 70, 255, 0.3);
-  }
-  .admin-table td { padding: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-  
-  .badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 600;
-  }
-  
-  .badge-admin { background: linear-gradient(90deg, var(--gold), #ff8800); color: #000; }
-  .badge-user { background: rgba(145, 70, 255, 0.3); color: var(--text); }
-  .badge-approved { background: rgba(0, 255, 136, 0.2); color: var(--green); }
-  .badge-pending { background: rgba(255, 215, 0, 0.2); color: var(--gold); }
-  .badge-banned { background: rgba(255, 56, 96, 0.2); color: var(--red); }
-  
-  .action-btn {
-    padding: 6px 12px;
-    border-radius: 8px;
-    border: none;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    margin-right: 5px;
-    transition: all 0.2s;
-  }
-  
-  .btn-approve { background: var(--green); color: #000; }
-  .btn-ban { background: var(--red); color: white; }
-  
-  .admin-menu-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 22px;
-    max-width: 1100px;
-    margin: 20px auto 0;
-  }
-
-  .admin-menu-card {
-    min-height: 230px;
-    padding: 30px 24px;
-    border-radius: 20px;
-    border: 1px solid rgba(145, 70, 255, 0.35);
-    background: var(--bg-card);
-    color: var(--text);
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 14px;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    transition: all 0.25s ease;
-  }
-
-  .admin-menu-card:hover {
-    transform: translateY(-6px);
-    border-color: var(--purple);
-    box-shadow: 0 14px 40px rgba(145, 70, 255, 0.28);
-  }
-
-  .admin-menu-icon { font-size: 52px; }
-  .admin-menu-title { font-size: 20px; font-weight: 800; }
-  .admin-menu-desc { color: var(--text-dim); font-size: 13px; line-height: 1.5; }
-
-  .admin-stats {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(120px, 1fr));
-    gap: 14px;
-    margin: 22px 0 28px;
-  }
-
-  .admin-stats > div {
-    padding: 18px;
-    border-radius: 12px;
-    background: rgba(0, 0, 0, 0.25);
-    text-align: center;
-  }
-
-  .admin-stats strong { display:block; font-size:30px; color:var(--gold); }
-  .admin-stats span { display:block; margin-top:5px; color:var(--text-dim); font-size:11px; text-transform:uppercase; letter-spacing:1px; }
-  .admin-placeholder { text-align:center; padding:60px 25px; }
-  .admin-placeholder p { color:var(--text-dim); margin-top:12px; }
-
-  .toast {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: linear-gradient(90deg, var(--purple), var(--pink));
-    color: white;
-    padding: 15px 25px;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    z-index: 2000;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s;
-    font-weight: 600;
-  }
-  
-  .toast.show { opacity: 1; transform: translateY(0); }
-  .hidden { display: none !important; }
-  
-  footer {
-    text-align: center;
-    padding: 40px;
-    color: var(--text-dim);
-    border-top: 1px solid rgba(145, 70, 255, 0.2);
-    margin-top: 60px;
-    font-size: 13px;
-    position: relative;
-    z-index: 1;
-  }
-  
-  .result-nom {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-  
-  .result-nom h4 {
-    color: var(--pink);
-    margin-bottom: 15px;
-    font-size: 18px;
-  }
-  
-  .result-row {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    margin-bottom: 8px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 8px;
-    gap: 15px;
-  }
-  
-  .result-rank {
-    font-size: 24px;
-    font-weight: 900;
-    width: 40px;
-    text-align: center;
-  }
-  
-  .result-name { flex: 1; font-weight: 600; }
-  
-  .result-stats {
-    display: flex;
-    gap: 15px;
-    font-size: 13px;
-    color: var(--text-dim);
-  }
-  
-  .result-stats span { white-space: nowrap; }
-  
-  .result-score {
-    font-size: 20px;
-    font-weight: 900;
-    color: var(--gold);
-    min-width: 60px;
-    text-align: right;
-  }
-
-
-    .media-frame {
-        width: 100%;
-        height: auto;
-        min-height: 200px;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #2a2540, #1a1530);
-        border: 3px solid rgba(145, 70, 255, 0.4);
-        border-radius: 10px;
-        overflow: hidden;
-        padding: 5px;
-    }
-
-        .media-frame img {
-            width: 100%;
-            height: auto;
-            /* max-height: 350px; */ /* ← УБЕРИТЕ эту строку */
-            object-fit: contain;
-            display: block;
-            border-radius: 8px;
-        }
-
-        .media-frame video {
-            width: 100%;
-            max-height: 560px;
-            object-fit: contain;
-            display: block;
-            border-radius: 8px;
-            background: #000;
-        }
-
- 
-  @media (max-width: 768px) {
-    .hero h1 { font-size: 40px; letter-spacing: 4px; }
-    header { padding: 15px 20px; }
-    .section { padding: 40px 20px; }
-    .profile-header { flex-direction: column; text-align: center; }
-    .featured-card { padding: 30px 20px; }
-    .featured-card .category-title { font-size: 24px; }
-    .vote-page { padding: 20px; }
-    .vote-actions { opacity: 1; }
-    .history-title { font-size: 28px; }
-    .history-card.slay-king { grid-column: 1; }
-    .admin-menu-grid { grid-template-columns: 1fr; }
-    .admin-stats { grid-template-columns: repeat(2, 1fr); }
-    .admin-page { padding: 20px; }
-  }
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<a class="skip-link" href="#page-home">К содержимому</a>
 <header>
-  <div style="display:flex; align-items:center;">
-    <div class="logo" onclick="showPage('home')">SLAY</div>
-    <span class="logo-sub">вайпер шмайпер</span>
-  </div>
-  <nav id="nav">
-    <button class="nav-btn" onclick="showPage('home')">Главная</button>
+  <button class="brand" onclick="showPage('home')" aria-label="SLAY — на главную"><span class="logo">SLAY</span><span class="logo-sub">2026</span></button>
+  <nav id="nav" aria-label="Главная навигация">
     <button class="nav-btn" onclick="showPage('categories')">Номинации</button>
+    <button class="nav-btn" onclick="showTeam()">Участники</button>
+    <button class="nav-btn" onclick="showPage('categories')">Голосование</button>
     <button class="nav-btn hidden" id="profileBtn" onclick="showPage('profile')">Кабинет</button>
     <button class="nav-btn hidden" id="adminBtn" onclick="showPage('admin')">Админ</button>
-    <button class="nav-btn primary" id="loginBtn" onclick="openModal('login')">Войти</button>
+    <button class="nav-btn primary" id="loginBtn" onclick="openModal('login')">Войти ↗</button>
     <button class="nav-btn hidden" id="logoutBtn" onclick="logout()">Выйти</button>
   </nav>
+  <span class="header-note">Больше<br>чем<br>игра</span>
 </header>
 
 <div id="page-home">
-  <section class="hero">
-    <div class="subtitle">Ежегодная премия ВАЙПЕР ШМАЙПЕР</div>
-    <h1>SLAY ВАЙПЕР ШМПАЙПЕР</h1>
-    <div class="date">🏆 31 ДЕКАБРЯ 2026 • МАРАТА</div>
-    <p style="max-width:600px; margin:0 auto; color:var(--text-dim); line-height:1.6;">
-      Главная награда вайпер шмайпер. Голосуй за своих любимцев, определяй лучших из лучших и стань частью истории!
-    </p>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="hero-kicker">Ежегодная премия / SLAY AWARD 2026</p>
+      <h1 id="hero-title"><span>ВАЙПЕР</span><span>ШМАЙПЕР</span></h1>
+      <p class="hero-handwritten">Свои награждают своих.</p>
+      <div class="hero-action">
+        <button class="hero-cta" onclick="showPage('categories')">Голосовать <span aria-hidden="true">→</span></button>
+        <p>Игроки.<br>Моменты.<br>Истории.<br>Наши.</p>
+      </div>
+      <p class="hero-date">31 декабря 2026 &nbsp; / &nbsp; Марата</p>
+    </div>
+    <div class="hero-art" aria-label="Участники премии в форме SLAY">
+      <span class="hero-year" aria-hidden="true">26</span>
+      <img class="portrait-arseniy" src="images/arseniy.png" alt="Арсений Юсупов" width="1024" height="1536">
+      <img class="portrait-daniil" src="images/daniil.png" alt="Даниил Постоев" width="1024" height="1536">
+      <img class="portrait-andrey" src="images/andrey.png" alt="Андрей Владыко" width="1024" height="1536">
+      <img class="portrait-matvey" src="images/matvey.png" alt="Матвей Чернышов" width="1024" height="1536" fetchpriority="high">
+      <div class="season-stamp" aria-hidden="true">СЕЗОН<b>✦</b>2026</div>
+    </div>
   </section>
+  <div class="ticker" aria-hidden="true"><span>ВАЙПЕР ШМАЙПЕР</span> // <span>SLAY AWARD 2026</span> // <span>СВОИ НАГРАЖДАЮТ СВОИХ</span> // <span>ВАЙПЕР ШМАЙПЕР</span> // <span>SLAY AWARD 2026</span></div>
   
   <section class="section">
-    <h2 class="section-title"><span>Номинации</span> 2026</h2>
+    <div class="section-heading"><h2 class="section-title">Номинации</h2><p>Голосуй за тех,<br>кто делает нашу игру особенной</p></div>
     <div class="categories-grid" id="categories-home"></div>
     
     <div class="featured-section">
-      <h2 class="section-title gold"><span>Главные</span> номинации</h2>
+      <div class="section-heading"><h2 class="section-title">Особый статус</h2><p>Две главные<br>награды сезона</p></div>
       <div class="featured-grid" id="featured-home"></div>
     </div>
     
+    <section class="team-section" id="team" aria-labelledby="team-title">
+      <div class="section-heading"><h2 class="section-title" id="team-title">Наши люди</h2><p>Одна команда.<br>Большие истории.</p></div>
+      <div class="team-grid" id="team-grid"></div>
+    </section>
     <div class="history-section">
-      <h2 class="history-title">📜 История 25-го года</h2>
+      <h2 class="history-title">Архив / 2025</h2>
       <div class="history-grid">
         <div class="history-card">
           <div class="history-photo">🎮</div>
@@ -1106,16 +113,16 @@
 
 <div id="page-categories" class="hidden">
   <section class="section">
-    <h2 class="section-title"><span>Все</span> номинации</h2>
+    <span class="eyebrow">SLAY AWARD / СЕЗОН 2026</span><div class="section-heading"><h2 class="section-title">Все номинации</h2><p>15 поводов сказать:<br>это был твой год</p></div>
     <div class="categories-grid" id="categories-full"></div>
     
     <div class="featured-section">
-      <h2 class="section-title gold"><span>Главные</span> номинации</h2>
+      <div class="section-heading"><h2 class="section-title">Особый статус</h2><p>Две главные<br>награды сезона</p></div>
       <div class="featured-grid" id="featured-full"></div>
     </div>
     
     <div class="history-section">
-      <h2 class="history-title">📜 История 2025-го года</h2>
+      <h2 class="history-title">Архив / 2025</h2>
       <div class="history-grid">
         <div class="history-card">
           <div class="history-photo">🎮</div>
@@ -1334,15 +341,15 @@
   </div>
 </div>
 
-<div class="toast" id="toast"></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <div class="modal-overlay" id="modal-easter-egg">
   <div class="modal" style="max-width: 600px;">
     <button class="modal-close" onclick="closeEasterEgg()">×</button>
     <h2 style="text-align: center; margin-bottom: 30px;">матвей чернышов сосун</h2>
     <div style="text-align: center;">
-      <img id="easter-egg-image" src="images/slay-king-2025.jpg" alt="Пасхалка" style="max-width: 100%; height: auto; border-radius: 15px; box-shadow: 0 10px 40px rgba(145, 70, 255, 0.5);" onerror="this.style.display='none'; document.getElementById('easter-egg-placeholder').style.display='block';">
-      <div id="easter-egg-placeholder" style="display: none; padding: 60px; background: rgba(255, 215, 0, 0.1); border: 2px dashed var(--gold); border-radius: 15px; color: var(--gold);">
+      <img id="easter-egg-image" src="images/slay-king-2025.jpg" alt="Пасхалка" style="max-width: 100%; height: auto; border-radius: 0; box-shadow: 5px 5px 0 #171714;" onerror="this.style.display='none'; document.getElementById('easter-egg-placeholder').style.display='block';">
+      <div id="easter-egg-placeholder" style="display: none; padding: 60px; background: rgba(255, 215, 0, 0.1); border: 2px dashed var(--gold); border-radius: 0; color: var(--gold);">
         <div style="font-size: 72px; margin-bottom: 20px;">🏆</div>
         <div style="font-size: 18px; font-weight: 600;">Место для пасхалки</div>
         <div style="font-size: 13px; color: var(--text-dim); margin-top: 10px;">Добавь картинку: images/easter-egg.png</div>
@@ -1352,8 +359,10 @@
 </div>
 
 <footer>
-  © 2026 SLAY — Вайпер Шмайпер. Все права защищены. Клянусь мамой.<br>
-  <small style="color:var(--purple);">Сделано богами компьютерных технологий</small>
+  <span class="footer-brand">SLAY</span>
+  <p>ВАЙПЕР ШМАЙПЕР / СВОИ НАГРАЖДАЮТ СВОИХ<br>© 2026. Все права защищены. Клянусь мамой.</p>
+  <a href="#" onclick="showPage('categories'); return false;">Выбрать лучших ↗</a>
+  <span class="footer-year" aria-hidden="true">26</span>
 </footer>
 
 <script>
@@ -1671,37 +680,34 @@ function setPlace() { authLoadingFallback(); }
 function resetVotes() { authLoadingFallback(); }
 function getNominationResults() { return []; }
 
+function nominationTitle(nom) {
+  return nom.title.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+}
+
 function renderCategories() {
-  const regular = NOMINATIONS.filter(n => !n.featured);
-  const featured = NOMINATIONS.filter(n => n.featured);
-  
-  const regularHtml = regular.map(nom => `
-    <div class="category-card" onclick="openCategory('${nom.id}')">
-      <div class="category-icon">${nom.icon || '🏆'}</div>
-      <div class="category-title">${nom.title.substring(nom.title.indexOf(' ') + 1)}</div>
-      <div class="category-desc">${nom.desc}</div>
-    </div>
-  `).join('');
-  
-  const featuredHtml = featured.map(nom => `
-    <div class="featured-card" onclick="openCategory('${nom.id}')">
-      <div class="featured-label">★ Главная номинация</div>
-      <div class="category-icon">${nom.icon || '🏆'}</div>
-      <div class="category-title">${nom.title.substring(nom.title.indexOf(' ') + 1)}</div>
-      <div class="category-desc">${nom.desc}</div>
-    </div>
-  `).join('');
-  
-  document.getElementById('categories-home').innerHTML = regularHtml;
-  document.getElementById('categories-full').innerHTML = regularHtml;
-  document.getElementById('featured-home').innerHTML = featuredHtml;
-  document.getElementById('featured-full').innerHTML = featuredHtml;
+  const card = (nom, featured) => {
+    const number = String(NOMINATIONS.indexOf(nom) + 1).padStart(2, '0');
+    return `<button type="button" class="${featured ? 'featured-card' : 'category-card'}" onclick="openCategory('${nom.id}')">
+      ${featured ? '' : `<span class="category-number">${number}</span>`}
+      <img class="category-art" src="images/nominations/${nom.id}.svg" alt="" width="140" height="140" loading="lazy">
+      <span class="category-content">
+        ${featured ? '<span class="featured-label">Главная награда / 2026</span>' : ''}
+        <span class="category-title">${nominationTitle(nom)}</span>
+        <span class="category-desc">${nom.desc}</span>
+        <span class="category-bottom"><span>Смотреть номинантов</span><b aria-hidden="true">→</b></span>
+      </span>
+    </button>`;
+  };
+  const regularHtml = NOMINATIONS.filter(n => !n.featured).map(n => card(n, false)).join('');
+  const featuredHtml = NOMINATIONS.filter(n => n.featured).map(n => card(n, true)).join('');
+  ['categories-home', 'categories-full'].forEach(id => document.getElementById(id).innerHTML = regularHtml);
+  ['featured-home', 'featured-full'].forEach(id => document.getElementById(id).innerHTML = featuredHtml);
 }
 
 function openCategory(categoryId) {
   currentCategory = NOMINATIONS.find(n => n.id === categoryId);
   if (!currentCategory) return;
-  document.getElementById('vote-title').innerHTML = `<span>${currentCategory.title}</span>`;
+  document.getElementById('vote-title').innerHTML = `<span>${nominationTitle(currentCategory)}</span>`;
   document.getElementById('vote-desc').textContent = currentCategory.desc;
   renderVotePage();
   showPage('vote');
@@ -1744,9 +750,9 @@ function renderMultiVotePage(user) {
     </div>
     <div style="display:flex; flex-direction:column; gap:10px;">
       ${votes.length > 0 ? votes.map(v => `
-        <div style="padding:12px; background:rgba(145, 70, 255, 0.15); border:1px solid var(--purple); border-radius:10px; display:flex; justify-content:space-between; align-items:center;">
+        <div style="padding:12px; background:#e6dfcf; border:1px solid var(--purple); border-radius:0; display:flex; justify-content:space-between; align-items:center;">
           <span style="font-weight:600;">💕 ${v}</span>
-          <button onclick="toggleVoteForCouple('${escapeString(v)}')" style="background:rgba(255,56,96,0.3); border:1px solid var(--red); color:var(--red); padding:5px 12px; border-radius:8px; cursor:pointer; font-size:12px;">✕</button>
+          <button onclick="toggleVoteForCouple('${escapeString(v)}')" style="background:#efdbd4; border:1px solid var(--red); color:var(--red); padding:5px 12px; border-radius:0; cursor:pointer; font-size:12px;">✕</button>
         </div>
       `).join('') : '<div style="color:var(--text-dim); font-style:italic; padding:15px; text-align:center;">Ты ещё не проголосовал</div>'}
     </div>
@@ -1775,7 +781,7 @@ function renderMultiVotePage(user) {
         ${canVote ? `
           <button
             class="submit-btn"
-            style="width:100%; padding:12px; font-size:14px; ${hasVoted ? 'background:rgba(255,56,96,0.3); border:1px solid var(--red);' : ''}"
+            style="width:100%; padding:12px; font-size:14px; ${hasVoted ? 'background:#efdbd4; border:1px solid var(--red);' : ''}"
             onclick="toggleVoteForCouple('${escapeString(p)}')"
           >
             ${hasVoted ? '✕ Убрать голос' : '💕 Проголосовать'}
@@ -1842,12 +848,12 @@ function renderPlacesVotePage(user) {
           ${badge ? `<div class="participant-badge">${badge}</div>` : ''}
         </div>
 
-        ${showMediaFrame ? `
+        ${showMediaFrame && (getParticipantPhoto(p) || getParticipantVideo(p)) ? `
   <div class="media-frame">
     ${getParticipantVideo(p) ?
       `<video src="${getParticipantVideo(p)}" controls playsinline preload="metadata" aria-label="${getParticipantName(p)}"></video>`
       : getParticipantPhoto(p) ?
-        `<img src="${getParticipantPhoto(p)}" alt="${getParticipantName(p)}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333355%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2260%22 fill=%22%239992b8%22 font-family=%22Arial%22%3E📸%3C/text%3E%3C/svg%3E'">`
+        `<img src="${getParticipantPhoto(p)}" alt="${getParticipantName(p)}" style="width:100%;height:100%;object-fit:cover;border-radius:0;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333355%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2260%22 fill=%22%239992b8%22 font-family=%22Arial%22%3E📸%3C/text%3E%3C/svg%3E'">`
         : '📸'
     }
   </div>
@@ -1953,7 +959,7 @@ function renderProfile() {
     if (!hasAny) return;
 
     html += `
-      <div style="padding:15px; margin-bottom:10px; background:rgba(0,0,0,0.3); border-radius:10px;">
+      <div style="padding:15px; margin-bottom:10px; background:#e6dfcf; border-radius:0;">
         <div style="font-weight:700; margin-bottom:10px; color:var(--cyan);">${nom.icon || '🏆'} ${nom.title}</div>
         <div style="display:flex; gap:10px; flex-wrap:wrap; font-size:14px;">
           ${isMultiVote ?
@@ -2177,6 +1183,7 @@ updateUI();
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-app.js"></script>
+<script src="design.js"></script>
 
 </body>
 </html>

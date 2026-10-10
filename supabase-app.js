@@ -892,7 +892,7 @@
     }
 
     document.getElementById('vote-title').innerHTML =
-      '<span>' + window.currentCategory.title + '</span>';
+      '<span>' + window.nominationTitle(window.currentCategory) + '</span>';
     document.getElementById('vote-desc').textContent =
       window.currentCategory.desc;
 
