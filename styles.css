@@ -21,3 +21,65 @@ body{min-width:0}.featured-card{grid-template-columns:140px minmax(0,1fr)}
 @media(max-width:850px){.featured-card{grid-template-columns:80px minmax(0,1fr)}}
 @media(max-width:600px){.featured-card{grid-template-columns:100px minmax(0,1fr)}}
 @media(max-width:370px){.featured-card{grid-template-columns:75px minmax(0,1fr);padding:18px;gap:14px}.featured-card .category-art{width:75px}.featured-card .category-title{font-size:30px}.category-bottom{font-size:8px}.hero-handwritten{font-size:15px}}
+
+/* Motion follows the physical paper/cutout language of the site. */
+:root { --motion-ease: cubic-bezier(.22, 1, .36, 1); }
+.hero-art { translate: 0 var(--paper-shift, 0px); }
+.hero-year { translate: 0 var(--year-shift, 0px); }
+.ticker-track { display: inline-block; min-width: 100%; }
+.category-card, .featured-card, .team-card, .history-card, .participant-card,
+.admin-menu-card, .nav-btn, .submit-btn, .back-btn, .reset-btn, .medal-btn,
+.action-btn, .vote-notice button {
+  transition: transform 380ms var(--motion-ease), background-color 280ms ease,
+    box-shadow 380ms var(--motion-ease), border-color 280ms ease, color 280ms ease;
+}
+.category-art { transition: transform 550ms var(--motion-ease); }
+.category-bottom b, .hero-cta span {
+  display: inline-block;
+  transition: transform 420ms var(--motion-ease);
+}
+.team-image img, .media-frame img {
+  transition: transform 650ms var(--motion-ease);
+}
+.hero-cta { transition: transform 420ms var(--motion-ease), box-shadow 420ms var(--motion-ease); }
+.modal-overlay.active .modal { animation: paper-dialog-in 360ms var(--motion-ease) both; }
+@keyframes paper-dialog-in {
+  from { opacity: 0; translate: 0 18px; scale: .97; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
+}
+@media (hover: hover) and (pointer: fine) {
+  .category-card:hover, .category-card:focus-visible {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 0 var(--ink);
+    z-index: 1;
+  }
+  .category-card:hover .category-art, .category-card:focus-visible .category-art,
+  .featured-card:hover .category-art {
+    transform: translateY(-6px) rotate(4deg) scale(1.065);
+  }
+  .category-card:nth-child(even):hover .category-art { transform: translateY(-6px) rotate(-4deg) scale(1.065); }
+  .category-card:hover .category-bottom b, .featured-card:hover .category-bottom b,
+  .hero-cta:hover span { transform: translateX(6px); }
+  .featured-card:hover { transform: translateY(-6px) rotate(-.5deg); box-shadow: 8px 10px 0 var(--ink); }
+  .team-card:hover { transform: translateY(-7px); }
+  .team-card:hover img { transform: scale(1.045); }
+  .participant-card:hover { transform: translateY(-4px); box-shadow: 4px 6px 0 #d5cbb5; }
+  .participant-card:hover .media-frame img { transform: scale(1.025); }
+  .history-card:hover, .admin-menu-card:hover { transform: translateY(-4px); }
+  .nav-btn:hover, .back-btn:hover, .reset-btn:hover, .action-btn:hover { transform: translateY(-2px); }
+  .submit-btn:hover, .vote-notice button:hover { transform: translateY(-3px); box-shadow: 3px 4px 0 var(--yellow); }
+  .medal-btn:hover { transform: translateY(-3px) rotate(-3deg); }
+}
+button:active { scale: .985; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-art, .hero-year, .ticker-track { translate: none !important; }
+  .category-card:hover, .category-card:hover .category-art, .category-card:nth-child(even):hover .category-art,
+  .featured-card:hover, .featured-card:hover .category-art, .team-card:hover, .team-card:hover img,
+  .participant-card:hover, .participant-card:hover img, .history-card:hover, .admin-menu-card:hover,
+  .nav-btn:hover, .back-btn:hover, .reset-btn:hover, .action-btn:hover, .submit-btn:hover,
+  .vote-notice button:hover, .medal-btn:hover, .hero-cta:hover span, .category-bottom b { transform: none !important; }
+  button:active { scale: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-cta, .hero-cta:hover { transform: none; }
+}
