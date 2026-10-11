@@ -1,0 +1,17 @@
+{
+  "name": "slay-award-migration",
+  "private": true,
+  "scripts": {
+    "catalog": "node scripts/build-catalog.mjs",
+    "migration:check": "node scripts/migrate.mjs",
+    "test:migration": "node --test scripts/migration.test.mjs",
+    "test:backend": "node --test scripts/backend.test.mjs",
+    "test:rules": "firebase emulators:exec --only firestore --project demo-slay-award \"node --test scripts/rules.test.mjs\""
+  },
+  "dependencies": { "firebase-admin": "^13.0.0" },
+  "devDependencies": {
+    "@firebase/rules-unit-testing": "^5.0.0",
+    "firebase": "12.4.0",
+    "firebase-tools": "^14.0.0"
+  }
+}

@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function verified() { return signedIn() && request.auth.token.email_verified == true; }
+    function profile() { return get(/databases/$(database)/documents/profiles/$(request.auth.uid)).data; }
+    function admin() { return verified() && profile().role == 'admin' && profile().status == 'approved'; }
+    function voter(uid) {
+      return verified() && request.auth.uid == uid && profile().role == 'user' && profile().status == 'approved';
+    }
+    function validProfile(d, uid) {
+      return d.keys().hasAll(['id', 'username', 'display_name', 'role', 'status', 'created_at'])
+        && d.keys().hasOnly(['id', 'username', 'display_name', 'role', 'status', 'created_at'])
+        && d.id == uid && d.username is string && d.username.matches('^[a-z0-9_]{3,30}$')
+        && d.display_name is string && d.display_name.size() > 0 && d.display_name.size() <= 50
+        && d.role in ['user', 'admin'] && d.status in ['pending', 'approved', 'banned']
+        && d.created_at is string;
+    }
+    match /profiles/{uid} {
+      allow get: if signedIn() && (request.auth.uid == uid || admin());
+      allow list: if admin();
+      allow create: if signedIn() && request.auth.uid == uid
+        && validProfile(request.resource.data, uid)
+        && request.resource.data.role == 'user' && request.resource.data.status == 'pending'
+        && getAfter(/databases/$(database)/documents/usernames/$(request.resource.data.username)).data.uid == uid;
+      allow update: if validProfile(request.resource.data, uid) && (
+        (signedIn() && request.auth.uid == uid
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['display_name']))
+        || (admin() && resource.data.role == 'user'
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status']))
+      );
+      allow delete: if false;
+    }
+    match /usernames/{username} {
+      allow get: if signedIn();
+      allow list: if false;
+      allow create: if signedIn() && username.matches('^[a-z0-9_]{3,30}$')
+        && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.uid == request.auth.uid
+        && getAfter(/databases/$(database)/documents/profiles/$(request.auth.uid)).data.username == username;
+      allow update, delete: if false;
+    }
+    match /nominations/{nomination} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+    function allowedChoice(value, catalog) { return value == null || (value is string && value in catalog.participants); }
+    function distinct(a, b) { return a == null || b == null || a != b; }
+    function validVote(d, docId) {
+      let catalog = get(/databases/$(database)/documents/nominations/$(d.nomination_id)).data;
+      return d.keys().hasAll(['user_id', 'nomination_id', 'choices', 'updated_at'])
+        && d.keys().hasOnly(['user_id', 'nomination_id', 'choices', 'updated_at'])
+        && d.user_id is string && d.nomination_id is string
+        && docId == d.user_id + '_' + d.nomination_id
+        && d.choices is list && d.choices.size() == 3 && d.updated_at == request.time
+        && allowedChoice(d.choices[0], catalog) && allowedChoice(d.choices[1], catalog) && allowedChoice(d.choices[2], catalog)
+        && distinct(d.choices[0], d.choices[1]) && distinct(d.choices[0], d.choices[2]) && distinct(d.choices[1], d.choices[2]);
+    }
+    match /votes/{voteId} {
+      allow read: if signedIn() && (resource.data.user_id == request.auth.uid || admin());
+      allow create, update: if voter(request.resource.data.user_id) && validVote(request.resource.data, voteId);
+      allow delete: if voter(resource.data.user_id);
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
