@@ -1,5 +1,18 @@
 # Переход SLAY AWARD на Firebase
 
+## Текущий этап
+
+Создан проект `slay-award-2026` (SLAY AWARD 2026), тариф Spark.
+Зарегистрировано веб-приложение SLAY AWARD Website, публичная конфигурация
+записана в `backend-config.js`. Включён вход Email/Password.
+Создана база Firestore Standard `(default)` в регионе `europe-west3` (Frankfurt).
+
+В базе пока действуют начальные правила `allow read, write: if false`.
+Каталог, аккаунты и голоса ещё не перенесены; правила из `firestore.rules`
+ещё не опубликованы. Для продолжения нужны доступ к старому проекту Supabase
+и авторизация административного импорта Firebase. Переключатель сайта
+остаётся на Supabase до завершения миграции и проверки входа.
+
 Подготовлен переход с Supabase на Firebase Authentication и Cloud Firestore
 Standard edition. Текущий сайт использует Supabase, пока в `backend-config.js`
 не выбран Firebase. VPS и Cloud Functions для этой реализации не нужны.
