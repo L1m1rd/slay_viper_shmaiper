@@ -40,3 +40,9 @@ test('preserve admin and banned profiles', () => {
   const profile = prepareMigration(input, catalog).documents.find(d => d.path === 'profiles/user-1').data;
   assert.equal(profile.role, 'admin'); assert.equal(profile.status, 'banned');
 });
+test('preserve Supabase-generated administrator handle without renaming', () => {
+  const input = source(); input.profiles[0].role = 'admin';
+  input.profiles[0].username = 'user_22a630fe1367408c9cf38a04fd261277';
+  const plan = prepareMigration(input, catalog);
+  assert.equal(plan.documents.find(d => d.path === 'profiles/user-1').data.username, input.profiles[0].username);
+});

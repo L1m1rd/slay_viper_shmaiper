@@ -15,7 +15,8 @@ export function prepareMigration(input, catalog) {
   }
   for (const p of input.profiles) {
     if (!users.has(p.id) || profiles.has(p.id)) throw new Error('Profile has missing or duplicate Auth user');
-    if (!/^[a-z0-9_]{3,30}$/.test(p.username) || handles.has(p.username)) throw new Error('Invalid or duplicate username');
+    // Supabase can generate legacy administrator handles longer than 30 chars.
+    if (!/^[a-z0-9_]{3,64}$/.test(p.username) || handles.has(p.username)) throw new Error('Invalid or duplicate username');
     if (typeof p.display_name !== 'string' || !p.display_name.trim() || p.display_name.length > 50) throw new Error('Invalid display name');
     if (!['admin', 'user'].includes(p.role) || !['approved', 'pending', 'banned'].includes(p.status)) throw new Error('Invalid profile role/status');
     const created = new Date(p.created_at);

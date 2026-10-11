@@ -11,7 +11,7 @@ service cloud.firestore {
     function validProfile(d, uid) {
       return d.keys().hasAll(['id', 'username', 'display_name', 'role', 'status', 'created_at'])
         && d.keys().hasOnly(['id', 'username', 'display_name', 'role', 'status', 'created_at'])
-        && d.id == uid && d.username is string && d.username.matches('^[a-z0-9_]{3,30}$')
+        && d.id == uid && d.username is string && d.username.matches('^[a-z0-9_]{3,64}$')
         && d.display_name is string && d.display_name.size() > 0 && d.display_name.size() <= 50
         && d.role in ['user', 'admin'] && d.status in ['pending', 'approved', 'banned']
         && d.created_at is string;
@@ -21,6 +21,7 @@ service cloud.firestore {
       allow list: if admin();
       allow create: if signedIn() && request.auth.uid == uid
         && validProfile(request.resource.data, uid)
+        && request.resource.data.username.matches('^[a-z0-9_]{3,30}$')
         && request.resource.data.role == 'user' && request.resource.data.status == 'pending'
         && getAfter(/databases/$(database)/documents/usernames/$(request.resource.data.username)).data.uid == uid;
       allow update: if validProfile(request.resource.data, uid) && (

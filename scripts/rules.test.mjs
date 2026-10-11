@@ -65,3 +65,14 @@ test('registration atomically reserves unique username and creates pending profi
   await assertFails(collision.commit());
   await assertFails(setDoc(doc(db('eviluser'), 'profiles/eviluser'), profile('eviluser','admin','approved')));
 });
+test('legacy administrator can edit name, but new registrations retain 30-char limit', async () => {
+  const legacyHandle = 'user_22a630fe1367408c9cf38a04fd261277';
+  await env.withSecurityRulesDisabled(async context => {
+    await updateDoc(doc(context.firestore(), 'profiles/admin'), { username: legacyHandle });
+  });
+  await assertSucceeds(updateDoc(doc(db('admin'), 'profiles/admin'), { display_name: 'Администратор' }));
+  const database = db('newlonguser'), batch = writeBatch(database);
+  batch.set(doc(database, 'profiles/newlonguser'), { ...profile('newlonguser', 'user', 'pending'), username: legacyHandle });
+  batch.set(doc(database, 'usernames', legacyHandle), { uid: 'newlonguser' });
+  await assertFails(batch.commit());
+});
