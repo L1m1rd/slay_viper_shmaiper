@@ -542,6 +542,7 @@
     }
 
     try {
+      window.SLAY_RESULTS_UPDATED_AT = 0;
       const [profiles, votes] = await Promise.all([
         firestore.collection('profiles').orderBy('created_at').get({ source: 'server' }),
         firestore.collection('votes').get({ source: 'server' })
@@ -643,6 +644,8 @@
     }).join('');
 
     document.getElementById('admin-results').innerHTML = resultsHtml;
+    window.SLAY_RESULTS_UPDATED_AT = Date.now();
+    window.dispatchEvent(new Event('slay:results-updated'));
 
     const tbody = document.getElementById('admin-users');
 

@@ -286,10 +286,18 @@
 
     <div id="admin-section-presentation" class="hidden">
       <button class="back-btn" onclick="openAdminSection('menu')">← Назад</button>
-      <div class="section-card admin-placeholder">
-        <div class="admin-menu-icon">🎬</div>
-        <h3>Презентация</h3>
-        <p>Этот раздел пока без функционала.</p>
+      <div class="section-card" id="presentation-controls">
+        <span class="eyebrow">SLAY AWARD / 2026</span>
+        <h3>Презентация победителей</h3>
+        <p>Выбери номинацию и открой сцену. После появления она продолжит плавно двигаться до выхода.</p>
+        <div class="presentation-options">
+          <label>Номинация<select id="presentation-category"></select></label>
+          <label>Участники<select id="presentation-source"><option value="silhouette">Неизвестный участник</option><option value="votes">По голосованию</option></select></label>
+          <button type="button" id="presentation-refresh">Обновить итоги</button>
+        </div>
+        <p id="presentation-status" role="status"></p>
+        <div id="presentation-scenes" class="presentation-scenes"></div>
+        <p class="presentation-note">Ситуация года, Тикток года и сцены проигравших пока не включены. Инцел года и 2008 этого года — только первое место.</p>
       </div>
     </div>
   </div>
@@ -1182,7 +1190,8 @@ renderCategories();
 updateUI();
 </script>
 <script src="backend-config.js"></script>
-<script src="backend-loader.js"></script>
+<link rel="stylesheet" href="presentation.css?v=1">
+<script src="backend-loader.js?v=20261014-presentation"></script>
 
 </body>
 </html>

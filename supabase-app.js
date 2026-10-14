@@ -606,6 +606,7 @@
       return;
     }
 
+    window.SLAY_RESULTS_UPDATED_AT = 0;
     const results = await Promise.all([
       supabaseClient
         .from('profiles')
@@ -718,6 +719,8 @@
     }).join('');
 
     document.getElementById('admin-results').innerHTML = resultsHtml;
+    window.SLAY_RESULTS_UPDATED_AT = Date.now();
+    window.dispatchEvent(new Event('slay:results-updated'));
 
     const tbody = document.getElementById('admin-users');
 

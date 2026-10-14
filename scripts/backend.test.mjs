@@ -13,9 +13,8 @@ test('backend loader selects only the configured provider and loads presentation
     };
     vm.runInNewContext(loader, context);
     await context.window.SLAY_BACKEND_READY;
-    assert.equal(loaded.at(-2), 'design.js');
-    assert.equal(loaded.at(-1), 'motion.js');
-    assert.equal(loaded.at(-3), provider + '-app.js');
+    assert.deepEqual(loaded.slice(-4).map(path => path.split('?')[0]), ['design.js', 'motion.js', 'presentation-model.js', 'presentation.js']);
+    assert.equal(loaded.at(-5).split('?')[0], provider + '-app.js');
     assert.equal(loaded.some(path => path.includes(provider === 'firebase' ? 'supabase' : 'firebase')), false);
     assert.equal(messages.length, 0);
   }
