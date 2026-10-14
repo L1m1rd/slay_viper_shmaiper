@@ -689,7 +689,7 @@ function renderCategories() {
     const number = String(NOMINATIONS.indexOf(nom) + 1).padStart(2, '0');
     return `<button type="button" class="${featured ? 'featured-card' : 'category-card'}" onclick="openCategory('${nom.id}')">
       ${featured ? '' : `<span class="category-number">${number}</span>`}
-      <img class="category-art" src="images/nominations/${nom.id}.svg" alt="" width="140" height="140" loading="lazy">
+      <img class="category-art" src="images/nominations/${nom.id}.svg?v=20261014" alt="" width="140" height="140" loading="lazy">
       <span class="category-content">
         ${featured ? '<span class="featured-label">Главная награда / 2026</span>' : ''}
         <span class="category-title">${nominationTitle(nom)}</span>
