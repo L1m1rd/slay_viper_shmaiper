@@ -2,7 +2,7 @@
   'use strict';
   const stages = { 3: '02-third', 2: '03-second', 1: '04-first' };
   function ranks(id) {
-    if (['situation', 'tiktok'].includes(id)) return [];
+    if (['situation', 'tiktok', 'bodybuilder'].includes(id)) return [];
     return ['incel', '2008'].includes(id) ? [1] : [3, 2, 1];
   }
   function resolve(nomination, rank, rows, reveal) {

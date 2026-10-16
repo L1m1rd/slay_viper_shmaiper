@@ -113,7 +113,7 @@
 
 <div id="page-categories" class="hidden">
   <section class="section">
-    <span class="eyebrow">SLAY AWARD / СЕЗОН 2026</span><div class="section-heading"><h2 class="section-title">Все номинации</h2><p>15 поводов сказать:<br>это был твой год</p></div>
+    <span class="eyebrow">SLAY AWARD / СЕЗОН 2026</span><div class="section-heading"><h2 class="section-title">Все номинации</h2><p>16 поводов сказать:<br>это был твой год</p></div>
     <div class="categories-grid" id="categories-full"></div>
     
     <div class="featured-section">
@@ -641,6 +641,24 @@ window.NOMINATIONS = [
     featured: true,
     icon: '💕',
     votingType: 'multi-vote'
+  },
+  {
+    id: 'bodybuilder',
+    title: '💪 Качок года',
+    desc: 'Сила, дисциплина и результат. Тот, кто весь год работал над собой и стал мощнее.',
+    participants: [
+      { name: 'Андрей Владыко', photo: 'images/andrey.png' },
+      { name: 'Даниил Постоев', photo: 'images/daniil.png' },
+      { name: 'Тимур Насретдинов', photo: 'images/timur.png' },
+      { name: 'Шурик', photo: 'images/shurik.png' },
+      { name: 'Арсений Юсупов', photo: 'images/arseniy.png' },
+      { name: 'Матвей Чернышов', photo: 'images/matvey.png' },
+      { name: 'Семён Ефремов', photo: 'images/semen.png' },
+      { name: 'Александр Шамбасов', photo: 'images/ssasha.png' },
+      { name: 'Александр Пеняев', photo: 'images/penyaev.png' }
+    ],
+    featured: false,
+    icon: '💪'
   },
   {
   id: 'slayking',
@@ -1191,7 +1209,7 @@ updateUI();
 </script>
 <script src="backend-config.js"></script>
 <link rel="stylesheet" href="presentation.css?v=1">
-<script src="backend-loader.js?v=20261014-presentation"></script>
+<script src="backend-loader.js?v=20261016-bodybuilder"></script>
 
 </body>
 </html>

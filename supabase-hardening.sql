@@ -29,6 +29,7 @@ begin
         'tiktok',
         'idiot',
         'couple',
+        'bodybuilder',
         'slayking'
     ) then
         raise exception 'Unknown nomination';

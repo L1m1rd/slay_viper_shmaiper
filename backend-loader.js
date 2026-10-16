@@ -27,7 +27,7 @@
     }
     await load('design.js');
     await load('motion.js');
-    await load('presentation-model.js?v=1');
+    await load('presentation-model.js?v=2');
     await load('presentation.js?v=1');
   })().catch(error => {
     console.error('Backend initialization failed:', error);
