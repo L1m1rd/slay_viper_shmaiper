@@ -5,3 +5,5 @@
 @media(prefers-reduced-motion:reduce){.award-live-stage *{transition:none!important}}
 
 .award-live-portrait img{opacity:0;transition:opacity 1200ms ease}.award-live-portrait img.is-ready{opacity:1}.award-live-portrait img.award-symbol{opacity:0}.award-live-portrait img.award-symbol.is-ready{opacity:.65}
+
+.award-live-row{transition:translate 1100ms cubic-bezier(.22,1,.36,1)}.award-live-contender{transition:background 650ms ease,border-color 650ms ease}.award-live-contender.is-speaking{background:linear-gradient(0deg,#edc52b14,transparent 80%);border-bottom-color:#edc52b}.award-live-contender.is-speaking strong{color:#ffdd61}
