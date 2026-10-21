@@ -30,7 +30,11 @@
     return animation;
   }
   function cancelAnimations() { animations.forEach(a => a.cancel()); animations.clear(); }
+  function introSpeaking(active) {
+    dialog.querySelector('.phase-intro')?.classList.toggle('is-narrating', active && phase === 'intro');
+  }
   function stopAudio() {
+    introSpeaking(false);
     clearTimeout(audioTimeout);
     if (sound) { sound.pause(); sound.removeAttribute('src'); sound.load(); sound = null; }
     action('resume').hidden = true;
@@ -160,7 +164,18 @@
     const stage = el('div', 'award-live-stage phase-intro'), header = el('div', 'award-live-header');
     header.append(el('span', 'award-live-brand', 'SLAY / 2026'), el('span', '', 'ВАЙПЕР ШМАЙПЕР'));
     const intro = el('section', 'award-live-intro');
-    intro.append(el('p', 'award-live-eyebrow', 'НОМИНАЦИЯ ' + String(nominations.indexOf(n) + 1).padStart(2, '0')), el('h1', 'award-live-title', model.titleOf(n)), el('p', 'award-live-tagline', 'СВОИ НАГРАЖДАЮТ СВОИХ'));
+    const title = el('h1', 'award-live-title'); title.setAttribute('aria-label', model.titleOf(n));
+    let letter = 0;
+    model.titleOf(n).split(/(\s+)/).forEach(part => {
+      if (/^\s+$/.test(part)) { title.append(document.createTextNode(part)); return; }
+      const word = el('span', 'award-live-word'); word.setAttribute('aria-hidden', 'true');
+      for (const char of part) {
+        const glyph = el('span', 'award-live-glyph', char);
+        glyph.style.setProperty('--letter-delay', `${letter++ * 75}ms`); word.append(glyph);
+      }
+      title.append(word);
+    });
+    intro.append(el('p', 'award-live-eyebrow', 'НОМИНАЦИЯ ' + String(nominations.indexOf(n) + 1).padStart(2, '0')), title, el('p', 'award-live-tagline', 'СВОИ НАГРАЖДАЮТ СВОИХ'));
     const art = el('img', 'award-live-art'); art.src = `images/nominations/${n.id}.svg`; art.alt = ''; intro.append(art);
     stage.append(header, intro, el('section', 'award-live-row-scene'), el('section', 'award-live-podium-scene'));
     const footer = el('div', 'award-live-footer');
@@ -190,10 +205,11 @@
       action('skip').disabled = false; action('skip').textContent = 'К участникам →'; message(model.titleOf(n));
       const lead = audios.get(n.id)?.lead;
       if (lead) {
-        const result = await playAudio(lead, id, { trimEnd: 3 });
+        const result = await playAudio(lead, id, { trimEnd: 3, onResume: () => introSpeaking(true), onPause: () => introSpeaking(false) });
         if (id !== run || phase !== 'intro') return;
+        introSpeaking(false);
         if (result === 'unavailable') message('Озвучка недоступна — продолжаем показ');
-      } else { message('Озвучка подводки пока отсутствует'); await new Promise(resolve => { phaseFinish = resolve; phaseTimer = setTimeout(() => { phaseFinish = null; resolve(); }, 3500); }); }
+      } else { message('Озвучка подводки пока отсутствует'); introSpeaking(true); await new Promise(resolve => { phaseFinish = resolve; phaseTimer = setTimeout(() => { phaseFinish = null; resolve(); }, 3500); }); }
       if (id === run && phase === 'intro') await revealRow(id);
     } finally { if (id === run) isOpening = false; }
   }
@@ -244,10 +260,10 @@
       if (id !== run || phase !== 'row') return;
       const highlight = () => { enter(); card.classList.add('is-speaking'); message('Сейчас: ' + person.name); };
       const url = person.identity && audios.get(activeNomination.id)?.names.get(person.identity);
-      const result = await playAudio(url, id, { onStart: highlight });
+      const result = await playAudio(url, id, { onStart: highlight, onPause: () => card.classList.add('is-voice-paused'), onResume: () => card.classList.remove('is-voice-paused') });
       if (id !== run || phase !== 'row') return;
       if (result === 'unavailable') { highlight(); await pauseFor(2400); }
-      card.classList.remove('is-speaking');
+      card.classList.remove('is-speaking', 'is-voice-paused');
     }
     if (id === run && phase === 'row') showPodium(id);
   }
@@ -279,19 +295,20 @@
       const card = entrants.get(person.rank);
       let entrance;
       const reveal = () => {
-        card.style.opacity = '1'; card.setAttribute('aria-hidden', 'false'); card.classList.add('is-announced');
+        card.style.opacity = '1'; card.setAttribute('aria-hidden', 'false'); card.classList.add('is-announced', 'is-speaking');
         message(person.rank + ' место · ' + person.name);
         entrance = animate(card, [{ opacity: 0, transform: 'translateY(90px) scale(.97)' }, { opacity: 1, transform: 'translateY(0) scale(1)' }], { duration: 2400 });
       };
       const url = person.identity && audios.get(activeNomination.id)?.names.get(person.identity);
       const result = await playAudio(url, id, {
         onStart: reveal,
-        onPause: () => { if (entrance?.playState === 'running') entrance.pause(); },
-        onResume: () => { if (entrance?.playState === 'paused') entrance.play(); }
+        onPause: () => { card.classList.add('is-voice-paused'); if (entrance?.playState === 'running') entrance.pause(); },
+        onResume: () => { card.classList.remove('is-voice-paused'); if (entrance?.playState === 'paused') entrance.play(); }
       });
       if (id !== run || phase !== 'podium') return;
       if (result === 'unavailable') { if (!card.classList.contains('is-announced')) reveal(); if (entrance?.playState === 'paused') entrance.play(); await pauseFor(2400); }
       if (entrance?.playState === 'paused') entrance.play();
+      card.classList.remove('is-speaking', 'is-voice-paused');
     }
   }
   dialog.addEventListener('click', async event => {
