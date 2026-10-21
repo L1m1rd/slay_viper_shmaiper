@@ -1,0 +1,860 @@
+{
+  "checks": {
+    "unique_audio": 82,
+    "files_per_format": 166,
+    "missing": [
+      {
+        "id": "14_couple",
+        "text": "Любовь — это прекрасное чувство, которое способно изменить человека.\n\nВ этом году мы наблюдали самые разные истории: романтику, страсть, ревность и неожиданные повороты.\n\nНо только одна пара заслужила признание всей нашей компании.\n\nПара года —",
+        "kind": "script"
+      },
+      {
+        "id": "15_bodybuilder",
+        "text": "Пока одни искали оправдания, эти люди искали свободную скамью в зале.\n\nПодход за подходом, тренировка за тренировкой. Их дисциплина заслуживает уважения, а фотографии после пампа — отдельного архива.\n\nСегодня мы узнаем, кто стал главным символом силы в нашей компании.\n\nКачок года —",
+        "kind": "script"
+      },
+      {
+        "id": "16_slayking",
+        "text": "Дамы и господа.\n\nМы подошли к моменту, ради которого собрались сегодня.\n\nВ течение года мы смеялись, ссорились, мирились, совершали ошибки и создавали воспоминания, которые останутся с нами на всю жизнь.\n\nНо среди всех нас есть человек, который стал настоящим символом этого года.\n\nНе просто победитель. Не просто легенда.\n\nКороль.\n\nЧеловек, чьё имя навсегда останется в истории «Вайпер Шмайпер».\n\nИ звание SLAY KING 2026 получает...",
+        "kind": "script"
+      },
+      {
+        "id": "17_closing",
+        "text": "Вот и подошёл к концу ещё один год.\n\nКто-то сегодня получил заслуженную награду. Кто-то остался ни с чем. А кто-то завтра даже не вспомнит, что здесь происходило.\n\nНо самое главное — мы снова собрались вместе.\n\nВремя идёт, люди меняются, многое остаётся в прошлом. И однажды мы будем вспоминать именно такие вечера.\n\nСпасибо всем, кто был частью этого года.\n\nЭто был SLAY AWARD 2026. Это был ВАЙПЕР ШМАЙПЕР. До встречи в следующем году!",
+        "kind": "script"
+      },
+      {
+        "id": "n_025",
+        "text": "Семён порвал барабанную перепонку плавая в бассейне на новый год",
+        "kind": "nominee"
+      }
+    ],
+    "no_text_placeholders": true,
+    "decode": "all WAV outputs decoded from source MP3 with FFmpeg",
+    "pcm_format": "48000 Hz mono signed 16-bit",
+    "silence": "3 seconds appended to all available ceremony texts; 0.35 seconds to names and titles",
+    "listening_review": "not performed; check personal name stress and delivery before ceremony"
+  },
+  "audio": [
+    {
+      "id": "00_opening",
+      "text": "Дамы и господа, легенды Марата, ветераны политеха и все, кто каким-то чудом дожил до этого вечера!\n\nСегодня мы собрались здесь, чтобы подвести итоги ещё одного безумного года. Года великих побед, сомнительных решений, незабываемых вечеров и поступков, за которые некоторым до сих пор стыдно.\n\nСегодня каждый получит то, что заслужил. Ну или то, за что проголосовали его друзья.\n\nДобро пожаловать на SLAY AWARD 2026 — ВАЙПЕР ШМАЙПЕР!",
+      "duration_seconds": 41.688,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 21809,
+      "sha256_wav": "ef3bc2457ae32c0da71571c9a4c2ae636b375685761cee25e159d459f8fdbe5f"
+    },
+    {
+      "id": "01_cs2",
+      "text": "Здесь не существует понятия «плохая команда». Здесь виноваты пинг, монитор, мышка и, конечно же, тиммейты.\n\nТысячи часов, сотни проигранных каток и десятки обещаний удалить эту игру навсегда.\n\nНо только один человек сегодня получит звание лучшего игрока CS-2.\n\nИ победителем становится...",
+      "duration_seconds": 30.312,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20264,
+      "sha256_wav": "96d3ec8735a4b0e114bceba6526b2a94781452bb707104d9bf9ea0ecb7543a03"
+    },
+    {
+      "id": "02_dota2",
+      "text": "Пока одни строили отношения, карьеру и планы на будущее, эти люди строили билды.\n\nОни знают цену каждому крипу, но иногда забывают цену собственного времени.\n\nСегодня мы узнаем, кто потратил свою жизнь на Доту наиболее результативно.\n\nDota 2 игрок года —",
+      "duration_seconds": 25.272,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 21325,
+      "sha256_wav": "df4f38e428e0d8f3983f8af6f90b9c5e24f797894fda79d9a0fdbaae5e362507"
+    },
+    {
+      "id": "03_style",
+      "text": "Встречают по одёжке, провожают по уму. Но сегодня вторая часть нас совершенно не интересует.\n\nЭтот человек способен превратить обычный выход за хлебом в показ мод. Его гардероб вызывает уважение, а иногда и вопросы.\n\nСамый стильный человек 2026 года —",
+      "duration_seconds": 27.576,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20764,
+      "sha256_wav": "35ee5be0d6734fbefb50fc7fb67c3fa73e17f7074d481843e20e61d28e91bbc4"
+    },
+    {
+      "id": "04_incel",
+      "text": "Любовь приходит и уходит, а одиночество остаётся верным.\n\nНаши номинанты знают всё о женщинах, отношениях и психологии любви. Правда, преимущественно из интернета.\n\nСегодня мы наградим человека, который сделал из отсутствия личной жизни настоящую философию.\n\nИнцел года —",
+      "duration_seconds": 27.84,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20246,
+      "sha256_wav": "84cf6126220232fde786110e460e1fbc4c8b2fcb6a243cbfc168f201559b63d5"
+    },
+    {
+      "id": "05_charisma",
+      "text": "Есть люди, которые заходят в комнату, и все сразу обращают на них внимание.\n\nИм не нужно ничего доказывать. Достаточно одного взгляда, пары слов или просто присутствия.\n\nСегодня мы определим человека, чья аура оказалась сильнее всех остальных.\n\nХаризма года —",
+      "duration_seconds": 27.264,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 21284,
+      "sha256_wav": "910cfb3ac0f41185ce6555718c5e8e4c1c6c1dda3e276a1edcd794bf321deca6"
+    },
+    {
+      "id": "06_2008",
+      "text": "Пока некоторые из нас вспоминают детство, представители 2008 года только начинают понимать, что оно заканчивается.\n\nМолодость, амбиции, сомнительные решения и абсолютная уверенность в собственной правоте.\n\nСегодня мы выберем лучшего представителя этого легендарного поколения.\n\n2008 этого года —",
+      "duration_seconds": 28.608,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20484,
+      "sha256_wav": "089214b6563aace383dd5337c0c17ea0310bfe7bd03a8e56cd7087f85bafd1d4"
+    },
+    {
+      "id": "07_alcoholic",
+      "text": "Некоторые события невозможно забыть. А некоторые невозможно вспомнить.\n\nЭтот человек знает, где начинается вечер, но далеко не всегда знает, где он закончится.\n\nЕго печень заслуживает отдельной награды за стойкость и мужество.\n\nАлкаш года —",
+      "duration_seconds": 24.6,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20025,
+      "sha256_wav": "58ce462e78f6fc0cccbaf9228e79f1374b47843e6f4b48ffa647fcd8550049f5"
+    },
+    {
+      "id": "08_meme",
+      "text": "Некоторым людям достаточно один раз неудачно сфотографироваться, чтобы войти в историю.\n\nИх цитаты становятся легендарными, фотографии разлетаются по чатам, а поступки обсуждаются месяцами.\n\nСегодня мы наградим человека, который сам того не подозревая стал главным источником контента.\n\nЧеловек-мем года —",
+      "duration_seconds": 27.96,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19987,
+      "sha256_wav": "bfa165eb7efa953317e24656d0e699e6d1f16856641239dedf8dcbb72feca892"
+    },
+    {
+      "id": "09_anecdote",
+      "text": "Хороший анекдот заставляет улыбнуться. Великий анекдот заставляет пересказывать его каждому встречному.\n\nВ этом году мы услышали немало историй, после которых хотелось одновременно смеяться и задавать вопросы.\n\nНо только одна из них достойна войти в историю.\n\nАнекдот года —",
+      "duration_seconds": 26.846,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19471,
+      "sha256_wav": "d2d7c4f9aac66dda6c21111523d480107159cea9f91bbec33fdf82f8296e6aaa"
+    },
+    {
+      "id": "10_situation",
+      "text": "У каждого года есть события, которые определяют его историю.\n\nНо у нашей компании история измеряется не достижениями, а ситуациями, которые невозможно объяснить нормальному человеку.\n\nСегодня мы вспомним момент, который навсегда останется в нашей памяти.\n\nСитуация года —",
+      "duration_seconds": 26.086,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19019,
+      "sha256_wav": "b87386e34a2af61e773d771d49878a2d4371b8f7a3b06531192f5b8c994da304"
+    },
+    {
+      "id": "11_crush",
+      "text": "Красота спасёт мир. Но сначала она разрушит несколько дружеских отношений и разобьёт пару сердец.\n\nСегодня речь пойдёт о человеке, который заставлял других терять голову, забывать слова и принимать необдуманные решения.\n\nКраш года —",
+      "duration_seconds": 23.188,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19507,
+      "sha256_wav": "10efe3daacc9d407aea81994b3b690f483a4cba0f0943f0dc0769d8f6eaaf55e"
+    },
+    {
+      "id": "12_tiktok",
+      "text": "Искусство бывает разным. Кто-то пишет картины, кто-то снимает кино, а кто-то создаёт шедевры за пятнадцать секунд.\n\nЭти видео мы пересматривали десятки раз. Они заслуживают не просто лайков, а места в истории.\n\nТикток года —",
+      "duration_seconds": 23.757,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20674,
+      "sha256_wav": "be460559eda1c7bdc42be21df6127e47b67a9098d29b16f553c0a1e57bf89c8b"
+    },
+    {
+      "id": "13_idiot",
+      "text": "Для этой номинации не нужны талант, образование или особые достижения.\n\nЗдесь оценивается способность принимать решения, которые ни один здравомыслящий человек не смог бы даже представить.\n\nНо именно благодаря таким людям наша жизнь никогда не бывает скучной.\n\nДолбаёб года —",
+      "duration_seconds": 25.499,
+      "trailing_added_silence": 3,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18448,
+      "sha256_wav": "e8f9d1b34d30f4b24be7b21a54773ded1424bee22d2994d2b723b905f4ca78d1"
+    },
+    {
+      "id": "n_001",
+      "text": "Андрей Владыко",
+      "duration_seconds": 2.896,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20931,
+      "sha256_wav": "9c8b845c3c89afc0a98be2c752d138ee33903b1bb381f7c63be92083f3674658"
+    },
+    {
+      "id": "n_002",
+      "text": "Даниил Постоев",
+      "duration_seconds": 3.053,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17756,
+      "sha256_wav": "b90849cf93a88a6e7b0c2264a33b8d28abc5334e9ccc7006d56a1149e9b0ea78"
+    },
+    {
+      "id": "n_003",
+      "text": "Тимур Насретдинов",
+      "duration_seconds": 3.053,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18235,
+      "sha256_wav": "ae56b76930d36ec9d054b4fb047312bc61cf2932745b265eb4b5765e55a5b8ec"
+    },
+    {
+      "id": "n_004",
+      "text": "Шурик",
+      "duration_seconds": 2.272,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 15417,
+      "sha256_wav": "fff0106b50786b1d5f343583968d2bc891c4ea0d1107e53af7aa2a9f90300b64"
+    },
+    {
+      "id": "n_005",
+      "text": "Арсений Юсупов",
+      "duration_seconds": 3.095,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18191,
+      "sha256_wav": "782c00e5ab7b9687d0d74661622cc7d6653369036e160c4c3d0ff2c2da50fdab"
+    },
+    {
+      "id": "n_006",
+      "text": "Матвей Чернышов",
+      "duration_seconds": 3.04,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17681,
+      "sha256_wav": "56847dfc1733b4a5dd559b90332f7e567ce682e40d3160c19bdcee1bc9f0deca"
+    },
+    {
+      "id": "n_007",
+      "text": "Семён Ефремов",
+      "duration_seconds": 2.982,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17938,
+      "sha256_wav": "4a9c44ce23ef70a7bdf85ba86ba399bd876bd874fbd324f8eb25c65eadc0f7bb"
+    },
+    {
+      "id": "n_008",
+      "text": "Александр Шамбасов",
+      "duration_seconds": 3.223,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19897,
+      "sha256_wav": "784885cc25b48984d21c2b40d6be0a7a4b188055de7517a9ef08ef0a23d89ad1"
+    },
+    {
+      "id": "n_009",
+      "text": "Александр Пеняев",
+      "duration_seconds": 3.067,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19002,
+      "sha256_wav": "448eceb522b4bf80f79526587702f4b2df1809093cdec3d8ece01c8fed1d627b"
+    },
+    {
+      "id": "n_010",
+      "text": "Бипки",
+      "duration_seconds": 2.3,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19327,
+      "sha256_wav": "6473cd7a4c5d108808a0cd56d2807199f92f79c5d9ca78c6040e10a75ab54a08"
+    },
+    {
+      "id": "n_011",
+      "text": "Два грузина лошадь надувают",
+      "duration_seconds": 3.933,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18045,
+      "sha256_wav": "0e0e0dc58b7b983bfb5df77ddfc351cd0f5290fdba932791f6bd6c72d216d525"
+    },
+    {
+      "id": "n_012",
+      "text": "Грузинская свадьба набздел",
+      "duration_seconds": 3.55,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18763,
+      "sha256_wav": "35f7280ab2c3c6dc99dfc165689ed3fc219721fa334ad587adc0a0c18b76f23c"
+    },
+    {
+      "id": "n_013",
+      "text": "Пришелец заходит на зону",
+      "duration_seconds": 3.592,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 16203,
+      "sha256_wav": "f78c2afdc614680f2d36f0ee44e7484ca515c58d155416fb395e4700ca59c634"
+    },
+    {
+      "id": "n_014",
+      "text": "Минуточка",
+      "duration_seconds": 2.541,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17705,
+      "sha256_wav": "f3f742453388673a848531def93cec2fe196d908c355d0992cc894c40c1b3533"
+    },
+    {
+      "id": "n_015",
+      "text": "Рядовой табуретка",
+      "duration_seconds": 2.953,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18226,
+      "sha256_wav": "024bda6747fdbcc36740cba0da453a99bdc7a9583155873b379cf86868b30fc3"
+    },
+    {
+      "id": "n_016",
+      "text": "Боцман",
+      "duration_seconds": 2.399,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18653,
+      "sha256_wav": "c9396255b2d43d644c9341028f712d05c7a0da7d453f47394d90a8592ef527d5"
+    },
+    {
+      "id": "n_017",
+      "text": "Армянин нашел золотую лампу",
+      "duration_seconds": 3.82,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19286,
+      "sha256_wav": "7795aca71bfe2f74e3923a288e578d9d69c0b49e709ad6380b9124c863f8f96a"
+    },
+    {
+      "id": "n_018",
+      "text": "Номера анекдотов на зоне",
+      "duration_seconds": 3.664,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20559,
+      "sha256_wav": "c4dd8864450dc92a78a0e55f41df8b77d2cd5766ebd9c4cc69236b221d8909f9"
+    },
+    {
+      "id": "n_019",
+      "text": "Соленые бананы",
+      "duration_seconds": 2.925,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17049,
+      "sha256_wav": "e2fb84376e05b1b858660f060e6841d54b6c80ac560e82f7d698b26b49d87577"
+    },
+    {
+      "id": "n_020",
+      "text": "Мужик после зоны едет в поезде с чурками",
+      "duration_seconds": 4.744,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17899,
+      "sha256_wav": "049117005f8c490461fb284d6483281f527e97beb80f86d59ac198889ea3cb41"
+    },
+    {
+      "id": "n_021",
+      "text": "Черный джек",
+      "duration_seconds": 2.612,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18487,
+      "sha256_wav": "880942ca95b53a83d222c712bb36076be4b8bbf89b494e346b9dcba1e8933e1c"
+    },
+    {
+      "id": "n_022",
+      "text": "Пельменник \n (голосуй сюда если хуесос)",
+      "duration_seconds": 4.572,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17957,
+      "sha256_wav": "7d74f4eaaf27c7edcff4d9dea8fc7729c09e2abe100d089a6ce61869b32825e4"
+    },
+    {
+      "id": "n_023",
+      "text": "Геи в автобусе",
+      "duration_seconds": 2.882,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17704,
+      "sha256_wav": "84e33c54e79e851ec1ddf0ff0cb9dc7fddaf77fdbcfe204c5741d1513bcc3240"
+    },
+    {
+      "id": "n_024",
+      "text": "Шурику разбили телефон на ДР",
+      "duration_seconds": 3.998,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19783,
+      "sha256_wav": "0d70a13c239f673a47aac041ffb6983d7230b84e0498c1d6e2c315b2ef2d849a"
+    },
+    {
+      "id": "n_026",
+      "text": "Проект Z на ДР шурика",
+      "duration_seconds": 3.763,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 16870,
+      "sha256_wav": "d0bd0ac9ceae903927536e06cbf27cc118cba1308fa6c3307c04856d747b7160"
+    },
+    {
+      "id": "n_027",
+      "text": "Маскарад на новый год, когда снимали дом",
+      "duration_seconds": 4.658,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 15574,
+      "sha256_wav": "5d44f06c1e79acc10624a6711b383a5466cc244b841b9424833c6253f12623c1"
+    },
+    {
+      "id": "n_028",
+      "text": "Человек Чекушка на ДР шурика",
+      "duration_seconds": 3.962,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 15992,
+      "sha256_wav": "c0ff965fd9cdf51460d172ef4d1b89aa415557028e03733e5229d6b8f2b9c858"
+    },
+    {
+      "id": "n_029",
+      "text": "Человек Чекушка ходил по городу Ульяновску",
+      "duration_seconds": 4.686,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18877,
+      "sha256_wav": "b50ab85bca54f14e431fed4f21210310f3ee195a52e7c6df44cf31ace604b7ef"
+    },
+    {
+      "id": "n_030",
+      "text": "Андрей, Данил и Саша сняли тик токи",
+      "duration_seconds": 4.999,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19257,
+      "sha256_wav": "8eb77ed36c74f5582d110a79213494a9519280cf8f57142594712dc52548c1cf"
+    },
+    {
+      "id": "n_031",
+      "text": "Андрей сломал руку на футболе",
+      "duration_seconds": 3.82,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18280,
+      "sha256_wav": "be65cf6242a680b6ee9ef0cb4f4b8b2e72eb120d7901de74d908240b5e0eeb41"
+    },
+    {
+      "id": "n_032",
+      "text": "Сосиски 67",
+      "duration_seconds": 3.365,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18921,
+      "sha256_wav": "28dba185d96a9250d783a22c3dcd6d7438b6d761290585849641fe1990004c02"
+    },
+    {
+      "id": "n_033",
+      "text": "Данил уснул в клубнике",
+      "duration_seconds": 3.45,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17359,
+      "sha256_wav": "56d519ec9f0da1de2af0ae260a7dd72a2911143855ac3edd4d301eb802b60486"
+    },
+    {
+      "id": "n_034",
+      "text": "Данил оставил граффити на Мариинской гимназии",
+      "duration_seconds": 4.672,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 15958,
+      "sha256_wav": "38e4b9b0eb29d67425ddb9d0674dfa159cebe83b82d762c987fe4603affb09bb"
+    },
+    {
+      "id": "n_035",
+      "text": "У Шурика спиздили лавочку",
+      "duration_seconds": 3.635,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17338,
+      "sha256_wav": "fc714f6fb5bb098d67c20a85fde53a2b069921e4d92f6f76c429ded331713b7b"
+    },
+    {
+      "id": "n_036",
+      "text": "Данил подстригся как Whole Lotta Swag",
+      "duration_seconds": 4.416,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17846,
+      "sha256_wav": "d3df0afefd03769c84b866c844538d7435b227592388f062f6864016e3eb5c96"
+    },
+    {
+      "id": "n_037",
+      "text": "Арсена Ашотовича посадили",
+      "duration_seconds": 3.876,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19364,
+      "sha256_wav": "77f5d9b3b8753830a1eae81af3db78b81e3d569e676f677c33d115f433f19bbb"
+    },
+    {
+      "id": "n_038",
+      "text": "Рождение lil gin",
+      "duration_seconds": 3.294,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18347,
+      "sha256_wav": "3af3dffdc924d5d7f6b82af507b42bd887527dbdc7e7862c26210e5c550db45e"
+    },
+    {
+      "id": "n_039",
+      "text": "Данил выложил яйца на стол сестры",
+      "duration_seconds": 4.345,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18146,
+      "sha256_wav": "156193619eb55e556e9f72eae5be5550098def784fac514d3d07724937e723d0"
+    },
+    {
+      "id": "n_040",
+      "text": "Гравитационная башня во вкусно и точка",
+      "duration_seconds": 4.274,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 15770,
+      "sha256_wav": "02e0dccd63c649b4861c4a8e30c9318771f62553dfca3fca5f1bcc7a1831ef16"
+    },
+    {
+      "id": "n_041",
+      "text": "ААААААААААААААА - тимур",
+      "duration_seconds": 2.783,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18599,
+      "sha256_wav": "091b39f41d26e228f00325100a1098cc9f5397adc0a8f78a999729279bc54ed8"
+    },
+    {
+      "id": "n_042",
+      "text": "больно не больно, страшно не страшно - данил, андрей",
+      "duration_seconds": 5.794,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18362,
+      "sha256_wav": "65d393e2c0587d4378fd875c7326b4dd3364af43d89ab16f56f19a3b570ff823"
+    },
+    {
+      "id": "n_043",
+      "text": "жидкий липсинг - саша",
+      "duration_seconds": 3.607,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19060,
+      "sha256_wav": "c8e24ac4c7345ae3fe63c1f8a0aec616de7c185fa41f74318f35539c14b0c386"
+    },
+    {
+      "id": "n_044",
+      "text": "матвей с красотками",
+      "duration_seconds": 3.18,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17611,
+      "sha256_wav": "0749140403feff50eb84621fb78a3439cb9c9698629baf1ca906f51e51dbf1ca"
+    },
+    {
+      "id": "n_045",
+      "text": "тебя манят мои мани только не любовь",
+      "duration_seconds": 4.146,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 16820,
+      "sha256_wav": "379c8cb0254fad2cd6c716acfa5ec2bf3f55cdee8edb87a9bd8c61a2ec4e0bd2"
+    },
+    {
+      "id": "n_046",
+      "text": "тренд с котятами - данил, саша, андрей",
+      "duration_seconds": 5.226,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 21921,
+      "sha256_wav": "3049213750b644692b47a972a725388923848f4490a15dc4eb4b2fff04da0078"
+    },
+    {
+      "id": "n_047",
+      "text": "электрощиток - андрей, данил, саша",
+      "duration_seconds": 4.885,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20535,
+      "sha256_wav": "98acd51264fc2fa49955ef5ad6deb4ed1762ede2af4a05eb335d1b9c2aec6989"
+    },
+    {
+      "id": "n_048",
+      "text": "Матвей и Вика",
+      "duration_seconds": 2.982,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 16722,
+      "sha256_wav": "8eabd489ec38d8d6f9ab045ee5ddca6f984c18d5c190f1436975ed8a892165ab"
+    },
+    {
+      "id": "n_049",
+      "text": "Матвей и Соня",
+      "duration_seconds": 3.138,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 21435,
+      "sha256_wav": "c920cf30fd39b3540891bb9486fb524708be9fa60b66738693aace6b2fc0b941"
+    },
+    {
+      "id": "n_050",
+      "text": "Матвей и Полина",
+      "duration_seconds": 3.095,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18314,
+      "sha256_wav": "c68c5bd754f98ac288f825a52c5ce66676b410dfd04a4752b523fc18e11481e2"
+    },
+    {
+      "id": "n_051",
+      "text": "Матвей и Карина",
+      "duration_seconds": 3.095,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18590,
+      "sha256_wav": "fc0c98aeb72f072a5b7ecc7db4809fa44ffd9f6b5e4b91466222875348a6893b"
+    },
+    {
+      "id": "n_052",
+      "text": "Матвей и Алина",
+      "duration_seconds": 3.067,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19005,
+      "sha256_wav": "fc8b491531d9aa38cd46c54ba1c46d110311c441dbde49d32e8a5605ad8d9832"
+    },
+    {
+      "id": "n_053",
+      "text": "Семен и Надя",
+      "duration_seconds": 3.01,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 16292,
+      "sha256_wav": "a6544ebf84241e1804e4f63bf898b94abd56c70974f92915b85bdacfbfa3411b"
+    },
+    {
+      "id": "n_054",
+      "text": "Арсений и Надя",
+      "duration_seconds": 3.138,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17862,
+      "sha256_wav": "2d04221b327cf50f96cf2c5095c292aa8e42f2a5d628e26cdec95d9f22336328"
+    },
+    {
+      "id": "n_055",
+      "text": "Арсений и Арина",
+      "duration_seconds": 3.18,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 19337,
+      "sha256_wav": "b9a6caaa90053d1e39b9d992a8e7d518396e44a3ae663d9bbc467a5734ef5f1c"
+    },
+    {
+      "id": "n_056",
+      "text": "Тимур и Азалия",
+      "duration_seconds": 3.18,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20963,
+      "sha256_wav": "4bb162abdcaabde10777ee4d9d678931ad85ca9f9c6733df21c487fe7856afb1"
+    },
+    {
+      "id": "n_057",
+      "text": "Саша и Даша Таурин",
+      "duration_seconds": 3.536,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17162,
+      "sha256_wav": "a27dc380e2aaf35a92dfc528f418c23c7b5a14c8faccd16ddd61440f46fd850f"
+    },
+    {
+      "id": "n_058",
+      "text": "Саша и Даша Дрочкова",
+      "duration_seconds": 3.736,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18170,
+      "sha256_wav": "70789eaaab16d1e6bf609ff9e48df462796ec500fd8e1cbff08df014d4e69a97"
+    },
+    {
+      "id": "n_059",
+      "text": "Саша и Маша",
+      "duration_seconds": 2.996,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18693,
+      "sha256_wav": "3fc21211cbbfab2696667f38bc542a133a5afa2ae1dbb1de17f9efa4e87ade0a"
+    },
+    {
+      "id": "n_060",
+      "text": "Саша и Иванчикова",
+      "duration_seconds": 3.365,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17283,
+      "sha256_wav": "73abb4c6b0d8ce49ed3cce4f86cf6e080e0d0e0dcf4e5650c9ad523b969597ff"
+    },
+    {
+      "id": "n_061",
+      "text": "Данил и Маринка",
+      "duration_seconds": 3.109,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18249,
+      "sha256_wav": "2902ac2f5601a18edbfc60bb13d4ab4b8454dbd140c0ac3789f5aaca1b3cf854"
+    },
+    {
+      "id": "n_062",
+      "text": "Данил и Женя Данилина",
+      "duration_seconds": 3.564,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17995,
+      "sha256_wav": "19ec8e90b6fea72aefddcab8584938f3c916cffbcb8fd21df624bbee46e94ac1"
+    },
+    {
+      "id": "n_063",
+      "text": "Вова и Жена Вадима",
+      "duration_seconds": 3.465,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18399,
+      "sha256_wav": "848f117b0fb770b6777bedc6a96173647a158887ee2eb223e09d75ce483af0e0"
+    },
+    {
+      "id": "n_064",
+      "text": "Андрей и рука",
+      "duration_seconds": 2.996,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20210,
+      "sha256_wav": "f3172342b6ae701e2b155c5cb4c22d30949c3d74c4c4b8275f67042258e4f1c6"
+    },
+    {
+      "id": "n_065",
+      "text": "Шурик и серьёзка",
+      "duration_seconds": 3.195,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17344,
+      "sha256_wav": "63ae189fa1375e62eaa03ae46543fecc07753c05e0e256ef504acad5453cf7e3"
+    },
+    {
+      "id": "n_066",
+      "text": "Шурик и Кира Сорокина",
+      "duration_seconds": 3.536,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 17969,
+      "sha256_wav": "36ca04b896f56cbfe8380bcf0b672744eb4463c5ec78ed5420db5279c44c945e"
+    },
+    {
+      "id": "n_067",
+      "text": "Саня и Полина",
+      "duration_seconds": 3.01,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 20954,
+      "sha256_wav": "cded0e389cfed4379e36faf51012c04def643cf8f0f633b76419d8f09628a09c"
+    },
+    {
+      "id": "n_068",
+      "text": "Саня и Вика",
+      "duration_seconds": 2.868,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18472,
+      "sha256_wav": "0c74c0fd712de117a79e103bddc22df83c737153101c8d1bd85283c05dc736ee"
+    },
+    {
+      "id": "n_069",
+      "text": "Егор и Соня",
+      "duration_seconds": 3.051,
+      "trailing_added_silence": 0.35,
+      "sample_rate": 48000,
+      "channels": 1,
+      "peak_pcm": 18640,
+      "sha256_wav": "179f50b3d1bf4893147c875dc6561b140fcd07287349376175a66a321717edf4"
+    }
+  ]
+}
