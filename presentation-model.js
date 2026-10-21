@@ -8,12 +8,14 @@
     const ranked = nomination.participants.filter(p => {
       const name = nameOf(p); if (seen.has(name)) return false;
       seen.add(name); return true;
-    }).map(p => ({ name: nameOf(p), photo: p.photo || null, total: Math.max(0, scores.get(nameOf(p)) || 0) }))
+    }).map(p => ({ name: nameOf(p), photo: p.photo || null,
+      video: nomination.id === 'tiktok' && typeof p.video === 'string' && p.video.startsWith('videos/tiktok/') && !p.video.includes('..') && !p.video.includes('\\') && p.video.endsWith('.mp4') ? p.video : null,
+      total: Math.max(0, scores.get(nameOf(p)) || 0) }))
       .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name, 'ru'));
     const hasVotes = ranked.some(p => p.total > 0);
     const people = ranked.map((p, i) => ({ ...p, rank: reveal && p.total === 0 ? null : i + 1,
       tied: ranked.some((q, j) => i !== j && q.total === p.total),
-      name: reveal ? p.name : 'Участник ' + (i + 1), photo: reveal ? p.photo : null,
+      name: reveal ? p.name : 'Участник ' + (i + 1), photo: reveal ? p.photo : null, video: reveal ? p.video : null,
       identity: reveal ? p.name : null, hidden: !reveal }));
     const hasRanking = !reveal || hasVotes;
     return { title: titleOf(nomination), hasVotes, hasRanking, ranked: people,

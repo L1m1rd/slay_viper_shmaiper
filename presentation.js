@@ -10,6 +10,7 @@
   let audios = new Map(), audioLoaded = false, refreshPromise, run = 0, phase = 'closed';
   let activeNomination, activeSnapshot, originalFocus, previousOverflow = null, muted = false;
   let audioFinish, phaseTimer, phaseFinish, audioTimeout, sound, isOpening = false;
+  let movie, videoFinish, videoTimeout;
   const animations = new Set(), dialog = document.createElement('dialog');
   dialog.className = 'award-dialog'; dialog.setAttribute('aria-label', 'Церемония SLAY AWARD');
   dialog.innerHTML = `<div class="award-stage-host"></div><div class="award-toolbar"><span class="award-position" role="status" aria-live="polite"></span><button type="button" data-action="sound">Звук включён</button><button type="button" data-action="resume" hidden>Включить озвучку</button><button type="button" data-action="skip">К участникам →</button><button type="button" data-action="replay">Повторить с новыми итогами</button><button type="button" data-action="fullscreen">На весь экран</button><button type="button" data-action="close">Закрыть ×</button></div>`;
@@ -34,6 +35,58 @@
     if (sound) { sound.pause(); sound.removeAttribute('src'); sound.load(); sound = null; }
     action('resume').hidden = true;
     const finish = audioFinish; audioFinish = null; finish?.('cancelled');
+  }
+  function stopVideo() {
+    clearTimeout(videoTimeout);
+    const finish = videoFinish; videoFinish = null; finish?.('cancelled');
+    if (movie) { movie.pause(); movie.removeAttribute('src'); movie.load(); movie = null; }
+    action('resume').hidden = true; action('resume').textContent = 'Включить озвучку';
+  }
+  async function showNomineeVideo(person, id, expectedPhase) {
+    if (activeNomination.id !== 'tiktok' || !person.video || person.hidden) return;
+    if (id !== run || phase !== expectedPhase) return;
+    stopAudio(); stopVideo();
+    const stage = dialog.querySelector('.award-live-stage'), overlay = el('section', 'award-live-video-scene');
+    overlay.setAttribute('aria-label', 'Видео номинации Тикток года');
+    const video = el('video', 'award-live-video');
+    video.autoplay = true; video.playsInline = true; video.controls = true;
+    video.preload = 'auto'; video.muted = muted;
+    video.setAttribute('aria-label', 'Ролик номинанта');
+    overlay.append(el('p', 'award-live-video-label', 'ТИКТОК ГОДА / СМОТРИМ РОЛИК'), video);
+    stage.append(overlay); movie = video;
+    const previousSkip = { text: action('skip').textContent, disabled: action('skip').disabled };
+    action('skip').textContent = 'Пропустить ролик →'; action('skip').disabled = false;
+    message('Тикток года · смотрим ролик');
+    animate(overlay, [{ opacity: 0 }, { opacity: 1 }], { duration: 650, fill: 'none' });
+    await new Promise(resolve => {
+      let settled = false;
+      const finish = result => {
+        if (settled) return; settled = true; clearTimeout(videoTimeout);
+        video.onended = video.onerror = video.onwaiting = video.onstalled = video.onplaying = null;
+        video.pause(); if (videoFinish === finish) videoFinish = null;
+        action('resume').hidden = true; resolve(result);
+      };
+      videoFinish = finish;
+      const stalled = () => { clearTimeout(videoTimeout); videoTimeout = setTimeout(() => { message('Ролик недоступен · продолжаем объявление'); finish('unavailable'); }, 20000); };
+      video.onended = () => finish('ended');
+      video.onerror = () => { message('Ролик не загрузился · продолжаем объявление'); finish('unavailable'); };
+      video.onwaiting = video.onstalled = stalled;
+      video.onplaying = () => { if (id === run && !settled) { clearTimeout(videoTimeout); action('resume').hidden = true; } };
+      video.src = person.video.split('/').map(encodeURIComponent).join('/'); stalled();
+      video.play().catch(error => {
+        if (settled || id !== run) return;
+        if (error.name === 'NotAllowedError') {
+          clearTimeout(videoTimeout); action('resume').textContent = 'Воспроизвести видео'; action('resume').hidden = false;
+          message('Нажми «Воспроизвести видео», чтобы продолжить');
+        } else finish('unavailable');
+      });
+    });
+    if (id !== run || phase !== expectedPhase) return;
+    animate(overlay, [{ opacity: 1 }, { opacity: 0 }], { duration: 450 });
+    await pauseFor(reduceMotion.matches ? 0 : 450);
+    if (id !== run || phase !== expectedPhase) return;
+    if (movie === video) stopVideo();
+    overlay.remove(); action('skip').textContent = previousSkip.text; action('skip').disabled = previousSkip.disabled;
   }
   function playAudio(url, id, sync = {}) {
     stopAudio();
@@ -89,7 +142,7 @@
     const n = nominations.find(n => n.id === category.value);
     const card = el('button', 'presentation-sequence-card'); card.type = 'button';
     const image = el('img', ''); image.src = `images/nominations/${n.id}.svg`; image.alt = '';
-    card.append(image, el('strong', '', 'Запустить церемонию'), el('span', '', 'Подводка → непризовые места → пьедестал'));
+    card.append(image, el('strong', '', 'Запустить церемонию'), el('span', '', n.id === 'tiktok' ? 'Подводка → ролики и участники → пьедестал' : 'Подводка → непризовые места → пьедестал'));
     card.disabled = !audioLoaded; card.onclick = start;
     cards.append(card, el('p', 'presentation-audio-note', !audioLoaded ? 'Загружаю список озвучек…' : audios.get(n.id)?.lead ? 'Озвучка подключена. Места и имена подставляются автоматически.' : 'Подводка пока не озвучена. Церемония начнётся с названия номинации, затем покажет результаты.'));
     notice();
@@ -115,7 +168,7 @@
     stage.append(footer); dialog.querySelector('.award-stage-host').replaceChildren(stage); return stage;
   }
   function close() {
-    run++; clearTimeout(phaseTimer); phaseFinish?.(); phaseFinish = null; stopAudio(); cancelAnimations(); isOpening = false; phase = 'closed';
+    run++; clearTimeout(phaseTimer); phaseFinish?.(); phaseFinish = null; stopAudio(); stopVideo(); cancelAnimations(); isOpening = false; phase = 'closed';
     if (dialog.open) dialog.close();
     dialog.querySelector('.award-stage-host').replaceChildren();
     if (previousOverflow !== null) { document.body.style.overflow = previousOverflow; previousOverflow = null; }
@@ -187,6 +240,8 @@
         if (!reduceMotion.matches) await pauseFor(1100);
       }
       if (id !== run || phase !== 'row') return;
+      await showNomineeVideo(person, id, 'row');
+      if (id !== run || phase !== 'row') return;
       const highlight = () => { enter(); card.classList.add('is-speaking'); message('Сейчас: ' + person.name); };
       const url = person.identity && audios.get(activeNomination.id)?.names.get(person.identity);
       const result = await playAudio(url, id, { onStart: highlight });
@@ -198,7 +253,7 @@
   }
   function showPodium(id) {
     if (id !== run || !dialog.open || !activeSnapshot) return;
-    phase = 'podium'; clearTimeout(phaseTimer); phaseFinish?.(); phaseFinish = null; stopAudio();
+    phase = 'podium'; clearTimeout(phaseTimer); phaseFinish?.(); phaseFinish = null; stopAudio(); stopVideo();
     const stage = dialog.querySelector('.award-live-stage'); stage.className = 'award-live-stage phase-podium';
     const scene = stage.querySelector('.award-live-podium-scene'); scene.replaceChildren(); const snapshot = activeSnapshot;
     scene.append(el('p', 'award-live-eyebrow', snapshot.hasRanking ? 'ЛУЧШИЕ В ЭТОМ ГОДУ' : 'ИТОГИ ЕЩЁ ВПЕРЕДИ'), el('h2', 'award-live-scene-title', snapshot.title));
@@ -218,6 +273,8 @@
   }
   async function announcePodium(id, entrants) {
     for (const person of [...activeSnapshot.podium].reverse()) {
+      if (id !== run || phase !== 'podium') return;
+      await showNomineeVideo(person, id, 'podium');
       if (id !== run || phase !== 'podium') return;
       const card = entrants.get(person.rank);
       let entrance;
@@ -241,9 +298,9 @@
     const name = event.target.closest('[data-action]')?.dataset.action;
     if (name === 'close') close();
     if (name === 'replay') { close(); start(); }
-    if (name === 'skip') { if (phase === 'intro') revealRow(run); else if (phase === 'row') showPodium(run); }
-    if (name === 'sound') { muted = !muted; if (sound) sound.muted = muted; action('sound').textContent = muted ? 'Звук выключен' : 'Звук включён'; }
-    if (name === 'resume' && sound) { try { await sound.play(); } catch { message('Озвучка не запускается. Можно перейти к участникам.'); } }
+    if (name === 'skip') { if (movie) videoFinish?.('skipped'); else if (phase === 'intro') revealRow(run); else if (phase === 'row') showPodium(run); }
+    if (name === 'sound') { muted = !muted; if (sound) sound.muted = muted; if (movie) movie.muted = muted; action('sound').textContent = muted ? 'Звук выключен' : 'Звук включён'; }
+    if (name === 'resume' && (movie || sound)) { try { await (movie || sound).play(); } catch { message(movie ? 'Видео не запускается. Можно пропустить ролик.' : 'Озвучка не запускается. Можно перейти к участникам.'); } }
     if (name === 'fullscreen') { try { if (document.fullscreenElement) await document.exitFullscreen(); else await dialog.requestFullscreen(); } catch { message('Полноэкранный режим недоступен'); } }
   });
   dialog.addEventListener('cancel', event => { event.preventDefault(); close(); });
