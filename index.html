@@ -253,7 +253,7 @@
       <button class="admin-menu-card" onclick="openAdminSection('presentation')">
         <span class="admin-menu-icon">🎬</span>
         <span class="admin-menu-title">Презентация</span>
-        <span class="admin-menu-desc">Раздел будет добавлен позже</span>
+        <span class="admin-menu-desc">Озвучка, участники и пьедестал по текущим итогам</span>
       </button>
     </div>
 
@@ -288,16 +288,16 @@
       <button class="back-btn" onclick="openAdminSection('menu')">← Назад</button>
       <div class="section-card" id="presentation-controls">
         <span class="eyebrow">SLAY AWARD / 2026</span>
-        <h3>Презентация победителей</h3>
-        <p>Выбери номинацию и открой сцену. После появления она продолжит плавно двигаться до выхода.</p>
+        <h3>Церемония с актуальными итогами</h3>
+        <p>Выбери номинацию: после озвучки непризовые места появятся одной линией, затем — третье, второе и первое место на пьедестале.</p>
         <div class="presentation-options">
           <label>Номинация<select id="presentation-category"></select></label>
-          <label>Участники<select id="presentation-source"><option value="silhouette">Неизвестный участник</option><option value="votes">По голосованию</option></select></label>
+          <label>Участники<select id="presentation-source"><option value="votes">По голосованию</option><option value="silhouette">Репетиция с силуэтами</option></select></label>
           <button type="button" id="presentation-refresh">Обновить итоги</button>
         </div>
         <p id="presentation-status" role="status"></p>
         <div id="presentation-scenes" class="presentation-scenes"></div>
-        <p class="presentation-note">Ситуация года, Тикток года и сцены проигравших пока не включены. Инцел года и 2008 этого года — только первое место.</p>
+        <p class="presentation-note">Все 16 номинаций. Каждый запуск загружает текущие итоги. Фото, имена и названия подставляются автоматически; если голоса изменятся, следующий показ обновится. При равенстве баллов порядок совпадает с разделом «Итоги».</p>
       </div>
     </div>
   </div>
@@ -1208,8 +1208,8 @@ renderCategories();
 updateUI();
 </script>
 <script src="backend-config.js"></script>
-<link rel="stylesheet" href="presentation.css?v=1">
-<script src="backend-loader.js?v=20261016-bodybuilder"></script>
+<link rel="stylesheet" href="presentation.css?v=20261021-live">
+<script src="backend-loader.js?v=20261021-live"></script>
 
 </body>
 </html>

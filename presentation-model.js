@@ -1,27 +1,41 @@
 (function (root) {
   'use strict';
-  const stages = { 3: '02-third', 2: '03-second', 1: '04-first' };
-  function ranks(id) {
-    if (['situation', 'tiktok', 'bodybuilder'].includes(id)) return [];
-    return ['incel', '2008'].includes(id) ? [1] : [3, 2, 1];
+  const nameOf = p => typeof p === 'string' ? p : p.name || p.title;
+  const titleOf = n => n.title.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+  function snapshot(nomination, rows, reveal = true) {
+    const scores = new Map((rows || []).map(row => [row.name, Number(row.total) || 0]));
+    const seen = new Set();
+    const ranked = nomination.participants.filter(p => {
+      const name = nameOf(p); if (seen.has(name)) return false;
+      seen.add(name); return true;
+    }).map(p => ({ name: nameOf(p), photo: p.photo || null, total: Math.max(0, scores.get(nameOf(p)) || 0) }))
+      .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name, 'ru'));
+    const hasVotes = ranked.some(p => p.total > 0);
+    const people = ranked.map((p, i) => ({ ...p, rank: reveal && p.total === 0 ? null : i + 1,
+      tied: ranked.some((q, j) => i !== j && q.total === p.total),
+      name: reveal ? p.name : 'Участник ' + (i + 1), photo: reveal ? p.photo : null,
+      identity: reveal ? p.name : null, hidden: !reveal }));
+    const hasRanking = !reveal || hasVotes;
+    return { title: titleOf(nomination), hasVotes, hasRanking, ranked: people,
+      nonPrize: hasRanking ? people.filter(p => p.rank === null || p.rank > 3).reverse() : people,
+      podium: hasRanking ? people.filter(p => p.rank !== null && p.rank <= 3) : [],
+      hasTies: reveal && hasVotes && people.some(p => p.total > 0 && p.tied),
+      unit: nomination.votingType === 'multi-vote' ? 'голосов' : 'баллов' };
   }
-  function resolve(nomination, rank, rows, reveal) {
-    const unknown = { name: 'Имя пока скрыто', photo: 'images/unknown-participant.png', known: false, tied: false };
-    if (!reveal) return unknown;
-    // The backend already applies the official score and alphabetical tie-break.
-    const result = rows[rank - 1];
-    if (!result || !(result.total > 0)) return { ...unknown, name: 'Пока нет результата' };
-    const participant = nomination.participants.find(p => (typeof p === 'string' ? p : p.name || p.title) === result.name);
-    if (!participant) return { ...unknown, name: 'Участник не найден в каталоге' };
-    return {
-      name: result.name,
-      photo: participant.photo || unknown.photo,
-      known: Boolean(participant.photo),
-      tied: rows.some((row, index) => index !== rank - 1 && row.total === result.total),
-      total: result.total
+  function audioMap(manifest, nominations) {
+    const files = new Map((manifest.files || []).filter(f => f.format === 'MP3').map(f => [f.id, f.path]));
+    const url = id => {
+      const path = files.get(id);
+      return typeof path === 'string' && path.startsWith('MP3/') && !path.includes('..') && !path.includes('\\')
+        ? 'audio/slay-2026/' + path.split('/').map(encodeURIComponent).join('/') : null;
     };
+    return new Map(nominations.map((n, index) => {
+      const category = (manifest.categories || []).find(c => c.id === n.id);
+      return [n.id, { lead: url(String(index + 1).padStart(2, '0') + '_' + n.id),
+        names: new Map((category?.nominees || []).map(p => [p.text, url('n_' + p.utterance_id)])) }];
+    }));
   }
-  const api = { ranks, resolve, background: (id, rank) => `images/presentation/${id}-${stages[rank]}.png` };
+  const api = { snapshot, audioMap, nameOf, titleOf };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.SlayPresentationModel = api;
 })(typeof window !== 'undefined' ? window : globalThis);
