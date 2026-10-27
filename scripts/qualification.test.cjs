@@ -5,7 +5,7 @@ const model = require('../qualification-model.js');
 test('qualification catalog contains exactly the 22 agreed pairs, distinct from the main nomination', () => {
   assert.equal(model.candidates.length,22);
   assert.equal(new Set(model.candidates.map(c=>c.name)).size,22);
-  assert(model.candidates.some(c=>c.name==='Саня Пеняев и Иванчикова'));
+  assert(model.candidates.some(c=>c.name==='Саша Шамбасов и Иванчикова'));
   assert(model.candidates.some(c=>c.name==='Шурик и Стеша'));
   assert(model.candidates.some(c=>c.name==='Саша Шамбасов и Даша Таурин'));
   assert(!model.candidates.some(c=>c.name==='Егор и Соня'));

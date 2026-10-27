@@ -16,7 +16,7 @@ insert into public.couple_qualification_candidates(id,name,position) values
 ('c12','Саша Шамбасов и Маша',12),('c13','Данил и Маринка',13),('c14','Данил и Женя Данилина',14),
 ('c15','Вова и Жена Вадима',15),('c16','Андрей и рука',16),('c17','Шурик и серьёзка',17),
 ('c18','Шурик и Стеша',18),('c19','Шурик и Кира Сорокина',19),('c20','Саня Пеняев и Полина',20),
-('c21','Саня Пеняев и Вика',21),('c22','Саня Пеняев и Иванчикова',22)
+('c21','Саня Пеняев и Вика',21),('c22','Саша Шамбасов и Иванчикова',22)
 on conflict (id) do nothing;
 create table if not exists public.couple_qualification_ballots (
   user_id uuid primary key references auth.users(id) on delete cascade,
