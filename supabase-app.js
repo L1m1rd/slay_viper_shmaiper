@@ -583,10 +583,12 @@
   }
 
   function openAdminSection(section) {
+    if (getCurrentUser()?.role !== 'admin') return;
     const menu = document.getElementById('admin-menu');
     const users = document.getElementById('admin-section-users');
     const results = document.getElementById('admin-section-results');
     const presentation = document.getElementById('admin-section-presentation');
+    const qualification = document.getElementById('admin-section-qualification');
 
     if (!menu || !users || !results || !presentation) return;
 
@@ -594,8 +596,10 @@
     users.classList.add('hidden');
     results.classList.add('hidden');
     presentation.classList.add('hidden');
+    qualification.classList.add('hidden');
 
-    if (section === 'users') users.classList.remove('hidden');
+    if (section === 'qualification') { qualification.classList.remove('hidden'); window.SlayQualification?.refreshResults(); }
+    else if (section === 'users') users.classList.remove('hidden');
     else if (section === 'results') results.classList.remove('hidden');
     else if (section === 'presentation') presentation.classList.remove('hidden');
     else menu.classList.remove('hidden');

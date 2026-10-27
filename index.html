@@ -7,7 +7,7 @@
 <meta name="description" content="Свои награждают своих. SLAY AWARD 2026: участники, номинации и голосование за лучших в Вайпер Шмайпер.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="qualification.css?v=20261027-stage1">
+<link rel="stylesheet" href="qualification.css?v=20261027-admin-qualification">
 </head>
 <body class="qualification-restricted">
 
@@ -264,6 +264,11 @@
     <h2 class="section-title"><span>Панель</span> администратора</h2>
 
     <div id="admin-menu" class="admin-menu-grid">
+      <button class="admin-menu-card" onclick="openAdminSection('qualification')">
+        <span class="admin-menu-icon">💕</span>
+        <span class="admin-menu-title">Итоги отбора пар</span>
+        <span class="admin-menu-desc">Все 22 пары, количество голосов и текущая граница топ-16</span>
+      </button>
       <button class="admin-menu-card" onclick="openAdminSection('users')">
         <span class="admin-menu-icon">👥</span>
         <span class="admin-menu-title">Управление пользователями</span>
@@ -279,6 +284,16 @@
         <span class="admin-menu-title">Презентация</span>
         <span class="admin-menu-desc">Озвучка, участники и пьедестал по текущим итогам</span>
       </button>
+    </div>
+
+    <div id="admin-section-qualification" class="hidden">
+      <button class="back-btn" onclick="openAdminSection('menu')">← Назад</button>
+      <div class="section-card">
+        <h3>Итоги отбора / Пара года</h3>
+        <p>Количество голосов за каждую пару. Учитываются только бюллетени одобренных пользователей.</p>
+        <button id="admin-qualification-refresh" class="qualification-refresh" type="button">Обновить итоги</button>
+        <div id="admin-qualification-results" aria-live="polite">Загружаю итоги отбора…</div>
+      </div>
     </div>
 
     <div id="admin-section-users" class="hidden">
@@ -1235,7 +1250,7 @@ updateUI();
 <script src="backend-config.js"></script>
 <script src="qualification-model.js?v=20261027-pair22"></script>
 <link rel="stylesheet" href="presentation.css?v=20261027-winner-music-seven">
-<script src="backend-loader.js?v=20261027-stage1"></script>
+<script src="backend-loader.js?v=20261027-admin-qualification"></script>
 
 </body>
 </html>

@@ -5,6 +5,7 @@
   const save = document.getElementById('qualification-save'), count = document.getElementById('qualification-count');
   const status = document.getElementById('qualification-status'), notice = document.getElementById('qualification-notice');
   const adminResults = document.getElementById('qualification-results');
+  const panelResults = document.getElementById('admin-qualification-results');
   let phase = 'qualification', catalog = model.candidates, ready = false, ballotReady = false, busy = false;
   let draft = new Set(), saved = new Set(), sessionKey, generation = 0, setupPromise, resultsBusy = false;
   let ballotPromise, ballotToken;
@@ -82,20 +83,31 @@
   async function results() {
     if (!admin() || !ready || resultsBusy) return;
     resultsBusy = true; const token = generation;
-    const refresh = document.getElementById('qualification-results-refresh'); refresh.disabled = true;
+    const refresh = [document.getElementById('qualification-results-refresh'),document.getElementById('admin-qualification-refresh')];
+    refresh.forEach(button=>button.disabled=true);
     try {
       const tally = model.tally(catalog, await store.results());
       if (!admin() || token !== generation) return;
       adminResults.replaceChildren(node('p',`Проголосовало: ${tally.voters}. Каждый бюллетень содержит 16 пар.`));
-      if (!tally.voters) { adminResults.append(node('p','Голосов пока нет. Топ-16 ещё не определён.')); return; }
+      if (!tally.voters) adminResults.append(node('p','Голосов пока нет. Топ-16 ещё не определён.'));
       const list = node('ol',undefined,'qualification-ranking');
       tally.ranked.forEach((c,i) => {
         const row = node('li'); row.append(node('span',c.name),node('strong',String(c.votes)));
-        if(i===15) row.classList.add('qualification-cutoff'); list.append(row);
+        if(i===15 && tally.voters) row.classList.add('qualification-cutoff'); list.append(row);
       });
-      adminResults.append(list,node('p',tally.cutoffTie ? 'На границе 16-го места равенство голосов. Список предварительный; порядок при равенстве — по алфавиту.' : 'Черта после 16-го места — текущая граница прохода. Это предварительные итоги.'));
-    } catch { if (admin() && token===generation) adminResults.textContent='Не удалось загрузить итоги. Повтори обновление.'; }
-    finally { resultsBusy = false; refresh.disabled = false; }
+      const explanation = !tally.voters ? 'Все пары показаны с нулём голосов. Прошедшие пары ещё не определены.' : tally.cutoffTie ? 'На границе 16-го места равенство голосов. Список предварительный; порядок при равенстве — по алфавиту.' : 'Черта после 16-го места — текущая граница прохода. Это предварительные итоги.';
+      adminResults.append(list,node('p',explanation));
+      panelResults.replaceChildren(node('p',`Проголосовало: ${tally.voters}. Пар в отборе: ${tally.ranked.length}.`));
+      const table=node('table',undefined,'admin-table qualification-results-table'),head=node('thead'),headRow=node('tr'),body=node('tbody');
+      ['Место','Пара','Голоса'].forEach(label=>{const th=node('th',label);th.scope='col';headRow.append(th);});head.append(headRow);
+      tally.ranked.forEach((c,i)=>{
+        const row=node('tr');row.dataset.candidateId=c.id;
+        row.append(node('td',tally.voters?String(i+1):'—'),node('td',c.name),node('td',String(c.votes),'qualification-votes'));
+        if(i===15 && tally.voters)row.classList.add('qualification-cutoff');body.append(row);
+      });
+      table.append(head,body);panelResults.append(table,node('p',explanation));
+    } catch { if (admin() && token===generation) { adminResults.textContent='Не удалось загрузить итоги. Повтори обновление.'; panelResults.textContent=adminResults.textContent; } }
+    finally { resultsBusy = false; refresh.forEach(button=>button.disabled=false); }
   }
   function sync() {
     document.body.classList.toggle('qualification-restricted', restricted());
@@ -104,7 +116,7 @@
     document.getElementById('qualification-nav').hidden=phase==='main';
     const key = user() ? `${user().id}:${user().role}:${user().status}` : 'guest';
     if (key !== sessionKey) {
-      sessionKey=key; generation++; busy=false; draft=new Set(); saved=new Set(); adminResults.replaceChildren();
+      sessionKey=key; generation++; busy=false; draft=new Set(); saved=new Set(); adminResults.replaceChildren(); panelResults.replaceChildren();
       if (ready) { loadBallot(generation); if(admin())results(); }
     }
     controls();
@@ -140,8 +152,9 @@
   };
   document.getElementById('qualification-refresh').onclick=async()=>{await setup(); if(ready)await loadBallot(generation);};
   document.getElementById('qualification-results-refresh').onclick=results;
+  document.getElementById('admin-qualification-refresh').onclick=results;
   const easter=window.openEasterEgg; window.openEasterEgg=()=>{if(!restricted())easter();};
-  window.SlayQualification={sync, interceptPage, restricted, mainVotingAllowed:()=>phase==='main'};
+  window.SlayQualification={sync, interceptPage, restricted, mainVotingAllowed:()=>phase==='main', refreshResults:()=>ready?results():setup()};
   buildGrid(); sync();
   Promise.resolve(window.SLAY_AUTH_READY).then(()=>{sync();return setup();});
   setInterval(()=>{if(!document.hidden&&!busy)setup();},30000);

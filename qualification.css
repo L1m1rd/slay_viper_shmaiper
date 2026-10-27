@@ -29,5 +29,12 @@
 .qualification-ranking strong{display:inline-block;width:46px;text-align:right}
 .qualification-ranking .qualification-cutoff{border-bottom:3px dashed var(--ink);padding-bottom:18px;margin-bottom:8px}
 .qualification-admin p{line-height:1.7;font-size:13px;margin:14px 0}
+.qualification-results-table{width:100%;table-layout:fixed;margin:20px 0}
+.qualification-results-table th:first-child,.qualification-results-table td:first-child{width:65px}
+.qualification-results-table th:last-child,.qualification-results-table td:last-child{width:80px;text-align:right}
+.qualification-results-table td{overflow-wrap:anywhere}
+.qualification-results-table .qualification-votes{font-weight:700;font-variant-numeric:tabular-nums}
+.qualification-results-table .qualification-cutoff td{border-bottom:3px dashed var(--ink)}
+#admin-qualification-results p{line-height:1.7;margin:16px 0;font-size:13px}
 @media(max-width:900px){.qualification-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.qualification-total{font-size:70px}}
 @media(max-width:600px){.qualification-page{padding:36px 5%}.qualification-hero{display:block}.qualification-total{font-size:48px;display:flex;align-items:center;gap:16px;text-align:left;margin-top:20px}.qualification-total small{font-size:10px;margin-top:0}.qualification-grid{grid-template-columns:1fr}.qualification-pair{min-height:80px;padding:18px}.qualification-name{font-size:22px}.qualification-submit{gap:10px}.qualification-submit button{padding:12px}.qualification-submit p{flex-basis:65%;min-width:0}.qualification-hero p{font-size:13px}}
