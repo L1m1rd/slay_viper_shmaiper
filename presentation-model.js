@@ -8,7 +8,8 @@
     ['Семён Ефремов', 'audio/winner-music/semen.m4a'],
     ['Александр Пеняев', 'audio/winner-music/penyaev.m4a'],
     ['Арсений Юсупов', 'audio/winner-music/arseniy.m4a'],
-    ['Александр Шамбасов', 'audio/winner-music/shambasov.m4a']
+    ['Александр Шамбасов', 'audio/winner-music/shambasov.m4a'],
+    ['Шурик', 'audio/winner-music/shurik.m4a']
   ]);
   const winnerMusicFor = person => person && !person.hidden ? winnerTracks.get(person.identity) || null : null;
   function snapshot(nomination, rows, reveal = true) {
