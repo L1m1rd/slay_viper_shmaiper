@@ -69,13 +69,13 @@ test('TikTok movies follow the current ranked nominee and remain hidden in rehea
 
 test('winner music follows the current person, with no fallback for others or rehearsal', () => {
   const n = nominations[0];
-  for (const [name, file] of [['Андрей Владыко', 'andrey'], ['Даниил Постоев', 'daniil'], ['Семён Ефремов', 'semen']]) {
+  for (const [name, file] of [['Андрей Владыко', 'andrey'], ['Даниил Постоев', 'daniil'], ['Семён Ефремов', 'semen'], ['Александр Пеняев', 'penyaev'], ['Арсений Юсупов', 'arseniy'], ['Александр Шамбасов', 'shambasov']]) {
     const results = rows(n).map(r => ({ ...r, total: r.name === name ? 100 : r.total }));
     const winner = model.snapshot(n, results).podium[0];
     assert.equal(model.winnerMusicFor(winner), `audio/winner-music/${file}.m4a`);
     assert(fs.existsSync(require('node:path').join(__dirname, '..', model.winnerMusicFor(winner))));
     assert.equal(model.winnerMusicFor(model.snapshot(n, results, false).podium[0]), null);
   }
-  assert.equal(model.winnerMusicFor({ identity: 'Александр Шамбасов' }), null);
+  assert.equal(model.winnerMusicFor({ identity: 'Тимур Насретдинов' }), null);
   assert.equal(model.winnerMusicFor({ identity: 'Андрей Владыко и Даниил Постоев' }), null);
 });

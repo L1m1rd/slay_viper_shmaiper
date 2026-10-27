@@ -5,7 +5,10 @@
   const winnerTracks = new Map([
     ['Андрей Владыко', 'audio/winner-music/andrey.m4a'],
     ['Даниил Постоев', 'audio/winner-music/daniil.m4a'],
-    ['Семён Ефремов', 'audio/winner-music/semen.m4a']
+    ['Семён Ефремов', 'audio/winner-music/semen.m4a'],
+    ['Александр Пеняев', 'audio/winner-music/penyaev.m4a'],
+    ['Арсений Юсупов', 'audio/winner-music/arseniy.m4a'],
+    ['Александр Шамбасов', 'audio/winner-music/shambasov.m4a']
   ]);
   const winnerMusicFor = person => person && !person.hidden ? winnerTracks.get(person.identity) || null : null;
   function snapshot(nomination, rows, reveal = true) {
