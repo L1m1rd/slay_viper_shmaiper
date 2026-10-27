@@ -47,3 +47,8 @@
   0%,100%{transform:translateY(0)}
   45%{transform:translateY(-.13em)}
 }
+
+.award-celebration{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.award-confetti,.award-firework-spark{position:absolute;display:block;opacity:0;pointer-events:none}
+.award-confetti{top:-2%;border-radius:.04cqw}
+.award-firework-spark{width:.15cqw;height:.8cqw;border-radius:50%;box-shadow:0 0 .5cqw #ffdb6880}

@@ -30,6 +30,44 @@
     return animation;
   }
   function cancelAnimations() { animations.forEach(a => a.cancel()); animations.clear(); }
+  function celebrateWinner() {
+    const stage = dialog.querySelector('.phase-podium');
+    if (!stage || reduceMotion.matches || stage.querySelector('.award-celebration')) return;
+    const layer = el('div', 'award-celebration'); layer.setAttribute('aria-hidden', 'true');
+    const effects = [], colors = ['#edc52b', '#ffdf73', '#f5efdd', '#b68a26'];
+    stage.append(layer);
+    const launch = (node, frames, options) => {
+      layer.append(node);
+      const effect = animate(node, frames, options);
+      if (effect) effects.push(effect.finished.catch(() => {}));
+    };
+    // Finite bursts: golden sparks at the sides, then a slower confetti shower.
+    for (let i = 0; i < 40; i++) {
+      const spark = el('i', 'award-firework-spark'), angle = (i % 20) * Math.PI / 10;
+      const radius = 10 + (i * 7 % 6), x = Math.cos(angle) * radius, y = Math.sin(angle) * radius;
+      spark.style.left = i < 20 ? '18%' : '82%'; spark.style.top = i < 20 ? '34%' : '29%';
+      spark.style.background = colors[i % colors.length];
+      const tilt = angle * 180 / Math.PI + 90;
+      launch(spark, [
+        { opacity: 0, transform: `translate(0,0) rotate(${tilt}deg) scale(.4)` },
+        { opacity: 1, transform: `translate(${x * .55}cqw,${y * .55}cqw) rotate(${tilt}deg) scale(1)`, offset: .22 },
+        { opacity: 0, transform: `translate(${x}cqw,${y + 5}cqw) rotate(${tilt}deg) scale(.3)` }
+      ], { duration: 2200 + i % 4 * 180, delay: i < 20 ? 0 : 420, easing: 'cubic-bezier(.15,.55,.4,1)' });
+    }
+    for (let i = 0; i < 64; i++) {
+      const piece = el('i', 'award-confetti');
+      piece.style.left = `${i * 37 % 100}%`; piece.style.background = colors[i % colors.length];
+      piece.style.width = `${.28 + i % 3 * .1}cqw`; piece.style.height = `${.5 + i % 4 * .13}cqw`;
+      const drift = (i * 13 % 19) - 9, spin = (i % 2 ? 1 : -1) * (360 + i % 5 * 180);
+      launch(piece, [
+        { opacity: 0, transform: 'translate(0,-2cqw) rotate(0deg)' },
+        { opacity: .95, transform: `translate(${drift * .25}cqw,8cqw) rotate(${spin * .2}deg)`, offset: .18 },
+        { opacity: .85, transform: `translate(${drift * .7}cqw,43cqw) rotate(${spin * .75}deg)`, offset: .76 },
+        { opacity: 0, transform: `translate(${drift}cqw,62cqw) rotate(${spin}deg)` }
+      ], { duration: 4800 + i % 7 * 230, delay: i % 11 * 95, easing: 'linear' });
+    }
+    Promise.all(effects).then(() => layer.remove());
+  }
   function introSpeaking(active) {
     dialog.querySelector('.phase-intro')?.classList.toggle('is-narrating', active && phase === 'intro');
   }
@@ -302,9 +340,11 @@
       const card = entrants.get(person.rank);
       let entrance;
       const reveal = () => {
+        if (card.classList.contains('is-announced')) return;
         card.style.opacity = '1'; card.setAttribute('aria-hidden', 'false'); card.classList.add('is-announced', 'is-speaking');
         message(person.rank + ' место · ' + person.name);
         entrance = animate(card, [{ opacity: 0, transform: 'translateY(90px) scale(.97)' }, { opacity: 1, transform: 'translateY(0) scale(1)' }], { duration: 2400 });
+        if (person.rank === 1) celebrateWinner();
       };
       const url = person.identity && audios.get(activeNomination.id)?.names.get(person.identity);
       const result = await playAudio(url, id, {

@@ -28,7 +28,7 @@
     await load('design.js');
     await load('motion.js');
     await load('presentation-model.js?v=20261021-tiktok');
-    await load('presentation.js?v=20261027-row');
+    await load('presentation.js?v=20261027-celebration');
   })().catch(error => {
     console.error('Backend initialization failed:', error);
     window.toast('Не удалось подключиться. Обнови страницу или попробуй позже.');
