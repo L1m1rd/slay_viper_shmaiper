@@ -2,6 +2,12 @@
   'use strict';
   const nameOf = p => typeof p === 'string' ? p : p.name || p.title;
   const titleOf = n => n.title.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+  const winnerTracks = new Map([
+    ['Андрей Владыко', 'audio/winner-music/andrey.m4a'],
+    ['Даниил Постоев', 'audio/winner-music/daniil.m4a'],
+    ['Семён Ефремов', 'audio/winner-music/semen.m4a']
+  ]);
+  const winnerMusicFor = person => person && !person.hidden ? winnerTracks.get(person.identity) || null : null;
   function snapshot(nomination, rows, reveal = true) {
     const scores = new Map((rows || []).map(row => [row.name, Number(row.total) || 0]));
     const seen = new Set();
@@ -37,7 +43,7 @@
         names: new Map((category?.nominees || []).map(p => [p.text, url('n_' + p.utterance_id)])) }];
     }));
   }
-  const api = { snapshot, audioMap, nameOf, titleOf };
+  const api = { snapshot, audioMap, nameOf, titleOf, winnerMusicFor };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   else root.SlayPresentationModel = api;
 })(typeof window !== 'undefined' ? window : globalThis);
