@@ -229,11 +229,11 @@
     scene.append(el('p', 'award-live-eyebrow', rankedRow ? `МЕСТА ${people[0].rank} — ${people[people.length - 1].rank}` : snapshot.hasRanking ? 'НЕПРИЗОВЫЕ УЧАСТНИКИ' : 'УЧАСТНИКИ НОМИНАЦИИ'), el('h2', 'award-live-scene-title', snapshot.title));
     const viewport = el('div', 'award-live-row-viewport'), row = el('div', 'award-live-row'); row.style.setProperty('--people', Math.min(6, people.length));
     people.forEach(person => {
-      const card = el('article', 'award-live-contender'); card.title = person.name;
+      const card = el('article', 'award-live-contender');
+      card.style.opacity = '0'; card.setAttribute('aria-hidden', 'true');
       card.append(el('span', 'award-live-place', snapshot.hasRanking && person.rank !== null ? String(person.rank).padStart(2, '0') : '—'), portrait(person, activeNomination), el('strong', '', person.name), el('small', '', person.hidden ? 'ВАЙПЕР ШМАЙПЕР' : person.total === 0 ? 'Пока без голосов' : `${person.total} ${snapshot.unit}${person.tied ? ' · равенство' : ''}`)); row.append(card);
     });
     viewport.append(row); scene.append(viewport);
-    row.style.opacity = '0';
     message(snapshot.hasRanking ? rankedRow ? 'Непризовые места · от последнего к четвёртому' : 'Непризовые участники · включая тех, кто пока без голосов' : 'Голосов пока нет · победители не определены');
     action('skip').textContent = 'К пьедесталу →'; action('skip').disabled = false;
     announceRow(id, people, row, viewport);
@@ -242,11 +242,7 @@
     return new Promise(resolve => { phaseFinish = resolve; phaseTimer = setTimeout(() => { phaseFinish = null; resolve(); }, ms); });
   }
   async function announceRow(id, people, row, viewport) {
-    let entered = false, pan = 0;
-    const enter = () => {
-      if (entered) return; entered = true; row.style.opacity = '1';
-      animate(row, [{ opacity: 0, transform: 'translateY(55px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 1900 });
-    };
+    let pan = 0;
     for (const [index, person] of people.entries()) {
       if (id !== run || phase !== 'row') return;
       const card = row.children[index];
@@ -258,11 +254,22 @@
       if (id !== run || phase !== 'row') return;
       await showNomineeVideo(person, id, 'row');
       if (id !== run || phase !== 'row') return;
-      const highlight = () => { enter(); card.classList.add('is-speaking'); message('Сейчас: ' + person.name); };
+      let entrance;
+      const highlight = () => {
+        if (card.classList.contains('is-announced')) return;
+        card.style.opacity = '1'; card.setAttribute('aria-hidden', 'false'); card.title = person.name;
+        card.classList.add('is-announced', 'is-speaking'); message('Сейчас: ' + person.name);
+        entrance = animate(card, [{ opacity: 0, transform: 'translateY(55px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 1900 });
+      };
       const url = person.identity && audios.get(activeNomination.id)?.names.get(person.identity);
-      const result = await playAudio(url, id, { onStart: highlight, onPause: () => card.classList.add('is-voice-paused'), onResume: () => card.classList.remove('is-voice-paused') });
+      const result = await playAudio(url, id, {
+        onStart: highlight,
+        onPause: () => { card.classList.add('is-voice-paused'); if (entrance?.playState === 'running') entrance.pause(); },
+        onResume: () => { card.classList.remove('is-voice-paused'); if (entrance?.playState === 'paused') entrance.play(); }
+      });
       if (id !== run || phase !== 'row') return;
-      if (result === 'unavailable') { highlight(); await pauseFor(2400); }
+      if (result === 'unavailable') { highlight(); if (entrance?.playState === 'paused') entrance.play(); await pauseFor(2400); }
+      if (entrance?.playState === 'paused') entrance.play();
       card.classList.remove('is-speaking', 'is-voice-paused');
     }
     if (id === run && phase === 'row') showPodium(id);
