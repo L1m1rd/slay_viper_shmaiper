@@ -18,13 +18,15 @@
       for (const part of ['app', 'auth', 'firestore']) {
         await load('https://www.gstatic.com/firebasejs/12.4.0/firebase-' + part + '-compat.js');
       }
-      await load('firebase-app.js?v=20261014-presentation');
+      await load('firebase-app.js?v=20261027-stage1');
     } else if (config.provider === 'supabase') {
       await load('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
-      await load('supabase-app.js?v=20261014-presentation');
+      await load('supabase-app.js?v=20261027-stage1');
     } else {
       throw new Error('Неизвестный провайдер базы');
     }
+    await load('qualification-store.js?v=20261027-stage1');
+    await load('qualification.js?v=20261027-stage1');
     await load('design.js');
     await load('motion.js');
     await load('presentation-model.js?v=20261027-winner-music-seven');

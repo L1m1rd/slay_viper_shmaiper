@@ -210,6 +210,10 @@
   }
 
   async function ensureFreshVotingUser() {
+    if (window.SlayQualification && !window.SlayQualification.mainVotingAllowed()) {
+      window.toast('Сейчас открыт только отбор пар. Основное голосование начнётся позже.');
+      return null;
+    }
     if (auth.currentUser) {
       await auth.currentUser.reload();
       await auth.currentUser.getIdToken(true);
@@ -738,14 +742,17 @@
     } else {
       adminBtn.classList.add('hidden');
     }
+    window.SlayQualification?.sync();
   }
 
   async function showPage(page) {
+    if (window.SlayQualification?.interceptPage(page)) return;
     if (page === 'profile' || page === 'admin') {
       await refreshCurrentUser();
     }
 
     const user = getCurrentUser();
+    if (window.SlayQualification?.interceptPage(page)) return;
 
     if (page === 'profile' && !user) {
       window.openModal('login');
@@ -781,6 +788,7 @@
   }
 
   async function openCategory(categoryId) {
+    if (window.SlayQualification?.restricted()) { window.showPage('qualification'); return; }
     if (getCurrentUser()) {
       await refreshCurrentUser();
     }
@@ -890,5 +898,5 @@
       });
     });
   }
-  initialize();
+  window.SLAY_AUTH_READY = initialize();
 })();

@@ -7,16 +7,18 @@
 <meta name="description" content="Свои награждают своих. SLAY AWARD 2026: участники, номинации и голосование за лучших в Вайпер Шмайпер.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="qualification.css?v=20261027-stage1">
 </head>
-<body>
+<body class="qualification-restricted">
 
 <a class="skip-link" href="#page-home">К содержимому</a>
 <header>
   <button class="brand" onclick="showPage('home')" aria-label="SLAY — на главную"><span class="logo">SLAY</span><span class="logo-sub">2026</span></button>
   <nav id="nav" aria-label="Главная навигация">
-    <button class="nav-btn" onclick="showPage('categories')">Номинации</button>
-    <button class="nav-btn" onclick="showTeam()">Участники</button>
-    <button class="nav-btn" onclick="showPage('categories')">Голосование</button>
+    <button class="nav-btn" id="qualification-nav" onclick="showPage('qualification')">Отбор пар</button>
+    <button class="nav-btn" data-main-nav onclick="showPage('categories')">Номинации</button>
+    <button class="nav-btn" data-main-nav onclick="showTeam()">Участники</button>
+    <button class="nav-btn" data-main-nav onclick="showPage('categories')">Голосование</button>
     <button class="nav-btn hidden" id="profileBtn" onclick="showPage('profile')">Кабинет</button>
     <button class="nav-btn hidden" id="adminBtn" onclick="showPage('admin')">Админ</button>
     <button class="nav-btn primary" id="loginBtn" onclick="openModal('login')">Войти ↗</button>
@@ -25,7 +27,29 @@
   <span class="header-note">Больше<br>чем<br>игра</span>
 </header>
 
-<div id="page-home">
+<main id="page-qualification" class="qualification-page">
+  <section class="qualification-hero">
+    <div><span class="eyebrow">Этап 1 / Отборочное голосование</span><h1>Пара года</h1>
+    <p>Выбери 16 пар, которые хочешь увидеть в основном этапе. По итогам общего голосования 16 пар с наибольшей поддержкой пройдут дальше. Остальные номинации откроются на втором этапе.</p></div>
+    <div class="qualification-total">16 <small>из <span id="qualification-total">22</span> пар пройдут дальше</small></div>
+  </section>
+  <div id="qualification-notice" class="qualification-notice"></div>
+  <div id="qualification-grid" class="qualification-grid" aria-label="Пары отборочного этапа"></div>
+  <div class="qualification-submit">
+    <strong id="qualification-count" aria-live="polite">0 / 16</strong>
+    <p id="qualification-status" role="status">Загружаю отборочное голосование…</p>
+    <button id="qualification-refresh" class="qualification-refresh" type="button">Обновить</button>
+    <button id="qualification-save" type="button" disabled>Сохранить 16 пар</button>
+  </div>
+  <section id="qualification-admin" class="qualification-admin" hidden>
+    <h2>Итоги отбора / Только для администратора</h2>
+    <button id="qualification-results-refresh" class="qualification-refresh" type="button">Обновить итоги отбора</button>
+    <div id="qualification-results" aria-live="polite"></div>
+    <p>Ниже — все номинации основного этапа. У обычных пользователей этот раздел пока скрыт.</p>
+  </section>
+</main>
+
+<div id="page-home" class="hidden">
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-copy">
       <p class="hero-kicker">Ежегодная премия / SLAY AWARD 2026</p>
@@ -1152,6 +1176,7 @@ function updateUI() {
 }
 
 function showPage(page) {
+  if (window.SlayQualification?.interceptPage(page)) return;
   ['home', 'categories', 'vote', 'profile', 'admin'].forEach(p => {
     document.getElementById('page-' + p).classList.add('hidden');
   });
@@ -1208,8 +1233,9 @@ renderCategories();
 updateUI();
 </script>
 <script src="backend-config.js"></script>
+<script src="qualification-model.js?v=20261027-stage1"></script>
 <link rel="stylesheet" href="presentation.css?v=20261027-winner-music-seven">
-<script src="backend-loader.js?v=20261027-winner-music-seven"></script>
+<script src="backend-loader.js?v=20261027-stage1"></script>
 
 </body>
 </html>
