@@ -4,7 +4,7 @@
   const titleOf = n => n.title.replace(/^[^\p{L}\p{N}]+/u, '').trim();
   const winnerTracks = new Map([
     ['Андрей Владыко', 'audio/winner-music/andrey.m4a'],
-    ['Даниил Постоев', 'audio/winner-music/daniil.m4a'],
+    ['Даниил Постоев', 'audio/winner-music/daniil.m4a?v=20261029'],
     ['Семён Ефремов', 'audio/winner-music/semen.m4a'],
     ['Александр Пеняев', 'audio/winner-music/penyaev.m4a'],
     ['Арсений Юсупов', 'audio/winner-music/arseniy.m4a'],

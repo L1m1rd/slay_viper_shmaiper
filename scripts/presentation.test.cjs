@@ -72,8 +72,8 @@ test('winner music follows the current person, with no fallback for others or re
   for (const [name, file] of [['Андрей Владыко', 'andrey'], ['Даниил Постоев', 'daniil'], ['Семён Ефремов', 'semen'], ['Александр Пеняев', 'penyaev'], ['Арсений Юсупов', 'arseniy'], ['Александр Шамбасов', 'shambasov'], ['Шурик', 'shurik']]) {
     const results = rows(n).map(r => ({ ...r, total: r.name === name ? 100 : r.total }));
     const winner = model.snapshot(n, results).podium[0];
-    assert.equal(model.winnerMusicFor(winner), `audio/winner-music/${file}.m4a`);
-    assert(fs.existsSync(require('node:path').join(__dirname, '..', model.winnerMusicFor(winner))));
+    assert.equal(model.winnerMusicFor(winner).split('?')[0], `audio/winner-music/${file}.m4a`);
+    assert(fs.existsSync(require('node:path').join(__dirname, '..', model.winnerMusicFor(winner).split('?')[0])));
     assert.equal(model.winnerMusicFor(model.snapshot(n, results, false).podium[0]), null);
   }
   assert.equal(model.winnerMusicFor({ identity: 'Тимур Насретдинов' }), null);

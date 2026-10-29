@@ -29,7 +29,7 @@
     await load('qualification.js?v=20261027-admin-qualification');
     await load('design.js');
     await load('motion.js');
-    await load('presentation-model.js?v=20261027-winner-music-seven');
+    await load('presentation-model.js?v=20261029-daniil');
     await load('presentation.js?v=20261027-winner-music-seven');
   })().catch(error => {
     console.error('Backend initialization failed:', error);
