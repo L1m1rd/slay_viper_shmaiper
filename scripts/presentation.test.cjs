@@ -70,7 +70,11 @@ test('TikTok movies follow the current ranked nominee and remain hidden in rehea
 test('situation catalog removes retired entries and binds five safe videos to current ranked nominees', () => {
   const n = nominations.find(n => n.id === 'situation');
   const names = n.participants.map(model.nameOf);
-  assert.equal(names.length, 14);
+  assert.equal(names.length, 17);
+  for (const added of ['дилдо на др шурика', 'матвею набили ебало', 'семена заказали']) assert(names.includes(added));
+  const photos = model.snapshot(n, rows(n)).ranked.filter(p => p.photo);
+  assert.equal(photos.length, 4);
+  for (const p of photos) assert(fs.existsSync(require('node:path').join(__dirname, '..', p.photo)));
   for (const removed of ['Андрей, Данил и Саша сняли тик токи', 'Арсена Ашотовича посадили', 'Человек Чекушка ходил по городу Ульяновску', 'Человек Чекушка на ДР шурика']) assert(!names.includes(removed));
   assert(names.includes('человек чекушка'));
   const media = model.snapshot(n, rows(n)).ranked.filter(p => p.video);
