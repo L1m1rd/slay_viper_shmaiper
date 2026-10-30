@@ -41,9 +41,10 @@
       return typeof path === 'string' && path.startsWith('MP3/') && !path.includes('..') && !path.includes('\\')
         ? 'audio/slay-2026/' + path.split('/').map(encodeURIComponent).join('/') : null;
     };
-    return new Map(nominations.map((n, index) => {
+    return new Map(nominations.map(n => {
       const category = (manifest.categories || []).find(c => c.id === n.id);
-      return [n.id, { lead: url(String(index + 1).padStart(2, '0') + '_' + n.id),
+      const leadId = [...files.keys()].find(id => /^\d+_/.test(id) && id.slice(id.indexOf('_') + 1) === n.id);
+      return [n.id, { lead: url(leadId),
         names: new Map((category?.nominees || []).map(p => [p.text, url('n_' + p.utterance_id)])) }];
     }));
   }

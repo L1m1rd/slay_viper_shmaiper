@@ -235,6 +235,12 @@
       title.append(word);
     });
     intro.append(el('p', 'award-live-eyebrow', 'НОМИНАЦИЯ ' + String(nominations.indexOf(n) + 1).padStart(2, '0')), title, el('p', 'award-live-tagline', 'СВОИ НАГРАЖДАЮТ СВОИХ'));
+    if (['bodybuilder', 'slayking'].includes(n.id)) {
+      intro.classList.add('award-intro-' + n.id);
+      const accent = el('div', 'award-live-accent'); accent.setAttribute('aria-hidden', 'true');
+      for (let i = 0; i < 3; i++) { const ring = el('span', ''); ring.style.setProperty('--ring', i); accent.append(ring); }
+      intro.append(accent);
+    }
     const art = el('img', 'award-live-art'); art.src = `images/nominations/${n.id}.svg`; art.alt = ''; intro.append(art);
     stage.append(header, intro, el('section', 'award-live-row-scene'), el('section', 'award-live-podium-scene'));
     const footer = el('div', 'award-live-footer');

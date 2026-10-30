@@ -51,9 +51,24 @@ test('real audio paths follow the ranked identity and absent recordings have no 
   const audio = model.audioMap(manifest, nominations);
   assert(audio.get('cs2').lead.includes('/MP3/'));
   assert(audio.get('cs2').names.get('Андрей Владыко').endsWith('.mp3'));
-  assert.equal(audio.get('bodybuilder').lead, null);
-  assert.equal(audio.get('situation').names.get('Семён порвал барабанную перепонку плавая в бассейне на новый год'), null);
+  assert(audio.get('bodybuilder').lead.endsWith('.mp3'));
+  assert(audio.get('slayking').lead.endsWith('.mp3'));
+  assert(audio.get('situation').names.get('Семён порвал барабанную перепонку плавая в бассейне на новый год').endsWith('.mp3'));
   assert.equal(model.audioMap({ ...manifest, files: [{ id: '01_cs2', format: 'MP3', path: 'https://elsewhere.example/audio' }] }, nominations).get('cs2').lead, null);
+});
+
+test('reordering nominations preserves every lead-in and all current situation and TikTok names have audio', () => {
+  const manifest = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, '../audio/slay-2026/manifest.json')));
+  const original = model.audioMap(manifest, nominations), reordered = model.audioMap(manifest, [...nominations].reverse());
+  for (const n of nominations) assert.equal(reordered.get(n.id).lead, original.get(n.id).lead, n.id);
+  assert.equal(nominations[7].id, 'situation'); assert.equal(nominations[9].id, 'meme');
+  for (const n of nominations.filter(n => ['situation', 'tiktok'].includes(n.id))) {
+    for (const p of n.participants) {
+      const src = original.get(n.id).names.get(model.nameOf(p));
+      assert(src, model.nameOf(p));
+      assert(fs.existsSync(require('node:path').join(__dirname, '..', decodeURIComponent(src))));
+    }
+  }
 });
 test('TikTok movies follow the current ranked nominee and remain hidden in rehearsal', () => {
   const n = nominations.find(n => n.id === 'tiktok'), results = rows(n);
