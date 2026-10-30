@@ -52,3 +52,4 @@
 .award-confetti,.award-firework-spark{position:absolute;display:block;opacity:0;pointer-events:none}
 .award-confetti{top:-2%;border-radius:.04cqw}
 .award-firework-spark{width:.15cqw;height:.8cqw;border-radius:50%;box-shadow:0 0 .5cqw #ffdb6880}
+.award-live-video{width:auto;height:auto;max-width:100%;max-height:calc(100% - 2.5cqw);flex:0 1 auto}

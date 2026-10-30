@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#edc52b">
 <meta name="description" content="Свои награждают своих. SLAY AWARD 2026: участники, номинации и голосование за лучших в Вайпер Шмайпер.">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20261030-media">
 <link rel="stylesheet" href="qualification.css?v=20261027-admin-qualification">
 </head>
 <body class="qualification-restricted">
@@ -587,12 +587,13 @@ window.NOMINATIONS = [
       'Данил оставил граффити на Мариинской гимназии',
       { title: 'У Шурика спиздили лавочку', video: 'videos/situation/bench.mp4' },
       { title: 'Данил подстригся как Whole Lotta Swag', photo: 'images/situation/whole-lotta-swag.jpg' },
-      'Рождение lil gin',
+      { title: 'Рождение lil gin', video: 'videos/situation/lil-gin.mp4' },
       'Данил выложил яйца на стол сестры',
       { title: 'Гравитационная башня во вкусно и точка', photo: 'images/situation/gravity-tower.jpg' },
-      'дилдо на др шурика',
-      'матвею набили ебало',
-      'семена заказали'
+      { title: 'дилдо на др шурика', video: 'videos/situation/dildo.mp4' },
+      { title: 'матвею набили ебало', video: 'videos/situation/matvey.mp4' },
+      { title: 'семена заказали', video: 'videos/situation/semen.mp4' },
+      { title: 'сеня начал материться', photo: 'images/situation/senya-chat.png' }
     ],
     featured: false,
     icon: '📱'
@@ -626,7 +627,8 @@ window.NOMINATIONS = [
       { title: 'матвей с красотками', video: 'videos/tiktok/матвей с красотками.mp4' },
       { title: 'тебя манят мои мани только не любовь', video: 'videos/tiktok/тебя манят мои мани только не любовь.mp4' },
       { title: 'тренд с котятами - данил, саша, андрей', video: 'videos/tiktok/тренд с котятами - данил, саша, андрей.mp4' },
-      { title: 'электрощиток - андрей, данил, саша', video: 'videos/tiktok/электрощиток - андрей, данил, саша.mp4' }
+      { title: 'электрощиток - андрей, данил, саша', video: 'videos/tiktok/электрощиток - андрей, данил, саша.mp4' },
+      { title: 'эээээ матвей', video: 'videos/tiktok/matvey-eee.mp4' }
     ],
     featured: false,
     icon: '📱'
@@ -914,9 +916,9 @@ function renderPlacesVotePage(user) {
         </div>
 
         ${showMediaFrame && (getParticipantPhoto(p) || getParticipantVideo(p)) ? `
-  <div class="media-frame">
+  <div class="media-frame${getParticipantVideo(p) ? ' video-frame' : ''}">
     ${getParticipantVideo(p) ?
-      `<video src="${getParticipantVideo(p)}" controls playsinline preload="metadata" aria-label="${getParticipantName(p)}"></video>`
+      `<video src="${getParticipantVideo(p)}" controls playsinline preload="metadata" onloadedmetadata="fitNomineeVideo(this)" onplaying="this.parentElement.classList.add('is-playing')" onpause="this.parentElement.classList.remove('is-playing')" onended="this.parentElement.classList.remove('is-playing')" aria-label="${getParticipantName(p)}"></video><button class="video-play" type="button" aria-label="Смотреть видео: ${getParticipantName(p)}" onclick="playNomineeVideo(this)"><span aria-hidden="true">▶</span></button>`
       : getParticipantPhoto(p) ?
         `<img src="${getParticipantPhoto(p)}" alt="${getParticipantName(p)}" style="width:100%;height:100%;object-fit:cover;border-radius:0;" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22200%22%3E%3Crect fill=%22%23333355%22 width=%22200%22 height=%22200%22/%3E%3Ctext x=%2250%%22 y=%2250%%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2260%22 fill=%22%239992b8%22 font-family=%22Arial%22%3E📸%3C/text%3E%3C/svg%3E'">`
         : '📸'
@@ -936,6 +938,15 @@ function renderPlacesVotePage(user) {
       </div>
     `;
   }).join('');
+}
+
+function fitNomineeVideo(video) {
+  if (video.videoWidth && video.videoHeight) video.parentElement.style.aspectRatio = video.videoWidth + ' / ' + video.videoHeight;
+}
+
+function playNomineeVideo(button) {
+  const video = button.parentElement.querySelector('video');
+  video.play().catch(() => toast('Не удалось запустить видео. Попробуй ещё раз.'));
 }
 
 function getParticipantName(p) {
@@ -1249,7 +1260,7 @@ updateUI();
 </script>
 <script src="backend-config.js"></script>
 <script src="qualification-model.js?v=20261027-pair22"></script>
-<link rel="stylesheet" href="presentation.css?v=20261027-winner-music-seven">
+<link rel="stylesheet" href="presentation.css?v=20261030-media">
 <script src="backend-loader.js?v=20261030-situation"></script>
 
 </body>

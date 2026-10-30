@@ -83,3 +83,4 @@ button:active { scale: .985; }
 @media (prefers-reduced-motion: reduce) {
   .hero-cta, .hero-cta:hover { transform: none; }
 }
+.video-frame{position:relative;display:block;aspect-ratio:16/9;border-bottom:0;align-self:stretch;flex-shrink:0;background:var(--ink)}.video-frame video{display:block;width:100%;height:100%;object-fit:contain}.video-play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:64px;height:64px;border-radius:50%;border:2px solid #fff;background:#111c;color:#fff;display:grid;place-items:center;box-shadow:0 2px 20px #0006;cursor:pointer;font-size:28px;padding:0}.video-play span{margin-left:4px}.video-play:hover{background:#171717;color:var(--yellow)}.video-play:focus-visible{outline:3px solid var(--yellow);outline-offset:4px}.video-frame.is-playing .video-play{display:none}

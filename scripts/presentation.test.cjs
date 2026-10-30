@@ -60,25 +60,26 @@ test('TikTok movies follow the current ranked nominee and remain hidden in rehea
   results[6].total = 100;
   const s = model.snapshot(n, results);
   assert.equal(s.podium[0].video, n.participants[6].video);
-  assert.equal(new Set([...s.podium, ...s.nonPrize].map(p => p.video)).size, 7);
+  assert.equal(new Set([...s.podium, ...s.nonPrize].map(p => p.video)).size, 8);
   assert(model.snapshot(n, results, false).ranked.every(p => p.video === null));
   const unsafe = { ...n, participants: [{ title: 'External', video: 'https://example.org/x.mp4' }] };
   assert.equal(model.snapshot(unsafe, [{ name: 'External', total: 1 }]).podium[0].video, null);
   assert(model.snapshot(nominations[0], rows(nominations[0])).ranked.every(p => p.video === null));
 });
 
-test('situation catalog removes retired entries and binds five safe videos to current ranked nominees', () => {
+test('situation catalog removes retired entries and binds current photos and safe videos to ranked nominees', () => {
   const n = nominations.find(n => n.id === 'situation');
   const names = n.participants.map(model.nameOf);
-  assert.equal(names.length, 17);
+  assert.equal(names.length, 18);
   for (const added of ['дилдо на др шурика', 'матвею набили ебало', 'семена заказали']) assert(names.includes(added));
   const photos = model.snapshot(n, rows(n)).ranked.filter(p => p.photo);
-  assert.equal(photos.length, 4);
+  assert(names.includes('сеня начал материться'));
+  assert.equal(photos.length, 5);
   for (const p of photos) assert(fs.existsSync(require('node:path').join(__dirname, '..', p.photo)));
   for (const removed of ['Андрей, Данил и Саша сняли тик токи', 'Арсена Ашотовича посадили', 'Человек Чекушка ходил по городу Ульяновску', 'Человек Чекушка на ДР шурика']) assert(!names.includes(removed));
   assert(names.includes('человек чекушка'));
   const media = model.snapshot(n, rows(n)).ranked.filter(p => p.video);
-  assert.equal(media.length, 5);
+  assert.equal(media.length, 9);
   for (const p of media) {
     assert(fs.existsSync(require('node:path').join(__dirname, '..', p.video)));
     assert.equal(p.video, n.participants.find(q => model.nameOf(q) === p.name).video);
