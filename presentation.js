@@ -105,20 +105,21 @@
     action('resume').hidden = true; action('resume').textContent = 'Включить озвучку';
   }
   async function showNomineeVideo(person, id, expectedPhase) {
-    if (activeNomination.id !== 'tiktok' || !person.video || person.hidden) return;
+    if (!['tiktok', 'situation'].includes(activeNomination.id) || !person.video || person.hidden) return;
     if (id !== run || phase !== expectedPhase) return;
     stopAudio(); stopVideo();
     const stage = dialog.querySelector('.award-live-stage'), overlay = el('section', 'award-live-video-scene');
-    overlay.setAttribute('aria-label', 'Видео номинации Тикток года');
+    const categoryTitle = model.titleOf(activeNomination);
+    overlay.setAttribute('aria-label', 'Видео номинации ' + categoryTitle);
     const video = el('video', 'award-live-video');
     video.autoplay = true; video.playsInline = true; video.controls = true;
     video.preload = 'auto'; video.muted = muted;
     video.setAttribute('aria-label', 'Ролик номинанта');
-    overlay.append(el('p', 'award-live-video-label', 'ТИКТОК ГОДА / СМОТРИМ РОЛИК'), video);
+    overlay.append(el('p', 'award-live-video-label', categoryTitle.toUpperCase() + ' / СМОТРИМ РОЛИК'), video);
     stage.append(overlay); movie = video;
     const previousSkip = { text: action('skip').textContent, disabled: action('skip').disabled };
     action('skip').textContent = 'Пропустить ролик →'; action('skip').disabled = false;
-    message('Тикток года · смотрим ролик');
+    message(categoryTitle + ' · смотрим ролик');
     animate(overlay, [{ opacity: 0 }, { opacity: 1 }], { duration: 650, fill: 'none' });
     await new Promise(resolve => {
       let settled = false;

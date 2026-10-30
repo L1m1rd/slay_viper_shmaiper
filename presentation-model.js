@@ -19,7 +19,7 @@
       const name = nameOf(p); if (seen.has(name)) return false;
       seen.add(name); return true;
     }).map(p => ({ name: nameOf(p), photo: p.photo || null,
-      video: nomination.id === 'tiktok' && typeof p.video === 'string' && p.video.startsWith('videos/tiktok/') && !p.video.includes('..') && !p.video.includes('\\') && p.video.endsWith('.mp4') ? p.video : null,
+      video: ['tiktok', 'situation'].includes(nomination.id) && typeof p.video === 'string' && p.video.startsWith('videos/' + nomination.id + '/') && !p.video.includes('..') && !p.video.includes('\\') && p.video.endsWith('.mp4') ? p.video : null,
       total: Math.max(0, scores.get(nameOf(p)) || 0) }))
       .sort((a, b) => b.total - a.total || a.name.localeCompare(b.name, 'ru'));
     const hasVotes = ranked.some(p => p.total > 0);

@@ -67,6 +67,23 @@ test('TikTok movies follow the current ranked nominee and remain hidden in rehea
   assert(model.snapshot(nominations[0], rows(nominations[0])).ranked.every(p => p.video === null));
 });
 
+test('situation catalog removes retired entries and binds five safe videos to current ranked nominees', () => {
+  const n = nominations.find(n => n.id === 'situation');
+  const names = n.participants.map(model.nameOf);
+  assert.equal(names.length, 14);
+  for (const removed of ['Андрей, Данил и Саша сняли тик токи', 'Арсена Ашотовича посадили', 'Человек Чекушка ходил по городу Ульяновску', 'Человек Чекушка на ДР шурика']) assert(!names.includes(removed));
+  assert(names.includes('человек чекушка'));
+  const media = model.snapshot(n, rows(n)).ranked.filter(p => p.video);
+  assert.equal(media.length, 5);
+  for (const p of media) {
+    assert(fs.existsSync(require('node:path').join(__dirname, '..', p.video)));
+    assert.equal(p.video, n.participants.find(q => model.nameOf(q) === p.name).video);
+  }
+  assert(model.snapshot(n, rows(n), false).ranked.every(p => p.video === null));
+  const unsafe = { ...n, participants: [{ title: 'Invalid', video: 'videos/situation/../x.mp4' }] };
+  assert.equal(model.snapshot(unsafe, []).ranked[0].video, null);
+});
+
 test('winner music follows the current person, with no fallback for others or rehearsal', () => {
   const n = nominations[0];
   for (const [name, file] of [['Андрей Владыко', 'andrey'], ['Даниил Постоев', 'daniil'], ['Семён Ефремов', 'semen'], ['Александр Пеняев', 'penyaev'], ['Арсений Юсупов', 'arseniy'], ['Александр Шамбасов', 'shambasov'], ['Шурик', 'shurik']]) {
