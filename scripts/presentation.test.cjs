@@ -60,7 +60,7 @@ test('TikTok movies follow the current ranked nominee and remain hidden in rehea
   results[6].total = 100;
   const s = model.snapshot(n, results);
   assert.equal(s.podium[0].video, n.participants[6].video);
-  assert.equal(new Set([...s.podium, ...s.nonPrize].map(p => p.video)).size, 8);
+  assert.equal(new Set([...s.podium, ...s.nonPrize].map(p => p.video)).size, 9);
   assert(model.snapshot(n, results, false).ranked.every(p => p.video === null));
   const unsafe = { ...n, participants: [{ title: 'External', video: 'https://example.org/x.mp4' }] };
   assert.equal(model.snapshot(unsafe, [{ name: 'External', total: 1 }]).podium[0].video, null);
@@ -74,12 +74,12 @@ test('situation catalog removes retired entries and binds current photos and saf
   for (const added of ['дилдо на др шурика', 'матвею набили ебало', 'семена заказали']) assert(names.includes(added));
   const photos = model.snapshot(n, rows(n)).ranked.filter(p => p.photo);
   assert(names.includes('сеня начал материться'));
-  assert.equal(photos.length, 5);
+  assert.equal(photos.length, 6);
   for (const p of photos) assert(fs.existsSync(require('node:path').join(__dirname, '..', p.photo)));
   for (const removed of ['Андрей, Данил и Саша сняли тик токи', 'Арсена Ашотовича посадили', 'Человек Чекушка ходил по городу Ульяновску', 'Человек Чекушка на ДР шурика']) assert(!names.includes(removed));
   assert(names.includes('человек чекушка'));
   const media = model.snapshot(n, rows(n)).ranked.filter(p => p.video);
-  assert.equal(media.length, 9);
+  assert.equal(media.length, 10);
   for (const p of media) {
     assert(fs.existsSync(require('node:path').join(__dirname, '..', p.video)));
     assert.equal(p.video, n.participants.find(q => model.nameOf(q) === p.name).video);
