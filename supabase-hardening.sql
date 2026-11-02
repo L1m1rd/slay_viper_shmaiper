@@ -30,6 +30,7 @@ begin
         'idiot',
         'couple',
         'bodybuilder',
+        'fatness',
         'slayking'
     ) then
         raise exception 'Unknown nomination';

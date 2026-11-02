@@ -20,7 +20,7 @@ test('a new result snapshot moves a new winner and retains all non-prize partici
   assert.equal(new Set([...b.nonPrize, ...b.podium].map(p => p.name)).size, 9);
 });
 test('every category, including long lists and two-person categories, uses only existing participants', () => {
-  assert.equal(nominations.length, 16);
+  assert.equal(nominations.length, 17);
   for (const n of nominations) {
     const s = model.snapshot(n, rows(n));
     assert.equal(s.podium.length, Math.min(3, n.participants.length), n.id);
@@ -32,6 +32,21 @@ test('no votes does not invent winners, and unknown result names are ignored', (
   const n = nominations[0], s = model.snapshot(n, [{ name: 'Не в каталоге', total: 500 }]);
   assert.equal(s.hasVotes, false); assert.equal(s.podium.length, 0);
   assert.equal(s.nonPrize.length, n.participants.length);
+});
+
+test('fatness has the full nine-person roster, its own lead and existing individual voiceovers', () => {
+  const n = nominations.find(n => n.id === 'fatness'), roster = nominations.find(n => n.id === 'bodybuilder');
+  assert.deepEqual(n.participants, roster.participants);
+  assert.equal(n.participants.length, 9);
+  assert.equal(nominations.at(-1).id, 'slayking');
+  assert.equal(nominations.at(-2).id, 'fatness');
+  const manifest = JSON.parse(fs.readFileSync(require('node:path').join(__dirname, '../audio/slay-2026/manifest.json')));
+  const audio = model.audioMap(manifest, nominations).get('fatness');
+  assert(audio.lead.endsWith('.mp3'));
+  for (const p of n.participants) assert(audio.names.get(p.name).endsWith('.mp3'));
+  const changed = rows(n); changed[8].total = 100;
+  assert.equal(model.snapshot(n, changed).podium[0].name, n.participants[8].name);
+  assert(fs.readFileSync(require('node:path').join(__dirname, '../supabase-hardening.sql'), 'utf8').includes("'fatness'"));
 });
 test('unvoted participants stay in the row and are never awarded an empty podium place', () => {
   const n = nominations[0], s = model.snapshot(n, [{ name: n.participants[0].name, total: 3 }]);
