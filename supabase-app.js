@@ -142,87 +142,62 @@
     return fallback;
   }
 
+  const usernamePattern = /^[a-z0-9_]{3,30}$/;
+  const accountEmail = username => `${username}@slay-accounts.invalid`;
+
+  for (const id of ['reg-email', 'reg-name']) {
+    document.getElementById(id).closest('.form-group').hidden = true;
+  }
+  const loginIdentifier = document.getElementById('login-email');
+  loginIdentifier.type = 'text';
+  loginIdentifier.autocomplete = 'username';
+  loginIdentifier.placeholder = 'Твой логин';
+  loginIdentifier.previousElementSibling.textContent = 'Логин (или email для старого аккаунта)';
+
   async function register() {
-    const name = document.getElementById('reg-name').value.trim();
-    const email = document.getElementById('reg-email').value.trim().toLowerCase();
     const username = document.getElementById('reg-username').value.trim().toLowerCase();
     const password = document.getElementById('reg-password').value;
-
-    if (!name || !email || !username || !password) {
-      window.toast('Заполни все поля!');
-      return;
+    if (!usernamePattern.test(username)) {
+      return window.toast('Логин: 3–30 символов, только a-z, 0-9 и _');
     }
-
-    if (name.length > 50) {
-      window.toast('Имя — максимум 50 символов');
-      return;
-    }
-
-    if (!/^[a-z0-9_]{3,30}$/.test(username)) {
-      window.toast('Логин: 3–30 символов, только a-z, 0-9 и _');
-      return;
-    }
-
     if (password.length < 6) {
-      window.toast('Пароль минимум 6 символов');
-      return;
+      return window.toast('Пароль минимум 6 символов');
     }
-
     const result = await supabaseClient.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        data: {
-          username: username,
-          display_name: name
-        }
-      }
+      email: accountEmail(username),
+      password,
+      options: { data: { username, display_name: username } }
     });
-
     if (result.error) {
-      window.toast(friendlyAuthError(result.error, '❌ Не удалось создать аккаунт'));
-      return;
+      if (result.error.code === 'over_email_send_rate_limit' || result.error.code === 'email_address_invalid') {
+        return window.toast('Регистрация по логину временно недоступна.');
+      }
+      if (result.error.code === 'user_already_exists') return window.toast('Этот логин уже занят');
+      return window.toast(friendlyAuthError(result.error, '❌ Не удалось создать аккаунт'));
     }
-
-    if (
-      result.data.user &&
-      Array.isArray(result.data.user.identities) &&
-      result.data.user.identities.length === 0
-    ) {
-      window.toast('❌ Аккаунт с таким email уже существует');
-      return;
-    }
-
+    if (result.data.user?.identities?.length === 0) return window.toast('Этот логин уже занят');
+    if (!result.data.session) return window.toast('Регистрация по логину временно недоступна.');
     window.closeModal();
-
-    if (!result.data.session) {
-      window.toast('📨 Аккаунт создан. Подтверди email по ссылке из письма.');
-      window.showPage('home');
-      return;
-    }
-
     await refreshCurrentUser();
     await window.showPage('profile');
     window.toast('✅ Аккаунт создан! Ожидай подтверждения администратором ⏳');
   }
 
   async function login() {
-    const email = document.getElementById('login-email').value.trim().toLowerCase();
+    const identifier = loginIdentifier.value.trim().toLowerCase();
     const password = document.getElementById('login-password').value;
-
-    if (!email || !password) {
-      window.toast('Введи email и пароль');
-      return;
+    if ((!identifier.includes('@') && !usernamePattern.test(identifier)) || !password) {
+      return window.toast('Введи логин и пароль');
     }
 
     const result = await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: password
+      email: identifier.includes('@') ? identifier : accountEmail(identifier),
+      password
     });
 
     if (result.error) {
-      window.toast(friendlyAuthError(result.error, '❌ Не удалось войти'));
-      return;
+      if (result.error.code === 'invalid_credentials') return window.toast('❌ Неверный логин или пароль');
+      return window.toast(friendlyAuthError(result.error, '❌ Не удалось войти'));
     }
 
     const user = await refreshCurrentUser();

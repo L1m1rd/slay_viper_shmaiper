@@ -21,7 +21,7 @@
       await load('firebase-app.js?v=20261027-admin-qualification');
     } else if (config.provider === 'supabase') {
       await load('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
-      await load('supabase-app.js?v=20261027-admin-qualification');
+      await load('supabase-app.js?v=20261106-username');
     } else {
       throw new Error('Неизвестный провайдер базы');
     }
