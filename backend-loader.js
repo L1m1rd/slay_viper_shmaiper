@@ -26,7 +26,7 @@
       throw new Error('Неизвестный провайдер базы');
     }
     await load('qualification-store.js?v=20261027-admin-qualification');
-    await load('qualification.js?v=20261027-admin-qualification');
+    await load('qualification.js?v=pair23');
     await load('design.js');
     await load('motion.js');
     await load('presentation-model.js?v=20261030-voices');

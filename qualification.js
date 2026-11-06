@@ -128,7 +128,7 @@
     setupPromise=(async()=>{
       try {
         const data=await store.setup();
-        if (!['qualification','main'].includes(data.phase) || data.candidates.length !== model.candidates.length || new Set(data.candidates.map(c=>c.id)).size!==data.candidates.length) throw new Error('Invalid catalog');
+        if (!['qualification','main'].includes(data.phase) || data.candidates.length < model.limit || new Set(data.candidates.map(c=>c.id)).size!==data.candidates.length) throw new Error('Invalid catalog');
         const changed=phase!==data.phase; phase=data.phase; catalog=data.candidates; ready=true;
         if(!grid.children.length || !ballotReady)buildGrid();
         sync();
