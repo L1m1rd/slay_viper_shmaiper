@@ -30,7 +30,7 @@
     await load('design.js');
     await load('motion.js');
     await load('presentation-model.js?v=20261030-voices');
-    await load('presentation.js?v=20261102-fatness');
+    await load('presentation.js?v=20261106-next');
   })().catch(error => {
     console.error('Backend initialization failed:', error);
     window.toast('Не удалось подключиться. Обнови страницу или попробуй позже.');

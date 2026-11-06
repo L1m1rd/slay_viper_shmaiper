@@ -14,9 +14,13 @@
   let winnerMusic;
   const animations = new Set(), dialog = document.createElement('dialog');
   dialog.className = 'award-dialog'; dialog.setAttribute('aria-label', 'Церемония SLAY AWARD');
-  dialog.innerHTML = `<div class="award-stage-host"></div><div class="award-toolbar"><span class="award-position" role="status" aria-live="polite"></span><button type="button" data-action="sound">Звук включён</button><button type="button" data-action="resume" hidden>Включить озвучку</button><button type="button" data-action="music" hidden>Включить музыку</button><button type="button" data-action="skip">К участникам →</button><button type="button" data-action="replay">Повторить с новыми итогами</button><button type="button" data-action="fullscreen">На весь экран</button><button type="button" data-action="close">Закрыть ×</button></div>`;
+  dialog.innerHTML = `<div class="award-stage-host"></div><div class="award-toolbar"><span class="award-position" role="status" aria-live="polite"></span><button type="button" data-action="sound">Звук включён</button><button type="button" data-action="resume" hidden>Включить озвучку</button><button type="button" data-action="music" hidden>Включить музыку</button><button type="button" data-action="skip">К участникам →</button><button type="button" data-action="replay">Повторить с новыми итогами</button><button type="button" data-action="next-nomination">Следующая номинация →</button><button type="button" data-action="fullscreen">На весь экран</button><button type="button" data-action="close">Закрыть ×</button></div>`;
   document.body.append(dialog);
-  nominations.forEach(n => category.add(new Option(model.titleOf(n), n.id)));
+  const presentationOrder = [...nominations];
+  const situationIndex = presentationOrder.findIndex(n => n.id === 'situation');
+  const memeIndex = presentationOrder.findIndex(n => n.id === 'meme');
+  if (situationIndex >= 0 && memeIndex >= 0) [presentationOrder[situationIndex], presentationOrder[memeIndex]] = [presentationOrder[memeIndex], presentationOrder[situationIndex]];
+  presentationOrder.forEach(n => category.add(new Option(model.titleOf(n), n.id)));
   const action = name => dialog.querySelector(`[data-action="${name}"]`);
   const message = text => { dialog.querySelector('.award-position').textContent = text; };
   function el(tag, className, text) {
@@ -267,7 +271,7 @@
       if (id !== run || !sectionOpen()) return;
       activeNomination = n; activeSnapshot = null; phase = 'intro';
       originalFocus = document.activeElement; previousOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
-      makeStage(n); dialog.showModal(); action('close').focus({ preventScroll: true });
+      makeStage(n); action('next-nomination').disabled = category.selectedIndex >= category.options.length - 1; dialog.showModal(); action('close').focus({ preventScroll: true });
       action('skip').disabled = false; action('skip').textContent = 'К участникам →'; message(model.titleOf(n));
       const lead = audios.get(n.id)?.lead;
       if (lead) {
@@ -391,6 +395,7 @@
     const name = event.target.closest('[data-action]')?.dataset.action;
     if (name === 'close') close();
     if (name === 'replay') { close(); start(); }
+    if (name === 'next-nomination' && category.selectedIndex < category.options.length - 1) { close(); category.selectedIndex++; renderCards(); start(); }
     if (name === 'skip') { if (movie) videoFinish?.('skipped'); else if (phase === 'intro') revealRow(run); else if (phase === 'row') showPodium(run); }
     if (name === 'sound') { muted = !muted; if (sound) sound.muted = muted; if (movie) movie.muted = muted; if (winnerMusic) winnerMusic.muted = muted; action('sound').textContent = muted ? 'Звук выключен' : 'Звук включён'; }
     if (name === 'music' && winnerMusic) { try { await winnerMusic.play(); } catch { message('Музыка не запускается. Показ продолжается.'); } }
