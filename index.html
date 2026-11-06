@@ -978,6 +978,11 @@ function getParticipantName(p) {
   return p;
 }
 function getParticipantPhoto(p) {
+  const situationPhotos = {
+    'Семён порвал барабанную перепонку плавая в бассейне на новый год': 'images/situations/semen-pool.jpg',
+    'Данил выложил яйца на стол сестры': 'images/situations/danil-desk.jpg'
+  };
+  if (typeof p === 'string' && situationPhotos[p]) return situationPhotos[p];
   if (typeof p === 'object' && p.photo) {
     return p.photo;
   }
