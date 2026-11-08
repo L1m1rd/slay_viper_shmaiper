@@ -34,7 +34,7 @@
     await load('presentation.js?v=20261106-next');
     await load('playoff-model.js?v=20261108');
     await load('playoff-store.js?v=admin-test20261108');
-    await load('playoff.js?v=auto20261108');
+    await load('playoff.js?v=autosave20261108');
   })().catch(error => {
     console.error('Backend initialization failed:', error);
     window.toast('Не удалось подключиться. Обнови страницу или попробуй позже.');

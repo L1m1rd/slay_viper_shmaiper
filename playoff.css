@@ -4,3 +4,12 @@
 
 /* Connectors follow the measured card bounds. */
 .playoff-lines{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:visible}.playoff-lines path{fill:none;stroke:var(--ink);stroke-width:1}.playoff-wing,.playoff-center{position:relative;z-index:1}.playoff-wing .playoff-column:before,.playoff-wing .playoff-column:after,.playoff-wing .playoff-match:after,.playoff-center .playoff-match:before,.playoff-center .playoff-match:after{display:none}.playoff-entry.is-compact{grid-template-columns:22px minmax(0,1fr) 20px}.playoff-entry.is-compact img{grid-column:1/-1}.playoff-entry.is-compact .playoff-entry-copy{grid-column:2}
+
+/* Give each match and each round its own breathing room. */
+.playoff-bracket{min-width:1580px;column-gap:40px}
+.playoff-wing{column-gap:48px}
+.playoff-outer{row-gap:64px}
+.playoff-quarters{row-gap:64px}
+.playoff-scroll{padding-top:36px;padding-bottom:48px}
+@media(min-width:1800px){.playoff-bracket{column-gap:48px}.playoff-wing{column-gap:56px}}
+@media(max-width:760px){.playoff-bracket{min-width:1580px}.playoff-outer,.playoff-quarters{row-gap:56px}.playoff-wing{column-gap:44px}}
