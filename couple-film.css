@@ -1,0 +1,23 @@
+.couple-film{position:relative;width:100%;height:100%;overflow:hidden;background:#eae4d4;color:#171714;isolation:isolate;font-family:var(--body);contain:layout paint}
+.couple-film:before{content:'';position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(90deg,rgba(36,31,13,.13),transparent 22%,transparent 78%,rgba(36,31,13,.13));box-shadow:inset 0 0 90px rgba(33,29,15,.1)}
+.couple-film-world{position:absolute;left:0;top:0;width:3480px;height:1820px;transform-origin:0 0;will-change:transform;backface-visibility:hidden;background-image:radial-gradient(#17171424 .8px,transparent .8px);background-size:8px 8px}
+.couple-film-watermark{position:absolute;left:900px;top:60px;font:800 170px/.9 var(--display);color:#1717140b;letter-spacing:-5px;white-space:nowrap}
+.couple-film-lines{position:absolute;inset:0;pointer-events:none}.couple-film-lines path{fill:none;stroke:#8b816b;stroke-width:3}
+.couple-film-match{position:absolute;width:400px;height:300px;border:2px solid #171714;background:#f6f0e3;box-sizing:border-box;box-shadow:8px 10px 0 #1717140d;transition:box-shadow .7s,border-color .7s}
+.couple-film-match.is-focused{border-color:#a78009;box-shadow:12px 18px 0 #17171418,0 0 0 8px #edc52b}
+.couple-film-match h2{height:38px;padding:9px 13px;box-sizing:border-box;font:600 17px/1.1 var(--display);letter-spacing:1.8px;border-bottom:1px solid #17171440;margin:0}
+.couple-film-pair{position:relative;display:flex;gap:16px;align-items:center;height:129px;padding:15px;box-sizing:border-box;overflow:hidden;background:#f6f0e3}
+.couple-film-pair+.couple-film-pair{border-top:1px solid #17171440}.couple-film-pair img{width:126px;height:92px;object-fit:cover;position:relative;z-index:1;flex-shrink:0}
+.couple-film-copy{display:flex;flex-direction:column;gap:9px;position:relative;z-index:1;flex:1;min-width:0}.couple-film-copy strong{font:650 25px/1.05 var(--display);overflow-wrap:anywhere}
+.couple-film-votes{font:600 21px/1.1 var(--display);font-variant-numeric:tabular-nums;color:#655c48}
+.couple-film-meter{position:absolute;left:0;bottom:0;top:0;width:100%;transform-origin:left center;background:#edc52b25;pointer-events:none}
+.couple-film-winner-mark{position:absolute;bottom:4px;right:12px;font:600 11px var(--body);letter-spacing:.7px;opacity:0}.couple-film-pair[data-winner].is-revealed .couple-film-winner-mark{opacity:1}.couple-film-pair[data-winner].is-revealed{box-shadow:inset 5px 0 #d2a300}.couple-film-pair[data-winner].is-revealed .couple-film-votes{color:#171714}
+.couple-film-waiting{font:500 24px/1.3 var(--display);color:#9d9480;padding:0 15px}.couple-film-crown{position:absolute;width:400px;text-align:center;font:800 130px var(--display);color:#c89d00;transition:color 1s,text-shadow 1s}
+.couple-film-top{position:absolute;top:0;left:0;right:0;z-index:4;display:flex;justify-content:space-between;gap:12px;padding:2.1% 3%;font-size:clamp(8px,1vw,15px);letter-spacing:.15em;background:linear-gradient(#eae4d4 65%,#eae4d400)}
+.couple-film-intro{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#edc52b;pointer-events:none}.couple-film-intro h1{font:800 clamp(45px,11vw,170px)/.85 var(--display);letter-spacing:-.025em;margin:2.5% 0}.couple-film-intro p,.couple-film-intro>span{font-size:clamp(9px,1.1vw,18px);letter-spacing:.3em;font-weight:600}
+.couple-film-caption{position:absolute;z-index:4;bottom:0;left:0;right:0;display:flex;justify-content:space-between;align-items:end;gap:20px;padding:2% 3% 2.6%;background:linear-gradient(#eae4d400,#eae4d4 50%);color:#171714;min-height:0}.couple-film-caption span{font:600 clamp(12px,1.9vw,30px)/1.1 var(--display);max-width:63%}.couple-film-caption strong{font:500 clamp(9px,1vw,16px)/1.3 var(--body);text-align:right;max-width:34%}
+.couple-film-progress{position:absolute;z-index:5;bottom:0;left:0;right:0;height:5px;background:#17171414}.couple-film-progress span{display:block;height:100%;background:#171714;transform-origin:left center}
+.couple-film.is-champion .couple-film-crown{color:#b58b00;text-shadow:0 0 45px #edc52b88;animation:couple-champion-breathe 4s ease-in-out infinite}
+@keyframes couple-champion-breathe{50%{transform:translateY(-7px)}}
+@media(prefers-reduced-motion:reduce){.couple-film *{animation:none!important;transition:none!important}}
+

@@ -11,10 +11,11 @@
   let activeNomination, activeSnapshot, originalFocus, previousOverflow = null, muted = false;
   let audioFinish, phaseTimer, phaseFinish, audioTimeout, sound, isOpening = false;
   let movie, videoFinish, videoTimeout;
-  let winnerMusic;
+  let winnerMusic, coupleFilm;
+  const coupleTestOption = new Option('Тестовый плей-офф', 'playoff-test'); source.add(coupleTestOption);
   const animations = new Set(), dialog = document.createElement('dialog');
   dialog.className = 'award-dialog'; dialog.setAttribute('aria-label', 'Церемония SLAY AWARD');
-  dialog.innerHTML = `<div class="award-stage-host"></div><div class="award-toolbar"><span class="award-position" role="status" aria-live="polite"></span><button type="button" data-action="sound">Звук включён</button><button type="button" data-action="resume" hidden>Включить озвучку</button><button type="button" data-action="music" hidden>Включить музыку</button><button type="button" data-action="skip">К участникам →</button><button type="button" data-action="replay">Повторить с новыми итогами</button><button type="button" data-action="next-nomination">Следующая номинация →</button><button type="button" data-action="fullscreen">На весь экран</button><button type="button" data-action="close">Закрыть ×</button></div>`;
+  dialog.innerHTML = `<div class="award-stage-host"></div><div class="award-toolbar"><span class="award-position" role="status" aria-live="polite"></span><button type="button" data-action="sound">Звук включён</button><button type="button" data-action="resume" hidden>Включить озвучку</button><button type="button" data-action="music" hidden>Включить музыку</button><button type="button" data-action="skip">К участникам →</button><button type="button" data-action="replay">Повторить с новыми итогами</button><button type="button" data-action="film-pause" hidden>Пауза</button><button type="button" data-action="next-nomination">Следующая номинация →</button><button type="button" data-action="fullscreen">На весь экран</button><button type="button" data-action="close">Закрыть ×</button></div>`;
   document.body.append(dialog);
   const presentationOrder = [...nominations];
   const situationIndex = presentationOrder.findIndex(n => n.id === 'situation');
@@ -191,6 +192,7 @@
     });
   }
   function notice() {
+    if(category.value==='couple'){status.textContent=source.value==='playoff-test'?'Репетиция с тестовой сеткой администратора. Тестовые голоса не относятся к премии.':source.value==='votes'?'Пролёт по текущей сетке плей-офф. Числа — количество участников, проголосовавших за пару в каждом матче.':'Репетиция пролёта с неизвестными парами. Голоса не раскрываются.';return;}
     if (source.value !== 'votes') { status.textContent = 'Репетиция с силуэтами. Для реальных имён выбери «По голосованию».'; return; }
     status.textContent = window.SLAY_RESULTS_UPDATED_AT
       ? 'Актуальные итоги · ' + new Date(window.SLAY_RESULTS_UPDATED_AT).toLocaleTimeString('ru-RU') + '. Каждый запуск и переход к местам обновляют данные. Во время раскрытия порядок не меняется.'
@@ -207,11 +209,13 @@
   function renderCards() {
     cards.replaceChildren();
     const n = nominations.find(n => n.id === category.value);
+    coupleTestOption.hidden = n.id !== 'couple';
+    if(n.id !== 'couple' && source.value === 'playoff-test')source.value='votes';
     const card = el('button', 'presentation-sequence-card'); card.type = 'button';
     const image = el('img', ''); image.src = `images/nominations/${n.id}.svg`; image.alt = '';
-    card.append(image, el('strong', '', 'Запустить церемонию'), el('span', '', n.id === 'tiktok' ? 'Подводка → ролики и участники → пьедестал' : 'Подводка → непризовые места → пьедестал'));
-    card.disabled = !audioLoaded; card.onclick = start;
-    cards.append(card, el('p', 'presentation-audio-note', !audioLoaded ? 'Загружаю список озвучек…' : audios.get(n.id)?.lead ? 'Озвучка подключена. Места и имена подставляются автоматически.' : 'Подводка пока не озвучена. Церемония начнётся с названия номинации, затем покажет результаты.'));
+    card.append(image, el('strong', '', 'Запустить церемонию'), el('span', '', n.id === 'couple' ? 'Пролёт по сетке → голоса за пары → финал' : n.id === 'tiktok' ? 'Подводка → ролики и участники → пьедестал' : 'Подводка → непризовые места → пьедестал'));
+    card.disabled = n.id !== 'couple' && !audioLoaded; card.onclick = start;
+    cards.append(card, el('p', 'presentation-audio-note', n.id === 'couple' ? 'Пролёт камеры по сетке, число голосов в каждом матче и финальное раскрытие победителя. Пауза и переход к следующему матчу — в панели показа.' : !audioLoaded ? 'Загружаю список озвучек…' : audios.get(n.id)?.lead ? 'Озвучка подключена. Места и имена подставляются автоматически.' : 'Подводка пока не озвучена. Церемония начнётся с названия номинации, затем покажет результаты.'));
     notice();
   }
   function portrait(person, nomination) {
@@ -252,6 +256,7 @@
     stage.append(footer); dialog.querySelector('.award-stage-host').replaceChildren(stage); return stage;
   }
   function close() {
+    coupleFilm?.stop(); coupleFilm=null; action('film-pause').hidden=true;action('sound').hidden=false;
     stopWinnerMusic();
     run++; clearTimeout(phaseTimer); phaseFinish?.(); phaseFinish = null; stopAudio(); stopVideo(); cancelAnimations(); isOpening = false; phase = 'closed';
     if (dialog.open) dialog.close();
@@ -260,6 +265,24 @@
     if (document.fullscreenElement === dialog) document.exitFullscreen().catch(() => {});
     originalFocus?.focus();
   }
+  async function loadCoupleFilm() {
+    const [results,photos]=await Promise.all(['qualification-results.json?v=film20261108','playoff-photos.json?v=20261108'].map(async url=>{const r=await fetch(url);if(!r.ok)throw Error('Не удалось загрузить состав пар');return r.json();}));
+    const pairs=window.SlayPlayoffModel.seed(results,photos);
+    let snapshot,mode=source.value==='playoff-test'?'test':source.value==='votes'?'votes':'silhouette';
+    if(mode==='silhouette')snapshot={state:{status:'waiting'},matches:window.SlayPlayoffModel.initialMatches(pairs)};
+    else if(mode==='test'){
+      snapshot=window.SlayAdminTest?.allowed()?window.SlayAdminTest.get('playoff',null):null;
+      if(!snapshot)throw Error('Сначала пройди хотя бы один раунд в тестовом плей-офф, затем запусти презентацию.');
+      snapshot=JSON.parse(JSON.stringify(snapshot));
+      for(const m of snapshot.matches)if(!m.winner&&m.round===snapshot.state.active_round){const ballot=snapshot.ballots?.[m.round]||{};m.counts=Object.fromEntries((m.entrants||[]).map(id=>[id,ballot[m.slot]===id?1:0]));}
+    } else {
+      const result=await window.supabaseClient.rpc('get_couple_playoff');
+      if(result.error)throw Error('Результаты плей-офф пока недоступны. Для репетиции выбери «Тестовый плей-офф» или «Неизвестный участник».');
+      snapshot=result.data;
+    }
+    if(!snapshot?.state||snapshot.matches?.length!==15)throw Error('Не удалось получить полную сетку плей-офф.');
+    return {pairs,snapshot,mode};
+  }
   async function start() {
     if (!isAdmin() || !sectionOpen() || isOpening) return;
     const n = nominations.find(n => n.id === category.value);
@@ -267,12 +290,18 @@
     isOpening = true; const id = ++run;
     status.textContent = 'Загружаю актуальные итоги…';
     try {
-      if (source.value === 'votes' && !await updateResults()) { status.textContent = 'Не удалось загрузить свежие итоги. Проверь соединение и повтори запуск.'; return; }
+      const coupleData=n.id==='couple'?await loadCoupleFilm():null;
+      if (n.id!=='couple' && source.value === 'votes' && !await updateResults()) { status.textContent = 'Не удалось загрузить свежие итоги. Проверь соединение и повтори запуск.'; return; }
       if (id !== run || !sectionOpen()) return;
       activeNomination = n; activeSnapshot = null; phase = 'intro';
       originalFocus = document.activeElement; previousOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
       makeStage(n); action('next-nomination').disabled = category.selectedIndex >= category.options.length - 1; dialog.showModal(); action('close').focus({ preventScroll: true });
       action('skip').disabled = false; action('skip').textContent = 'К участникам →'; message(model.titleOf(n));
+      if(coupleData){
+        phase='couple-film';action('sound').hidden=true;action('film-pause').hidden=false;action('film-pause').textContent='Пауза';action('skip').textContent='Следующий матч →';
+        coupleFilm=window.SlayCoupleFilm.create({host:dialog.querySelector('.award-stage-host'),...coupleData,onMessage:message,onEnd:()=>{if(id===run){action('skip').disabled=true;action('film-pause').hidden=true;message(coupleData.mode==='test'?'Репетиция завершена · тестовые голоса':'Показ завершён');}}});
+        coupleFilm.play();return;
+      }
       const lead = audios.get(n.id)?.lead;
       if (lead) {
         const result = await playAudio(lead, id, { trimEnd: 3, onResume: () => introSpeaking(true), onPause: () => introSpeaking(false) });
@@ -281,7 +310,8 @@
         if (result === 'unavailable') message('Озвучка недоступна — продолжаем показ');
       } else { message('Озвучка подводки пока отсутствует'); introSpeaking(true); await new Promise(resolve => { phaseFinish = resolve; phaseTimer = setTimeout(() => { phaseFinish = null; resolve(); }, 3500); }); }
       if (id === run && phase === 'intro') await revealRow(id);
-    } finally { if (id === run) isOpening = false; }
+    } catch(error) { if(id===run){close();status.textContent=error.message||'Не удалось запустить презентацию.';} }
+    finally { if (id === run) isOpening = false; }
   }
   async function revealRow(id) {
     if (id !== run || !dialog.open || !['intro', 'loading'].includes(phase)) return;
@@ -396,7 +426,8 @@
     if (name === 'close') close();
     if (name === 'replay') { close(); start(); }
     if (name === 'next-nomination' && category.selectedIndex < category.options.length - 1) { close(); category.selectedIndex++; renderCards(); start(); }
-    if (name === 'skip') { if (movie) videoFinish?.('skipped'); else if (phase === 'intro') revealRow(run); else if (phase === 'row') showPodium(run); }
+    if (name === 'film-pause' && coupleFilm) action('film-pause').textContent=coupleFilm.pause()?'Продолжить':'Пауза';
+    if (name === 'skip') { if(coupleFilm)coupleFilm.next(); else if (movie) videoFinish?.('skipped'); else if (phase === 'intro') revealRow(run); else if (phase === 'row') showPodium(run); }
     if (name === 'sound') { muted = !muted; if (sound) sound.muted = muted; if (movie) movie.muted = muted; if (winnerMusic) winnerMusic.muted = muted; action('sound').textContent = muted ? 'Звук выключен' : 'Звук включён'; }
     if (name === 'music' && winnerMusic) { try { await winnerMusic.play(); } catch { message('Музыка не запускается. Показ продолжается.'); } }
     if (name === 'resume' && (movie || sound)) { try { await (movie || sound).play(); } catch { message(movie ? 'Видео не запускается. Можно пропустить ролик.' : 'Озвучка не запускается. Можно перейти к участникам.'); } }
@@ -420,3 +451,5 @@
   }
   renderCards(); loadAudio();
 })();
+
+
