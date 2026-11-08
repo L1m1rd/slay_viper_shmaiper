@@ -31,6 +31,9 @@
     const data=get('playoff',null);
     if(data.state.status!=='open'||data.state.version!==version||!window.SlayPlayoffModel.validBallot(selected,data.matches,data.state.active_round)) throw Error('Некорректный тестовый бюллетень');
     data.ballots[data.state.active_round]={...selected};set('playoff',data);
+    await advance('finish', version);
+    const next=get('playoff',null);
+    if(next.state.status==='waiting')await advance('open',next.state.version);
   }
   async function advance(action, version) {
     await loadPlayoff(); const data=get('playoff',null), state=data.state;

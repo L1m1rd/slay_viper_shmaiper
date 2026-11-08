@@ -10,7 +10,7 @@
     });
   }
   window.SLAY_BACKEND_READY = (async () => {
-    await load('admin-test.js?v=20261108');
+    await load('admin-test.js?v=auto20261108');
     const config = window.SLAY_BACKEND;
     if (config.provider === 'firebase') {
       if (['apiKey', 'authDomain', 'projectId', 'appId'].some(key => !config.firebase[key])) {
@@ -34,7 +34,7 @@
     await load('presentation.js?v=20261106-next');
     await load('playoff-model.js?v=20261108');
     await load('playoff-store.js?v=admin-test20261108');
-    await load('playoff.js?v=admin-test20261108');
+    await load('playoff.js?v=auto20261108');
   })().catch(error => {
     console.error('Backend initialization failed:', error);
     window.toast('Не удалось подключиться. Обнови страницу или попробуй позже.');

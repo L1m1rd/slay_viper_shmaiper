@@ -106,9 +106,9 @@
  async function saveBallot(){
   if(!canVote()||!M.validBallot(draft,matches,state.active_round))return;
   const token=epoch,choices={...draft};busy=true;error='';render();
-  try{await api.save(choices,state.version);if(token===epoch){saved=choices;window.toast('Выбор сохранён');}}
+  try{await api.save(choices,state.version);if(token===epoch){saved=choices;window.toast(window.SlayAdminTest?.enabled('playoff')?'Тестовый этап завершён':'Выбор сохранён');}}
   catch{if(token===epoch)error='Не удалось сохранить. Твой выбор остался на экране. Обнови статус раунда и повтори отправку.';}
-  finally{busy=false;await refresh();}
+  finally{busy=false;await refresh();if(window.SlayAdminTest?.enabled('playoff'))page.scrollIntoView({behavior:'smooth',block:'start'});}
  }
  function render(){
   if(!pairs.length)return;
@@ -128,7 +128,8 @@
   const center=node('div',undefined,'playoff-center');center.append(trophy(),node('h2','Финал'),matchCard(3,0),node('p',state.champion?`Пара года: ${pair(state.champion)?.name}`:'Кто станет парой года?'));bracket.append(center,wing('right'));scroll.append(bracket);page.append(scroll);
   page.append(node('p','На телефоне листай сетку в стороны. Номер на карточке — место по итогам отбора.','playoff-hint'));
   const footer=node('div',undefined,'playoff-savebar');footer.append(node('span',state.status==='open'?(changed()?'Изменения ещё не сохранены':'Твой сохранённый выбор учитывается в этом раунде'):'Результаты предыдущих раундов сохраняются в сетке.'));
-  const save=button(busy?'Сохраняю…':!changed()&&selected===total?'Выбор сохранён':'Сохранить выбор',saveBallot,'playoff-primary');save.disabled=!canVote()||!changed()||!M.validBallot(draft,matches,state.active_round);footer.append(save);page.append(footer);
+  const test=window.SlayAdminTest?.enabled('playoff');
+  const save=button(busy?'Сохраняю…':test?(state.status==='complete'?'Турнир завершён':state.active_round===3?'Показать победителя':'Сохранить и перейти в '+M.rounds[state.active_round+1]):!changed()&&selected===total?'Выбор сохранён':'Сохранить выбор',saveBallot,'playoff-primary');save.disabled=!canVote()||(!test&&!changed())||!M.validBallot(draft,matches,state.active_round);footer.append(save);page.append(footer);
   if(isAdmin())page.append(adminPanel());
   const draw=()=>drawConnectors(bracket);observer=new ResizeObserver(draw);observer.observe(bracket);requestAnimationFrame(draw);
  }
