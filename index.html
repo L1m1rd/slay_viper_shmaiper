@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="styles.css?v=20261030-media">
 <link rel="stylesheet" href="qualification.css?v=closed20261108">
+<link rel="stylesheet" href="playoff.css?v=20261108">
 </head>
 <body class="qualification-restricted">
 
@@ -15,6 +16,7 @@
 <header>
   <button class="brand" onclick="showPage('home')" aria-label="SLAY — на главную"><span class="logo">SLAY</span><span class="logo-sub">2026</span></button>
   <nav id="nav" aria-label="Главная навигация">
+    <button class="nav-btn" id="playoff-nav" onclick="window.SlayPlayoff?.open()">Пара года / Плей-офф</button>
     <button class="nav-btn" id="qualification-nav" onclick="showPage('qualification')">Отбор пар</button>
     <button class="nav-btn" data-main-nav onclick="showPage('categories')">Номинации</button>
     <button class="nav-btn" data-main-nav onclick="showTeam()">Участники</button>
@@ -51,6 +53,7 @@
   </section>
 </main>
 
+<main id="page-playoff" class="playoff-page hidden" aria-label="Пара года — плей-офф"><p>Загружаю сетку…</p></main>
 <div id="page-home" class="hidden">
   <section class="hero" aria-labelledby="hero-title">
     <div class="hero-copy">
@@ -800,6 +803,7 @@ function renderCategories() {
 }
 
 function openCategory(categoryId) {
+    if(categoryId==='couple' && window.SlayPlayoff)return window.SlayPlayoff.open();
   currentCategory = NOMINATIONS.find(n => n.id === categoryId);
   if (!currentCategory) return;
   document.getElementById('vote-title').innerHTML = `<span>${nominationTitle(currentCategory)}</span>`;
@@ -1236,7 +1240,7 @@ function updateUI() {
 
 function showPage(page) {
   if (window.SlayQualification?.interceptPage(page)) return;
-  ['home', 'categories', 'vote', 'profile', 'admin'].forEach(p => {
+  ['home', 'categories', 'vote', 'profile', 'admin', 'playoff'].forEach(p => {
     document.getElementById('page-' + p).classList.add('hidden');
   });
   document.getElementById('page-' + page).classList.remove('hidden');
@@ -1294,7 +1298,8 @@ updateUI();
 <script src="backend-config.js"></script>
 <script src="qualification-model.js?v=pair23"></script>
 <link rel="stylesheet" href="presentation.css?v=20261102-fatness">
-<script src="backend-loader.js?v=closed20261108"></script>
+<script src="backend-loader.js?v=playoff20261108"></script>
 
 </body>
 </html>
+

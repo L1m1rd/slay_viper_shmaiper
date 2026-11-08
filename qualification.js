@@ -62,12 +62,13 @@
     document.getElementById('qualification-admin').hidden = closed || !admin();
   }
   function display(scroll = true) {
-    ['home','categories','vote','profile','admin'].forEach(id=>document.getElementById('page-'+id).classList.add('hidden'));
+    ['home','categories','vote','profile','admin','playoff'].forEach(id=>document.getElementById('page-'+id).classList.add('hidden'));
     page.classList.remove('hidden');
     if (admin()) { window.renderCategories(); document.getElementById('page-categories').classList.remove('hidden'); }
     if (scroll) window.scrollTo(0,0);
   }
   function interceptPage(target) {
+    if(target==='playoff'){page.classList.add('hidden');return false;}
     if (target === 'qualification' || (restricted() && target !== 'profile')) { display(); return true; }
     page.classList.add('hidden'); return false;
   }
@@ -145,6 +146,7 @@
       if (ready) { loadBallot(generation); if(admin())results(); }
     }
     controls();
+    if(!document.getElementById('page-playoff')?.classList.contains('hidden'))return;
     if (restricted() && !document.getElementById('page-profile').classList.contains('hidden')) return;
     if (restricted() || !page.classList.contains('hidden')) display(false);
   }
@@ -185,3 +187,4 @@
   Promise.resolve(window.SLAY_AUTH_READY).then(()=>{sync();return setup();});
   setInterval(()=>{if(!document.hidden&&!busy)setup();},30000);
 })();
+

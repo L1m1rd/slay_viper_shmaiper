@@ -845,7 +845,7 @@
       page = 'home';
     }
 
-    ['home', 'categories', 'vote', 'profile', 'admin'].forEach((p) => {
+    ['home', 'categories', 'vote', 'profile', 'admin', 'playoff'].forEach((p) => {
       document.getElementById('page-' + p).classList.add('hidden');
     });
 
@@ -868,6 +868,7 @@
   }
 
   async function openCategory(categoryId) {
+    if(categoryId==='couple' && window.SlayPlayoff)return window.SlayPlayoff.open();
     if (window.SlayQualification?.restricted()) { window.showPage('qualification'); return; }
     if (getCurrentUser()) {
       await refreshCurrentUser();
@@ -962,3 +963,4 @@
 
   window.SLAY_AUTH_READY = initialize();
 })();
+

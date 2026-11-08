@@ -18,21 +18,25 @@
       for (const part of ['app', 'auth', 'firestore']) {
         await load('https://www.gstatic.com/firebasejs/12.4.0/firebase-' + part + '-compat.js');
       }
-      await load('firebase-app.js?v=20261027-admin-qualification');
+      await load('firebase-app.js?v=playoff20261108');
     } else if (config.provider === 'supabase') {
       await load('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
-      await load('supabase-app.js?v=20261106-username');
+      await load('supabase-app.js?v=playoff20261108');
     } else {
       throw new Error('Неизвестный провайдер базы');
     }
     await load('qualification-store.js?v=20261027-admin-qualification');
-    await load('qualification.js?v=closed20261108');
+    await load('qualification.js?v=playoff20261108');
     await load('design.js');
     await load('motion.js');
     await load('presentation-model.js?v=20261030-voices');
     await load('presentation.js?v=20261106-next');
+    await load('playoff-model.js?v=20261108');
+    await load('playoff-store.js?v=20261108');
+    await load('playoff.js?v=20261108');
   })().catch(error => {
     console.error('Backend initialization failed:', error);
     window.toast('Не удалось подключиться. Обнови страницу или попробуй позже.');
   });
 })();
+
