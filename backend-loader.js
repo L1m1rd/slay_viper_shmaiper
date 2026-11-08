@@ -32,7 +32,7 @@
     await load('motion.js');
     await load('presentation-model.js?v=20261030-voices');
     await load('playoff-model.js?v=20261108');
-    await load('couple-film.js?v=20261108');
+    await load('couple-film.js?v=reveal20261108');
     await load('presentation.js?v=couplefilm20261108');
     await load('playoff-store.js?v=admin-test20261108');
     await load('playoff.js?v=autosave20261108');
@@ -41,6 +41,8 @@
     window.toast('Не удалось подключиться. Обнови страницу или попробуй позже.');
   });
 })();
+
+
 
 
 

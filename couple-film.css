@@ -21,3 +21,15 @@
 @keyframes couple-champion-breathe{50%{transform:translateY(-7px)}}
 @media(prefers-reduced-motion:reduce){.couple-film *{animation:none!important;transition:none!important}}
 
+
+/* Keep later results concealed until their feeder match is revealed. */
+.couple-film-pair:not(.is-arrived)>img,.couple-film-pair:not(.is-arrived)>.couple-film-copy,.couple-film-pair:not(.is-arrived)>.couple-film-meter,.couple-film-pair:not(.is-arrived)>.couple-film-winner-mark{visibility:hidden}
+.couple-film-slot-waiting{position:absolute;inset:0;display:flex;align-items:center;padding:20px;font:500 23px/1.2 var(--display);color:#9d9480;background:var(--paper)}
+.couple-film-pair.is-arrived .couple-film-slot-waiting{display:none}
+.couple-film-flight{position:absolute;left:0;top:0;width:400px;height:129px;box-sizing:border-box;display:flex;align-items:center;gap:16px;padding:15px;background:#edc52b;border:2px solid #171714;box-shadow:9px 16px 30px #17171433;z-index:8;will-change:transform;transform-origin:center}
+.couple-film-flight[hidden]{display:none!important}
+.couple-film-flight img{width:126px;height:92px;object-fit:cover;flex-shrink:0}
+.couple-film-flight strong{font:650 25px/1.05 var(--display)}
+.couple-film-flight span{position:absolute;bottom:3px;right:12px;font:600 10px var(--body);letter-spacing:.5px}
+
+
