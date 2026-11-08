@@ -5,14 +5,14 @@
  let ready=false,busy=false,loading=false,account='',epoch=0,error='',schemaMissing=false,confirmFinish=false;
  let ties={},hydratedAccount='',observer;
  const user=()=>window.DB.getCurrentUser(),isAdmin=()=>user()?.role==='admin'&&user()?.status==='approved';
- const canVote=()=>ready&&!busy&&state.status==='open'&&user()?.role==='user'&&user()?.status==='approved';
+ const canVote=()=>ready&&!busy&&state.status==='open'&&(user()?.role==='user'||window.SlayAdminTest?.enabled('playoff'))&&user()?.status==='approved';
  const current=()=>matches.filter(m=>m.round===state.active_round);
  const changed=()=>JSON.stringify(Object.entries(draft).sort())!==JSON.stringify(Object.entries(saved).sort());
  const pair=id=>pairs.find(p=>p.id===id);
  const node=(tag,text,cls)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n;};
  const button=(text,fn,cls)=>{const b=node('button',text,cls);b.type='button';b.onclick=fn;return b;};
  function sync() {
-  const key=user()?`${user().id}:${user().role}:${user().status}`:'guest';
+  const key=user()?`${user().id}:${user().role}:${user().status}:${window.SlayAdminTest?.enabled('playoff')}`:'guest';
   if(key!==account){account=key;epoch++;draft={};saved={};ties={};ready=false;error='';confirmFinish=false;if(pairs.length){render();refresh();}}
  }
  async function refresh() {
@@ -108,7 +108,7 @@
   const token=epoch,choices={...draft};busy=true;error='';render();
   try{await api.save(choices,state.version);if(token===epoch){saved=choices;window.toast('Выбор сохранён');}}
   catch{if(token===epoch)error='Не удалось сохранить. Твой выбор остался на экране. Обнови статус раунда и повтори отправку.';}
-  finally{busy=false;if(token===epoch)render();else await refresh();}
+  finally{busy=false;await refresh();}
  }
  function render(){
   if(!pairs.length)return;
@@ -116,6 +116,7 @@
   const header=node('section',undefined,'playoff-heading'),titles=node('div');
   titles.append(node('span','SLAY AWARD / ПЛЕЙ-ОФФ','eyebrow'),node('h1','Пара года'),node('p','Выбери одну пару в каждом противостоянии. Победители встретятся в финале.'));
   const selected=Object.keys(draft).length,total=8/2**state.active_round;
+  window.SlayAdminTest?.addControls(page,'playoff',async()=>{epoch++;draft={};saved={};ties={};hydratedAccount='';ready=false;await refresh();});
   const progress=node('div',undefined,'playoff-progress');progress.append(node('strong',state.status==='complete'?'Турнир завершён':`Выбрано ${selected} из ${total}`),button(loading?'Обновляю…':'Обновить',refresh,'playoff-refresh'));
   header.append(titles,progress);page.append(header);
   const steps=node('ol',undefined,'playoff-steps');M.rounds.forEach((r,i)=>{const li=node('li',r,i===state.active_round?'is-current':i<state.active_round?'is-finished':'');if(i===state.active_round)li.setAttribute('aria-current','step');steps.append(li);});page.append(steps);
@@ -146,7 +147,7 @@
   sync();await window.showPage('playoff');render();await refresh();
  }
  function getResults(){
-  if(state.status!=='complete')return[];const final=matches.find(m=>m.round===3&&m.slot===0);if(!final?.winner)return[];
+  if(window.SlayAdminTest?.enabled('playoff') || state.status!=='complete')return[];const final=matches.find(m=>m.round===3&&m.slot===0);if(!final?.winner)return[];
   return [final.winner,...final.entrants.filter(id=>id!==final.winner)].map(id=>({name:pair(id)?.name,total:final.counts?.[id]||0,votes:final.counts?.[id]||0,1:0,2:0,3:0}));
  }
  const oldResults=window.getNominationResults;window.getNominationResults=id=>id==='couple'?getResults():oldResults(id);

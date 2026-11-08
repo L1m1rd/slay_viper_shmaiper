@@ -101,7 +101,9 @@
     let votes = {};
 
     try {
-      votes = await loadVotesForUser(profileResult.data.id);
+      votes = profileResult.data.role === 'admin' && profileResult.data.status === 'approved'
+        ? (() => { try { return JSON.parse(localStorage.getItem('slay-admin-test-v1:' + profileResult.data.id) || '{}').votes || {}; } catch { return {}; } })()
+        : await loadVotesForUser(profileResult.data.id);
     } catch (error) {
       console.error('Vote load failed:', error);
     }
@@ -243,7 +245,7 @@
   }
 
   async function ensureFreshVotingUser() {
-    if (window.SlayQualification && !window.SlayQualification.mainVotingAllowed()) {
+    if (window.SlayQualification && !window.SlayQualification.mainVotingAllowed() && !window.SlayAdminTest?.allowed()) {
       window.toast('Сейчас открыт только отбор пар. Основное голосование начнётся позже.');
       return null;
     }
@@ -255,10 +257,6 @@
       return null;
     }
 
-    if (user.role === 'admin') {
-      window.toast('Администраторы не участвуют в голосовании');
-      return null;
-    }
 
     if (user.status !== 'approved') {
       window.toast(
@@ -273,6 +271,10 @@
   }
 
   async function replaceNominationVotes(user, nominationId, voteValue) {
+    if (window.SlayAdminTest?.allowed() && user.id === getCurrentUser()?.id) {
+      const votes=window.SlayAdminTest.get('votes',{}); votes[nominationId]=voteValue;
+      window.SlayAdminTest.set('votes',votes); user.votes=votes; state.currentUser=user; return;
+    }
     const nomination = window.NOMINATIONS.find((n) => n.id === nominationId);
 
     if (!nomination) {

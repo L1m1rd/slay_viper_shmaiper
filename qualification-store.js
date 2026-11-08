@@ -9,15 +9,17 @@
         client.from('award_stage').select('phase').eq('id',true).single(),
         client.from('couple_qualification_candidates').select('id,name,position').order('position')
       ]);
-      return { phase: checked(stage).phase, candidates: checked(catalog) };
+      return { phase: window.SlayAdminTest?.enabled('qualification') ? 'qualification' : checked(stage).phase, candidates: checked(catalog) };
     },
     async ballot() {
       const user = window.DB.getCurrentUser();
-      if (!user || user.role === 'admin') return [];
+      if (!user) return [];
+      if (window.SlayAdminTest?.allowed()) return window.SlayAdminTest.get('qualification',[]);
       const row = checked(await client.from('couple_qualification_ballots').select('choices').eq('user_id',user.id).maybeSingle());
       return row?.choices || [];
     },
     async save(choices) {
+      if(window.SlayAdminTest?.enabled('qualification')) { if(!window.SlayQualificationModel.validBallot(choices))throw Error('Выбери 16 пар');window.SlayAdminTest.set('qualification',choices);return; }
       checked(await client.rpc('save_couple_qualification_ballot', { selected: choices }));
     },
     async results() {

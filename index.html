@@ -815,6 +815,10 @@ function openCategory(categoryId) {
 function renderVotePage() {
   if (!currentCategory) return;
   const user = DB.getCurrentUser();
+  let testNotice=document.getElementById('admin-test-vote-notice');
+  if(!testNotice){testNotice=document.createElement('p');testNotice.id='admin-test-vote-notice';testNotice.className='qualification-notice';document.getElementById('vote-desc').after(testNotice);}
+  testNotice.hidden=user?.role!=='admin';
+  testNotice.textContent='ТЕСТОВЫЕ ГОЛОСА · Сохраняются в этом браузере и не учитываются в премии.';
 
   const isMultiVote = currentCategory.votingType === 'multi-vote';
 
@@ -857,7 +861,7 @@ function renderMultiVotePage(user) {
     </div>
   `;
 
-  const canVote = user && user.role !== 'admin' && user.status === 'approved';
+  const canVote = user && user.status === 'approved';
 
   const list = document.getElementById('participants-list');
   list.innerHTML = currentCategory.participants.map(p => {
@@ -921,7 +925,7 @@ function renderPlacesVotePage(user) {
     </div>
   `;
 
-  const canVote = user && user.role !== 'admin' && user.status === 'approved';
+  const canVote = user && user.status === 'approved';
   const isAnecdote = currentCategory.id === 'anecdote';
   const showMediaFrame = !isAnecdote;
 
@@ -1040,7 +1044,7 @@ function renderProfile() {
   
   const bannerContainer = document.getElementById('status-banner-container');
   if (user.role === 'admin') {
-    bannerContainer.innerHTML = `<div class="status-banner status-approved"><span class="status-icon">👑</span>Ты — администратор.</div>`;
+    bannerContainer.innerHTML = `<div class="status-banner status-approved"><span class="status-icon">👑</span>Ты — администратор. Тестовые голоса не учитываются в премии.</div>`;
   } else if (user.status === 'pending') {
     bannerContainer.innerHTML = `<div class="status-banner status-pending">⏳ Твой аккаунт ожидает подтверждения администратором.</div>`;
   } else if (user.status === 'banned') {
@@ -1298,7 +1302,7 @@ updateUI();
 <script src="backend-config.js"></script>
 <script src="qualification-model.js?v=pair23"></script>
 <link rel="stylesheet" href="presentation.css?v=20261102-fatness">
-<script src="backend-loader.js?v=playoff20261108"></script>
+<script src="backend-loader.js?v=admin-test20261108"></script>
 
 </body>
 </html>

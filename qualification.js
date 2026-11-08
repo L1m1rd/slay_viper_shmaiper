@@ -12,7 +12,7 @@
   const user = () => window.DB.getCurrentUser();
   const admin = () => user()?.role === 'admin';
   const restricted = () => phase !== 'main' && !admin();
-  const editable = () => ready && ballotReady && phase === 'qualification' && user()?.role === 'user' && user()?.status === 'approved';
+  const editable = () => ready && ballotReady && phase === 'qualification' && (user()?.role === 'user' || window.SlayAdminTest?.enabled('qualification')) && user()?.status === 'approved';
   const same = () => draft.size === saved.size && [...draft].every(id => saved.has(id));
   function node(tag, text, className) {
     const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if (className) n.className = className; return n;
@@ -55,7 +55,7 @@
     else if (!user()) {
       notice.append(node('span','Войди в аккаунт, чтобы выбрать и сохранить 16 пар.'));
       const login = node('button','Войти ↗'); login.type='button'; login.onclick=()=>window.openModal('login'); notice.append(login);
-    } else if (admin()) notice.textContent = 'Просмотр администратора. Голосуют только одобренные участники. Остальные номинации доступны ниже.';
+    } else if (admin()) notice.textContent = window.SlayAdminTest?.enabled('qualification') ? 'Тестовый отбор. Твой выбор не влияет на опубликованные итоги.' : 'Просмотр администратора. Для проверки выбора включи тестовый режим.';
     else if (user().status !== 'approved') notice.textContent = user().status === 'banned' ? 'Аккаунт заблокирован. Голосование недоступно.' : 'Аккаунт ожидает одобрения администратора. После одобрения можно будет голосовать.';
     else if (phase !== 'qualification') notice.textContent = 'Отбор завершён. Начался основной этап голосования.';
     else notice.textContent = 'Отметь ровно 16 пар. До конца отбора сохранённый выбор можно изменить.';
@@ -140,12 +140,15 @@
     const votes = document.getElementById('my-votes-list')?.closest('.section-card'); if(votes) votes.hidden=restricted();
     document.querySelectorAll('[data-main-nav]').forEach(n=>n.hidden=restricted());
     document.getElementById('qualification-nav').hidden=phase==='main';
-    const key = user() ? `${user().id}:${user().role}:${user().status}` : 'guest';
+    const key = user() ? `${user().id}:${user().role}:${user().status}:${window.SlayAdminTest?.enabled('qualification')}` : 'guest';
     if (key !== sessionKey) {
       sessionKey=key; generation++; busy=false; draft=new Set(); saved=new Set(); adminResults.replaceChildren(); panelResults.replaceChildren();
       if (ready) { loadBallot(generation); if(admin())results(); }
     }
     controls();
+    let testPanel=document.getElementById('admin-qualification-test-controls');
+    if(!testPanel){testPanel=document.createElement('div');testPanel.id='admin-qualification-test-controls';page.prepend(testPanel);}
+    testPanel.replaceChildren();window.SlayAdminTest?.addControls(testPanel,'qualification',async()=>{ballotReady=false;await setup();await loadBallot(generation);});
     if(!document.getElementById('page-playoff')?.classList.contains('hidden'))return;
     if (restricted() && !document.getElementById('page-profile').classList.contains('hidden')) return;
     if (restricted() || !page.classList.contains('hidden')) display(false);
