@@ -1,0 +1,144 @@
+{
+  "voters": 9,
+  "ranked": [
+    {
+      "id": "c11",
+      "name": "Саша Шамбасов и Даша Дрочкова",
+      "position": 11,
+      "votes": 9
+    },
+    {
+      "id": "c10",
+      "name": "Саша Шамбасов и Даша Таурин",
+      "position": 10,
+      "votes": 9
+    },
+    {
+      "id": "c09",
+      "name": "Тимур и Азалия",
+      "position": 9,
+      "votes": 9
+    },
+    {
+      "id": "c07",
+      "name": "Арсений и Надя",
+      "position": 7,
+      "votes": 8
+    },
+    {
+      "id": "c04",
+      "name": "Матвей и Карина",
+      "position": 4,
+      "votes": 8
+    },
+    {
+      "id": "c16",
+      "name": "Андрей и рука",
+      "position": 16,
+      "votes": 7
+    },
+    {
+      "id": "c14",
+      "name": "Данил и Женя Данилина",
+      "position": 14,
+      "votes": 7
+    },
+    {
+      "id": "c23",
+      "name": "Егор и Соня",
+      "position": 23,
+      "votes": 7
+    },
+    {
+      "id": "c01",
+      "name": "Матвей и Вика",
+      "position": 1,
+      "votes": 7
+    },
+    {
+      "id": "c21",
+      "name": "Саня Пеняев и Вика",
+      "position": 21,
+      "votes": 7
+    },
+    {
+      "id": "c20",
+      "name": "Саня Пеняев и Полина",
+      "position": 20,
+      "votes": 7
+    },
+    {
+      "id": "c19",
+      "name": "Шурик и Кира Сорокина",
+      "position": 19,
+      "votes": 7
+    },
+    {
+      "id": "c13",
+      "name": "Данил и Маринка",
+      "position": 13,
+      "votes": 6
+    },
+    {
+      "id": "c02",
+      "name": "Матвей и Соня",
+      "position": 2,
+      "votes": 6
+    },
+    {
+      "id": "c22",
+      "name": "Саша Шамбасов и Иванчикова",
+      "position": 22,
+      "votes": 6
+    },
+    {
+      "id": "c17",
+      "name": "Шурик и серьёзка",
+      "position": 17,
+      "votes": 6
+    },
+    {
+      "id": "c15",
+      "name": "Вова и Жена Вадима",
+      "position": 15,
+      "votes": 5
+    },
+    {
+      "id": "c05",
+      "name": "Матвей и Алина",
+      "position": 5,
+      "votes": 5
+    },
+    {
+      "id": "c03",
+      "name": "Матвей и Полина",
+      "position": 3,
+      "votes": 5
+    },
+    {
+      "id": "c12",
+      "name": "Саша Шамбасов и Маша",
+      "position": 12,
+      "votes": 5
+    },
+    {
+      "id": "c08",
+      "name": "Арсений и Арина",
+      "position": 8,
+      "votes": 3
+    },
+    {
+      "id": "c06",
+      "name": "Семен и Надя",
+      "position": 6,
+      "votes": 3
+    },
+    {
+      "id": "c18",
+      "name": "Шурик и Стеша",
+      "position": 18,
+      "votes": 2
+    }
+  ],
+  "cutoffTie": false
+}

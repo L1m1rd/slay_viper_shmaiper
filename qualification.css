@@ -38,3 +38,8 @@
 #admin-qualification-results p{line-height:1.7;margin:16px 0;font-size:13px}
 @media(max-width:900px){.qualification-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.qualification-total{font-size:70px}}
 @media(max-width:600px){.qualification-page{padding:36px 5%}.qualification-hero{display:block}.qualification-total{font-size:48px;display:flex;align-items:center;gap:16px;text-align:left;margin-top:20px}.qualification-total small{font-size:10px;margin-top:0}.qualification-grid{grid-template-columns:1fr}.qualification-pair{min-height:80px;padding:18px}.qualification-name{font-size:22px}.qualification-submit{gap:10px}.qualification-submit button{padding:12px}.qualification-submit p{flex-basis:65%;min-width:0}.qualification-hero p{font-size:13px}}
+
+.qualification-grid[hidden],.qualification-submit[hidden],.qualification-public-results[hidden],.qualification-date[hidden]{display:none!important}
+.qualification-public-results{margin:40px 0;padding:clamp(16px,4vw,40px);border:1px solid var(--ink);background:var(--paper)}
+.qualification-public-results h2{font-family:var(--display);font-size:clamp(28px,5vw,48px);text-transform:uppercase;margin-bottom:20px}
+.qualification-date{font-family:var(--display);font-size:clamp(50px,12vw,170px);font-weight:800;line-height:1;letter-spacing:-.025em;text-align:center;color:var(--ink);background:var(--yellow);padding:clamp(35px,8vw,100px) 12px;margin:45px 0 20px;overflow-wrap:anywhere}

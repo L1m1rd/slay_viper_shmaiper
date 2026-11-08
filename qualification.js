@@ -34,6 +34,13 @@
     document.getElementById('qualification-total').textContent = catalog.length;
   }
   function controls() {
+    const closed = phase === 'closed';
+    grid.hidden = closed;
+    document.querySelector('.qualification-submit').hidden = closed;
+    document.getElementById('qualification-public-results').hidden = !closed;
+    document.getElementById('qualification-date').hidden = !closed;
+    document.querySelector('.qualification-hero .eyebrow').textContent = closed ? 'Этап 1 / Отбор завершён' : 'Этап 1 / Отборочное голосование';
+    document.querySelector('.qualification-hero p').textContent = closed ? 'Итоги отборочного этапа. Голосование закрыто.' : 'Выбери 16 пар, которые хочешь увидеть в основном этапе.';
     count.textContent = `${draft.size} / ${model.limit}`;
     const changed = !same();
     save.disabled = busy || !editable() || draft.size !== model.limit || !changed;
@@ -44,14 +51,15 @@
       input.closest('label').classList.toggle('is-selected',input.checked);
     });
     notice.replaceChildren();
-    if (!user()) {
+    if (closed) notice.textContent = 'Отборочное голосование завершено. Спасибо за участие!';
+    else if (!user()) {
       notice.append(node('span','Войди в аккаунт, чтобы выбрать и сохранить 16 пар.'));
       const login = node('button','Войти ↗'); login.type='button'; login.onclick=()=>window.openModal('login'); notice.append(login);
     } else if (admin()) notice.textContent = 'Просмотр администратора. Голосуют только одобренные участники. Остальные номинации доступны ниже.';
     else if (user().status !== 'approved') notice.textContent = user().status === 'banned' ? 'Аккаунт заблокирован. Голосование недоступно.' : 'Аккаунт ожидает одобрения администратора. После одобрения можно будет голосовать.';
     else if (phase !== 'qualification') notice.textContent = 'Отбор завершён. Начался основной этап голосования.';
     else notice.textContent = 'Отметь ровно 16 пар. До конца отбора сохранённый выбор можно изменить.';
-    document.getElementById('qualification-admin').hidden = !admin();
+    document.getElementById('qualification-admin').hidden = closed || !admin();
   }
   function display(scroll = true) {
     ['home','categories','vote','profile','admin'].forEach(id=>document.getElementById('page-'+id).classList.add('hidden'));
@@ -79,6 +87,23 @@
     ballotPromise = pending;
     pending.finally(() => { if (ballotPromise === pending) ballotPromise = null; });
     return pending;
+  }
+  async function publicResults() {
+    const target = document.getElementById('qualification-public-results');
+    try {
+      const response = await fetch('qualification-results.json?v=20261108');
+      if (!response.ok) throw new Error('Results unavailable');
+      const data = await response.json();
+      target.replaceChildren(node('h2', 'Итоги отборочного этапа'), node('p', 'Проголосовало: ' + data.voters));
+      const list = node('ol', undefined, 'qualification-ranking');
+      data.ranked.forEach((c, i) => {
+        const row = node('li');
+        row.append(node('span', c.name), node('strong', c.votes + ' голосов'));
+        if (i === 15) row.classList.add('qualification-cutoff');
+        list.append(row);
+      });
+      target.append(list, node('p', data.cutoffTie ? 'На границе 16-го места равенство голосов. Окончательный состав следующего этапа будет объявлен отдельно.' : 'Черта после 16-го места — граница прохода в следующий этап.'));
+    } catch { target.textContent = 'Не удалось загрузить итоги. Обнови страницу.'; }
   }
   async function results() {
     if (!admin() || !ready || resultsBusy) return;
@@ -128,12 +153,13 @@
     setupPromise=(async()=>{
       try {
         const data=await store.setup();
-        if (!['qualification','main'].includes(data.phase) || data.candidates.length < model.limit || new Set(data.candidates.map(c=>c.id)).size!==data.candidates.length) throw new Error('Invalid catalog');
+        if (!['qualification','closed','main'].includes(data.phase) || data.candidates.length < model.limit || new Set(data.candidates.map(c=>c.id)).size!==data.candidates.length) throw new Error('Invalid catalog');
         const changed=phase!==data.phase; phase=data.phase; catalog=data.candidates; ready=true;
         if(!grid.children.length || !ballotReady)buildGrid();
         sync();
         if (!ballotReady) await loadBallot(generation);
-        if(admin())await results();
+        if (phase === 'closed') await publicResults();
+        else if(admin())await results();
         if(changed && phase==='main' && !page.classList.contains('hidden')) { page.classList.add('hidden'); window.showPage('categories'); }
       } catch { ready=false; status.textContent='Не удалось подключить отбор. Обнови подключение, чтобы загрузить и сохранить свой выбор.'; controls(); }
       finally { setupPromise=null; }
