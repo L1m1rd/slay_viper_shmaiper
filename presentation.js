@@ -11,16 +11,18 @@
   let activeNomination, activeSnapshot, originalFocus, previousOverflow = null, muted = false;
   let audioFinish, phaseTimer, phaseFinish, audioTimeout, sound, isOpening = false;
   let movie, videoFinish, videoTimeout;
-  let winnerMusic, coupleFilm;
+  let winnerMusic, coupleFilm, coupleIntro=false;
   const coupleTestOption = new Option('Тестовый плей-офф', 'playoff-test'); source.add(coupleTestOption);
   const animations = new Set(), dialog = document.createElement('dialog');
   dialog.className = 'award-dialog'; dialog.setAttribute('aria-label', 'Церемония SLAY AWARD');
   dialog.innerHTML = `<div class="award-stage-host"></div><div class="award-toolbar"><span class="award-position" role="status" aria-live="polite"></span><button type="button" data-action="sound">Звук включён</button><button type="button" data-action="resume" hidden>Включить озвучку</button><button type="button" data-action="music" hidden>Включить музыку</button><button type="button" data-action="skip">К участникам →</button><button type="button" data-action="replay">Повторить с новыми итогами</button><button type="button" data-action="film-pause" hidden>Пауза</button><button type="button" data-action="next-nomination">Следующая номинация →</button><button type="button" data-action="fullscreen">На весь экран</button><button type="button" data-action="close">Закрыть ×</button></div>`;
   document.body.append(dialog);
-  const presentationOrder = [...nominations];
+  const presentationOrder = nominations.filter(n => n.id !== 'couple');
   const situationIndex = presentationOrder.findIndex(n => n.id === 'situation');
   const memeIndex = presentationOrder.findIndex(n => n.id === 'meme');
   if (situationIndex >= 0 && memeIndex >= 0) [presentationOrder[situationIndex], presentationOrder[memeIndex]] = [presentationOrder[memeIndex], presentationOrder[situationIndex]];
+  const coupleNomination = nominations.find(n => n.id === 'couple');
+  if(coupleNomination)presentationOrder.push(coupleNomination);
   presentationOrder.forEach(n => category.add(new Option(model.titleOf(n), n.id)));
   const action = name => dialog.querySelector(`[data-action="${name}"]`);
   const message = text => { dialog.querySelector('.award-position').textContent = text; };
@@ -256,7 +258,7 @@
     stage.append(footer); dialog.querySelector('.award-stage-host').replaceChildren(stage); return stage;
   }
   function close() {
-    coupleFilm?.stop(); coupleFilm=null; action('film-pause').hidden=true;action('sound').hidden=false;
+    coupleIntro=false;coupleFilm?.stop(); coupleFilm=null; action('film-pause').hidden=true;action('sound').hidden=false;
     stopWinnerMusic();
     run++; clearTimeout(phaseTimer); phaseFinish?.(); phaseFinish = null; stopAudio(); stopVideo(); cancelAnimations(); isOpening = false; phase = 'closed';
     if (dialog.open) dialog.close();
@@ -298,6 +300,11 @@
       makeStage(n); action('next-nomination').disabled = category.selectedIndex >= category.options.length - 1; dialog.showModal(); action('close').focus({ preventScroll: true });
       action('skip').disabled = false; action('skip').textContent = 'К участникам →'; message(model.titleOf(n));
       if(coupleData){
+        coupleIntro=true;action('sound').hidden=false;action('skip').textContent='Пропустить объявление →';message('Объявление номинации «Пара года»');
+        const coupleLead=audios.get('couple')?.lead || 'audio/slay-2026/MP3/14_%D0%9F%D0%B0%D1%80%D0%B0%20%D0%B3%D0%BE%D0%B4%D0%B0/00_%D0%9F%D0%BE%D0%B4%D0%B2%D0%BE%D0%B4%D0%BA%D0%B0.mp3';
+        await playAudio(coupleLead,id,{trimEnd:3,onResume:()=>introSpeaking(true),onPause:()=>introSpeaking(false)});
+        if(id!==run||!dialog.open||!sectionOpen())return;
+        coupleIntro=false;introSpeaking(false);
         phase='couple-film';action('sound').hidden=true;action('film-pause').hidden=false;action('film-pause').textContent='Пауза';action('skip').textContent='Следующий матч →';
         coupleFilm=window.SlayCoupleFilm.create({host:dialog.querySelector('.award-stage-host'),...coupleData,onMessage:message,onEnd:()=>{if(id===run){action('skip').disabled=true;action('film-pause').hidden=true;message(coupleData.mode==='test'?'Репетиция завершена · тестовые голоса':'Показ завершён');}}});
         coupleFilm.play();return;
@@ -427,7 +434,7 @@
     if (name === 'replay') { close(); start(); }
     if (name === 'next-nomination' && category.selectedIndex < category.options.length - 1) { close(); category.selectedIndex++; renderCards(); start(); }
     if (name === 'film-pause' && coupleFilm) action('film-pause').textContent=coupleFilm.pause()?'Продолжить':'Пауза';
-    if (name === 'skip') { if(coupleFilm)coupleFilm.next(); else if (movie) videoFinish?.('skipped'); else if (phase === 'intro') revealRow(run); else if (phase === 'row') showPodium(run); }
+    if (name === 'skip') { if(coupleIntro)audioFinish?.('skipped');else if(coupleFilm)coupleFilm.next(); else if (movie) videoFinish?.('skipped'); else if (phase === 'intro') revealRow(run); else if (phase === 'row') showPodium(run); }
     if (name === 'sound') { muted = !muted; if (sound) sound.muted = muted; if (movie) movie.muted = muted; if (winnerMusic) winnerMusic.muted = muted; action('sound').textContent = muted ? 'Звук выключен' : 'Звук включён'; }
     if (name === 'music' && winnerMusic) { try { await winnerMusic.play(); } catch { message('Музыка не запускается. Показ продолжается.'); } }
     if (name === 'resume' && (movie || sound)) { try { await (movie || sound).play(); } catch { message(movie ? 'Видео не запускается. Можно пропустить ролик.' : 'Озвучка не запускается. Можно перейти к участникам.'); } }
@@ -451,5 +458,7 @@
   }
   renderCards(); loadAudio();
 })();
+
+
 
 
