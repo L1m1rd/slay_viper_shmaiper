@@ -1,2 +1,3 @@
+# The player uses MP3; keep archived WAV masters out of the Pages build.
 exclude:
   - audio/slay-2026/WAV
