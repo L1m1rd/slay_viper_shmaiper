@@ -12,6 +12,9 @@
   let audioFinish, phaseTimer, phaseFinish, audioTimeout, sound, isOpening = false;
   let movie, videoFinish, videoTimeout;
   let winnerMusic, coupleFilm, coupleIntro=false;
+  let entranceIndex=-1;
+  const entranceRoster=nominations.find(n=>n.id==='cs2')?.participants||[];
+  const entranceFacts=new Map(); // Fill with the participant's approved text lines and optional narration URL.
   const coupleTestOption = new Option('Тестовый плей-офф', 'playoff-test'); source.add(coupleTestOption);
   const animations = new Set(), dialog = document.createElement('dialog');
   dialog.className = 'award-dialog'; dialog.setAttribute('aria-label', 'Церемония SLAY AWARD');
@@ -208,8 +211,66 @@
     }
     return refreshPromise;
   }
+  function entranceStage(index, text) {
+    const stage=el('section','entrance-stage'+(index<0?' is-title':''));
+    const head=el('div','entrance-header');head.append(el('span','','SLAY AWARD / 2026'),el('span','','ЦЕРЕМОНИЯ ОТКРЫТИЯ'));
+    const main=el('div','entrance-main'),copy=el('div','entrance-copy');
+    const kicker=el('p','entrance-kicker',index<0?'СВОИ НАГРАЖДАЮТ СВОИХ':'ВЫХОД УЧАСТНИКА'),title=el('h1','',text),facts=el('ul','entrance-facts');
+    copy.append(kicker,title,facts);main.append(copy);
+    let portraitFrame;
+    if(index>=0){
+      portraitFrame=el('div','entrance-portrait');
+      const image=el('img','');image.src=entranceRoster[index].photo;image.alt='';portraitFrame.append(image,el('span','',String(index+1).padStart(2,'0')));main.append(portraitFrame);
+    }
+    const foot=el('div','entrance-footer');foot.append(el('span','','ВАЙПЕР ШМАЙПЕР'),el('strong','',index<0?'ПРЕДСТАВЛЕНИЕ СОСТАВА':String(index+1).padStart(2,'0')+' / '+entranceRoster.length));
+    stage.append(head,main,foot);dialog.querySelector('.award-stage-host').replaceChildren(stage);
+    return {main,kicker,title,facts,portraitFrame};
+  }
+  async function showEntrance(index){
+    const id=++run;
+    clearTimeout(phaseTimer);phaseFinish?.();phaseFinish=null;stopAudio();stopWinnerMusic();cancelAnimations();
+    entranceIndex=index;
+    if(index>=entranceRoster.length){
+      phase='entrance-done';entranceStage(-1,'Все участники представлены');action('skip').disabled=true;message('Вступление завершено');return;
+    }
+    const entrant=entranceRoster[index],name=model.nameOf(entrant),person={identity:name,hidden:false};
+    const track=model.winnerMusicFor(person);
+    const {main,kicker,title,facts,portraitFrame}=entranceStage(index,'На выход');
+    message('Выход '+(index+1)+' из '+entranceRoster.length);
+    if(track)playWinnerMusic(person,id);
+    animate(main,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],{duration:550});
+    await pauseFor(track?4500:1700);
+    if(id!==run||phase!=='entrance'||!sectionOpen())return;
+    kicker.textContent='ЗНАКОМЬТЕСЬ';title.textContent=name;portraitFrame.classList.add('is-revealed');
+    animate(title,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'translateY(0)'}],{duration:750});
+    message(name);
+    const profile=entranceFacts.get(name);
+    if(profile?.lines)profile.lines.forEach(line=>facts.append(el('li','',line)));
+    if(winnerMusic)winnerMusic.volume=.22;
+    await playAudio(audios.get('cs2')?.names.get(name),id);
+    if(id!==run||phase!=='entrance'||!sectionOpen())return;
+    if(profile?.audio)await playAudio(profile.audio,id);
+    if(id!==run||phase!=='entrance'||!sectionOpen())return;
+    if(winnerMusic)winnerMusic.volume=.62;
+    await pauseFor(profile?.lines?.length?5200:3300);
+    if(id===run&&phase==='entrance'&&sectionOpen())showEntrance(index+1);
+  }
+  async function startEntrance(){
+    if(!sectionOpen()||!entranceRoster.length)return;
+    if(dialog.open)close();
+    const id=++run;entranceIndex=-1;phase='entrance';
+    originalFocus=document.activeElement;previousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';
+    entranceStage(-1,'Участники премии');
+    action('sound').hidden=false;action('skip').disabled=false;action('skip').textContent='Следующий участник →';
+    action('replay').textContent='Повторить вступление';action('next-nomination').disabled=false;action('next-nomination').textContent='К номинациям →';
+    dialog.showModal();action('close').focus({preventScroll:true});message('Церемония открытия');
+    await pauseFor(1800);if(id===run&&phase==='entrance'&&sectionOpen())showEntrance(0);
+  }
   function renderCards() {
     cards.replaceChildren();
+    const opener=el('button','entrance-launch');opener.type='button';opener.disabled=!audioLoaded||!entranceRoster.length;opener.onclick=startEntrance;
+    const openerArt=el('img','');openerArt.src='images/nominations/slayking.svg';openerArt.alt='';
+    opener.append(openerArt,el('strong','','Вступление · Представление участников'),el('span','','Музыка выхода → имя → факты. Девять участников, перед номинациями.'));cards.append(opener);
     const n = nominations.find(n => n.id === category.value);
     coupleTestOption.hidden = n.id !== 'couple';
     if(n.id !== 'couple' && source.value === 'playoff-test')source.value='votes';
@@ -258,6 +319,7 @@
     stage.append(footer); dialog.querySelector('.award-stage-host').replaceChildren(stage); return stage;
   }
   function close() {
+    action('replay').textContent='Повторить с новыми итогами';action('next-nomination').textContent='Следующая номинация →';
     coupleIntro=false;coupleFilm?.stop(); coupleFilm=null; action('film-pause').hidden=true;action('sound').hidden=false;
     stopWinnerMusic();
     run++; clearTimeout(phaseTimer); phaseFinish?.(); phaseFinish = null; stopAudio(); stopVideo(); cancelAnimations(); isOpening = false; phase = 'closed';
@@ -431,6 +493,11 @@
   dialog.addEventListener('click', async event => {
     const name = event.target.closest('[data-action]')?.dataset.action;
     if (name === 'close') close();
+    if (phase.startsWith('entrance')) {
+      if(name==='replay'){startEntrance();return;}
+      if(name==='next-nomination'){close();return;}
+      if(name==='skip'){if(phase==='entrance')showEntrance(entranceIndex+1);return;}
+    }
     if (name === 'replay') { close(); start(); }
     if (name === 'next-nomination' && category.selectedIndex < category.options.length - 1) { close(); category.selectedIndex++; renderCards(); start(); }
     if (name === 'film-pause' && coupleFilm) action('film-pause').textContent=coupleFilm.pause()?'Продолжить':'Пауза';
@@ -458,6 +525,8 @@
   }
   renderCards(); loadAudio();
 })();
+
+
 
 
 
