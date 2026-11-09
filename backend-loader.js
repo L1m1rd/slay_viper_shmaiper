@@ -10,6 +10,7 @@
     });
   }
   window.SLAY_BACKEND_READY = (async () => {
+    await load('self-vote.js?v=20261109');
     await load('admin-test.js?v=auto20261108');
     const config = window.SLAY_BACKEND;
     if (config.provider === 'firebase') {
@@ -22,7 +23,7 @@
       await load('firebase-app.js?v=playoff20261108');
     } else if (config.provider === 'supabase') {
       await load('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2');
-      await load('supabase-app.js?v=admin-test20261108');
+      await load('supabase-app.js?v=selfvote20261109');
     } else {
       throw new Error('Неизвестный провайдер базы');
     }
@@ -41,6 +42,8 @@
     window.toast('Не удалось подключиться. Обнови страницу или попробуй позже.');
   });
 })();
+
+
 
 
 

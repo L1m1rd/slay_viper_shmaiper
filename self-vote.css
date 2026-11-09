@@ -1,0 +1,7 @@
+.participant-card.is-self-vote-blocked .media-frame{position:relative}
+.self-vote-cover{position:absolute;inset:0;z-index:2;display:grid;place-content:center;justify-items:center;gap:10px;padding:18px;text-align:center;color:#fff9e9;background:linear-gradient(145deg,#171714ad,#171714e6);pointer-events:none}
+.self-vote-cover svg{width:28px;height:28px;color:#edc52b}
+.self-vote-cover small{font-size:10px;letter-spacing:.13em;color:#edc52b}
+.self-vote-cover strong{font:600 clamp(19px,2.2vw,28px)/1.1 var(--display);max-width:210px}
+.self-vote-cover.is-inline{position:static;margin:12px 0 0;background:#171714;min-height:110px}
+

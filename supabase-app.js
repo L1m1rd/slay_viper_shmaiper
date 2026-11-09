@@ -27,6 +27,8 @@
       username: profile.username,
       role: profile.role,
       status: profile.status,
+      nomineeName: profile.nominee_name ?? null,
+      nomineeRulesLoaded: profile.nominee_rules_loaded,
       votes: votes || {},
       registered: profile.created_at
     };
@@ -98,6 +100,8 @@
       return null;
     }
 
+    const nomineeResult = await supabaseClient.from('award_nominee_accounts').select('nominee_name').eq('user_id', profileResult.data.id).maybeSingle();
+    const profile = { ...profileResult.data, nominee_name: nomineeResult.data?.nominee_name, nominee_rules_loaded: !nomineeResult.error };
     let votes = {};
 
     try {
@@ -108,7 +112,12 @@
       console.error('Vote load failed:', error);
     }
 
-    state.currentUser = toAppUser(profileResult.data, votes);
+    for (const [nomination, selections] of Object.entries(votes)) {
+      if (!window.SlaySelfVote.isPersonal(nomination) || !selections) continue;
+      for (const place of [1, 2, 3]) if (window.SlaySelfVote.blocked(nomination, selections[place], profile.nominee_name)) selections[place] = null;
+      if (![1, 2, 3].some(place => selections[place])) delete votes[nomination];
+    }
+    state.currentUser = toAppUser(profile, votes);
     window.updateUI();
     return state.currentUser;
   }
@@ -271,6 +280,8 @@
   }
 
   async function replaceNominationVotes(user, nominationId, voteValue) {
+    if (window.SlaySelfVote.isPersonal(nominationId) && user.nomineeRulesLoaded === false) throw Error('Не удалось проверить кандидатуру');
+    if (Object.values(voteValue || {}).some(name => window.SlaySelfVote.blocked(nominationId, name, user.nomineeName))) throw Error('AWARD_SELF_VOTE_FORBIDDEN');
     if (window.SlayAdminTest?.allowed() && user.id === getCurrentUser()?.id) {
       const votes=window.SlayAdminTest.get('votes',{}); votes[nominationId]=voteValue;
       window.SlayAdminTest.set('votes',votes); user.votes=votes; state.currentUser=user; return;
@@ -403,6 +414,8 @@
     };
 
     const normalizedName = window.getParticipantName(participantName);
+    if (window.SlaySelfVote.blocked(window.currentCategory.id, normalizedName, user.nomineeName)) return window.toast('За себя голосовать нельзя');
+    if (window.SlaySelfVote.isPersonal(window.currentCategory.id) && user.nomineeRulesLoaded === false) return window.toast('Не удалось проверить кандидатуру. Обнови страницу.');
 
     if (vote[place] === normalizedName) {
       vote[place] = null;
@@ -599,20 +612,23 @@
         .order('created_at', { ascending: true }),
       supabaseClient
         .from('votes')
-        .select('user_id, nomination_id, participant, place, created_at')
+        .select('user_id, nomination_id, participant, place, created_at'),
+      supabaseClient.from('award_nominee_accounts').select('user_id, nominee_name')
     ]);
 
     const profilesResult = results[0];
     const votesResult = results[1];
+    const nomineesResult = results[2];
 
-    if (profilesResult.error || votesResult.error) {
-      console.error(profilesResult.error || votesResult.error);
+    if (profilesResult.error || votesResult.error || nomineesResult.error) {
+      console.error(profilesResult.error || votesResult.error || nomineesResult.error);
       window.toast('❌ Не удалось загрузить данные админ-панели');
       return;
     }
 
     state.adminUsers = profilesResult.data || [];
-    state.adminVotes = votesResult.data || [];
+    const nominees = new Map((nomineesResult.data || []).map(row => [row.user_id, row.nominee_name]));
+    state.adminVotes = (votesResult.data || []).filter(row => !window.SlaySelfVote.blocked(row.nomination_id, row.participant, nominees.get(row.user_id)));
 
     const users = state.adminUsers.filter((u) => u.role !== 'admin');
 
@@ -965,4 +981,6 @@
 
   window.SLAY_AUTH_READY = initialize();
 })();
+
+
 
