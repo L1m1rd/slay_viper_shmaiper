@@ -13,8 +13,108 @@
   let movie, videoFinish, videoTimeout;
   let winnerMusic, coupleFilm, coupleIntro=false;
   let entranceIndex=-1;
-  const entranceRoster=nominations.find(n=>n.id==='cs2')?.participants||[];
-  const entranceFacts=new Map(); // Fill with the participant's approved text lines and optional narration URL.
+  const entranceFacts=new Map([
+  [
+    "Матвей Чернышов",
+    {
+      "lines": [
+        "Действующий Человек-мем года",
+        "Интрижек много, серьёзка одна",
+        "В этом году наконец-то подрался"
+      ],
+      "audio": "audio/entrance-2026/matvey.mp3"
+    }
+  ],
+  [
+    "Андрей Владыко",
+    {
+      "lines": [
+        "Действующий Dota 2 игрок года",
+        "Гриндит дома целыми днями",
+        "Траву трогать не собирается"
+      ],
+      "audio": "audio/entrance-2026/andrey.mp3"
+    }
+  ],
+  [
+    "Александр Шамбасов",
+    {
+      "lines": [
+        "Действующий SLAY KING",
+        "Луксмаксинг и тачки",
+        "Топ-1 керри своей комнаты"
+      ],
+      "audio": "audio/entrance-2026/shambasov.mp3"
+    }
+  ],
+  [
+    "Тимур Насретдинов",
+    {
+      "lines": [
+        "Действующий CS2 игрок года",
+        "Бан на FACEIT до января",
+        "КМС по Азалии"
+      ],
+      "audio": "audio/entrance-2026/timur.mp3"
+    }
+  ],
+  [
+    "Даниил Постоев",
+    {
+      "lines": [
+        "Действующий Алкаш года",
+        "Вайбкодер",
+        "Нищий темщик"
+      ],
+      "audio": "audio/entrance-2026/daniil.mp3"
+    }
+  ],
+  [
+    "Шурик",
+    {
+      "lines": [
+        "В скваде с 2026 года",
+        "Каждый день новая серьёзка",
+        "Будущий врач · пьёт только вино"
+      ],
+      "audio": "audio/entrance-2026/shurik.mp3"
+    }
+  ],
+  [
+    "Арсений Юсупов",
+    {
+      "lines": [
+        "Действующий Стиль года",
+        "Мажор, три завода",
+        "Претендент на «Пару года»"
+      ],
+      "audio": "audio/entrance-2026/arseniy.mp3"
+    }
+  ],
+  [
+    "Семён Ефремов",
+    {
+      "lines": [
+        "КМС по жиму",
+        "Лучшая тройка в Dota 2",
+        "Ебаный 2008-й"
+      ],
+      "audio": "audio/entrance-2026/semen.mp3"
+    }
+  ],
+  [
+    "Александр Пеняев",
+    {
+      "lines": [
+        "Без пяти лет лейтенант",
+        "КМС по пиву"
+      ],
+      "audio": "audio/entrance-2026/penyaev.mp3"
+    }
+  ]
+]);
+  const entranceParticipants=nominations.find(n=>n.id==='cs2')?.participants||[];
+  const entranceRoster=[...entranceFacts.keys()].map(name=>entranceParticipants.find(p=>model.nameOf(p)===name)).filter(Boolean);
   const coupleTestOption = new Option('Тестовый плей-офф', 'playoff-test'); source.add(coupleTestOption);
   const animations = new Set(), dialog = document.createElement('dialog');
   dialog.className = 'award-dialog'; dialog.setAttribute('aria-label', 'Церемония SLAY AWARD');
@@ -525,6 +625,8 @@
   }
   renderCards(); loadAudio();
 })();
+
+
 
 
 
