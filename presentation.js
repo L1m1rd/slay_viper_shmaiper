@@ -12,6 +12,8 @@
   let audioFinish, phaseTimer, phaseFinish, audioTimeout, sound, isOpening = false;
   let movie, videoFinish, videoTimeout;
   let winnerMusic, coupleFilm, coupleIntro=false;
+  let narrationContext, narrationGain;
+  const musicVolume = .7, musicUnderNarration = .09;
   let entranceIndex=-1;
   const entranceFacts=new Map([
   [
@@ -191,12 +193,30 @@
     if (!url || id !== run) return;
     const track = new Audio(); winnerMusic = track;
     track.loop = false; track.preload = 'auto'; track.muted = muted;
-    track.volume = audioFinish ? .28 : .8;
+    updateMusicVolume();
     track.onplaying = track.onended = track.onerror = () => { if (winnerMusic === track) action('music').hidden = true; };
     track.src = url;
     track.play().catch(error => {
       if (id === run && winnerMusic === track && error.name === 'NotAllowedError') action('music').hidden = false;
     });
+  }
+  function updateMusicVolume() {
+    if (winnerMusic) winnerMusic.volume = audioFinish ? musicUnderNarration : musicVolume;
+  }
+  function enableNarrationGain() {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    if (!narrationContext) {
+      narrationContext = new AudioContext();
+      narrationGain = narrationContext.createGain();
+      narrationGain.gain.value = 1.6;
+      const compressor = narrationContext.createDynamicsCompressor();
+      compressor.threshold.value = -9;
+      compressor.knee.value = 8;
+      compressor.ratio.value = 6;
+      narrationGain.connect(compressor).connect(narrationContext.destination);
+    }
+    if (narrationContext.state === 'suspended') narrationContext.resume().catch(() => {});
   }
   function introSpeaking(active) {
     dialog.querySelector('.phase-intro')?.classList.toggle('is-narrating', active && phase === 'intro');
@@ -266,16 +286,27 @@
     if (!url || id !== run) return Promise.resolve('unavailable');
     return new Promise(resolve => {
       const audio = new Audio(); sound = audio; audio.muted = muted; audio.preload = 'auto';
+      let input;
+      if (narrationContext?.state === 'running' && audio instanceof HTMLMediaElement && new URL(url, document.baseURI).origin === location.origin) {
+        input = narrationContext.createMediaElementSource(audio);
+        input.connect(narrationGain);
+      }
       let settled = false, started = false;
       const finish = result => {
         if (settled) return; settled = true; clearTimeout(audioTimeout);
         audio.onended = audio.onerror = audio.onwaiting = audio.onplaying = audio.ontimeupdate = null;
         audio.pause();
+        input?.disconnect();
         if (audioFinish === finish) audioFinish = null;
+        updateMusicVolume();
         action('resume').hidden = true; resolve(result);
       };
       audioFinish = finish;
-      const stalled = () => { clearTimeout(audioTimeout); audioTimeout = setTimeout(() => finish('unavailable'), 20000); };
+      updateMusicVolume();
+      const stalled = () => {
+        clearTimeout(audioTimeout);
+        audioTimeout = setTimeout(() => finish('unavailable'), started ? 20000 : (sync.startTimeout ?? 20000));
+      };
       audio.onended = () => finish('ended'); audio.onerror = () => finish('unavailable');
       audio.onwaiting = () => { if (started) sync.onPause?.(); stalled(); };
       audio.onplaying = () => {
@@ -284,7 +315,7 @@
         if (!started) { started = true; sync.onStart?.(); }
         sync.onResume?.();
       };
-      // Published lead-ins include three seconds of editing silence. Advance at speech end.
+      // Advance before the measured trailing silence in published clips.
       audio.ontimeupdate = () => {
         if (started && sync.trimEnd > 0 && Number.isFinite(audio.duration) && audio.duration > sync.trimEnd && audio.currentTime >= audio.duration - sync.trimEnd) finish('ended');
       };
@@ -339,24 +370,23 @@
     message('Выход '+(index+1)+' из '+entranceRoster.length);
     if(track)playWinnerMusic(person,id);
     animate(main,[{opacity:0,transform:'translateY(12px)'},{opacity:1,transform:'translateY(0)'}],{duration:550});
-    await pauseFor(track?4500:1700);
+    await pauseFor(track ? 2100 : 650);
     if(id!==run||phase!=='entrance'||!sectionOpen())return;
     kicker.textContent='ЗНАКОМЬТЕСЬ';title.textContent=name;portraitFrame.classList.add('is-revealed');
     animate(title,[{opacity:0,transform:'translateY(16px)'},{opacity:1,transform:'translateY(0)'}],{duration:750});
     message(name);
     const profile=entranceFacts.get(name);
     if(profile?.lines)profile.lines.forEach(line=>facts.append(el('li','',line)));
-    if(winnerMusic)winnerMusic.volume=.22;
-    await playAudio(audios.get('cs2')?.names.get(name),id);
+    await playAudio(audios.get('cs2')?.names.get(name), id, { trimEnd: 1.2, startTimeout: 4000 });
     if(id!==run||phase!=='entrance'||!sectionOpen())return;
     if(profile?.audio)await playAudio(profile.audio,id);
     if(id!==run||phase!=='entrance'||!sectionOpen())return;
-    if(winnerMusic)winnerMusic.volume=.62;
-    await pauseFor(profile?.lines?.length?5200:3300);
+    await pauseFor(850);
     if(id===run&&phase==='entrance'&&sectionOpen())showEntrance(index+1);
   }
   async function startEntrance(){
     if(!sectionOpen()||!entranceRoster.length)return;
+    enableNarrationGain();
     if(dialog.open)close();
     const id=++run;entranceIndex=-1;phase='entrance';
     originalFocus=document.activeElement;previousOverflow=document.body.style.overflow;document.body.style.overflow='hidden';
@@ -449,6 +479,7 @@
   }
   async function start() {
     if (!isAdmin() || !sectionOpen() || isOpening) return;
+    enableNarrationGain();
     const n = nominations.find(n => n.id === category.value);
     if (dialog.open) close();
     isOpening = true; const id = ++run;
@@ -587,7 +618,6 @@
       if (result === 'unavailable') { if (!card.classList.contains('is-announced')) reveal(); if (entrance?.playState === 'paused') entrance.play(); await pauseFor(2400); }
       if (entrance?.playState === 'paused') entrance.play();
       card.classList.remove('is-speaking', 'is-voice-paused');
-      if (person.rank === 1 && winnerMusic) winnerMusic.volume = .8;
     }
   }
   dialog.addEventListener('click', async event => {
@@ -625,7 +655,6 @@
   }
   renderCards(); loadAudio();
 })();
-
 
 
 

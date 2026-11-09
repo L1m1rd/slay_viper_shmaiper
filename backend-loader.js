@@ -34,7 +34,7 @@
     await load('presentation-model.js?v=20261030-voices');
     await load('playoff-model.js?v=20261108');
     await load('couple-film.js?v=speed08-last20261108');
-    await load('presentation.js?v=entrance-voice20261109');
+    await load('presentation.js?v=voice-mix20261109');
     await load('playoff-store.js?v=admin-test20261108');
     await load('playoff.js?v=autosave20261108');
   })().catch(error => {
@@ -42,7 +42,6 @@
     window.toast('Не удалось подключиться. Обнови страницу или попробуй позже.');
   });
 })();
-
 
 
 
