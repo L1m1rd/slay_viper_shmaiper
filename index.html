@@ -549,7 +549,7 @@ window.NOMINATIONS = [
     desc: 'Самое смешное событие этого года.',
     participants: [
       { title: 'Шурику разбили телефон на ДР', video: 'videos/situation/phone.mp4' },
-      'Семён порвал барабанную перепонку плавая в бассейне на новый год',
+      { title: 'Семён порвал барабанную перепонку плавая в бассейне на новый год', photo: 'images/situations/semen-pool.jpg' },
       { title: 'Проект Z на ДР шурика', video: 'videos/situation/project-z.mp4' },
       { title: 'Маскарад на новый год, когда снимали дом', video: 'videos/situation/masquerade.mp4' },
       { title: 'человек чекушка', video: 'videos/situation/chekushka.mp4' },
@@ -560,7 +560,7 @@ window.NOMINATIONS = [
       { title: 'У Шурика спиздили лавочку', video: 'videos/situation/bench.mp4' },
       { title: 'Данил подстригся как Whole Lotta Swag', photo: 'images/situation/whole-lotta-swag.jpg' },
       { title: 'Рождение lil gin', video: 'videos/situation/lil-gin.mp4' },
-      'Данил выложил яйца на стол сестры',
+      { title: 'Данил выложил яйца на стол сестры', photo: 'images/situations/danil-desk.jpg' },
       { title: 'Гравитационная башня во вкусно и точка', photo: 'images/situation/gravity-tower.jpg' },
       { title: 'дилдо на др шурика', video: 'videos/situation/dildo.mp4' },
       { title: 'матвею набили ебало', video: 'videos/situation/matvey.mp4' },
@@ -1002,11 +1002,6 @@ function getParticipantName(p) {
   return p;
 }
 function getParticipantPhoto(p) {
-  const situationPhotos = {
-    'Семён порвал барабанную перепонку плавая в бассейне на новый год': 'images/situations/semen-pool.jpg',
-    'Данил выложил яйца на стол сестры': 'images/situations/danil-desk.jpg'
-  };
-  if (typeof p === 'string' && situationPhotos[p]) return situationPhotos[p];
   if (typeof p === 'object' && p.photo) {
     return p.photo;
   }
@@ -1311,7 +1306,7 @@ updateUI();
 <link rel="stylesheet" href="presentation.css?v=20261102-fatness">
 <link rel="stylesheet" href="entrance.css?v=20261109">
 <link rel="stylesheet" href="couple-film.css?v=reveal20261108">
-<script src="backend-loader.js?v=daniil-tracks20261110"></script>
+<script src="backend-loader.js?v=nominee-media20261110"></script>
 
 </body>
 </html>

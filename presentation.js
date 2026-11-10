@@ -234,7 +234,22 @@
     if (movie) { movie.pause(); movie.removeAttribute('src'); movie.load(); movie = null; }
     action('resume').hidden = true; action('resume').textContent = 'Включить озвучку';
   }
-  async function showNomineeVideo(person, id, expectedPhase) {
+  function captureNomineeFrame(video) {
+    if (video.readyState < 2 || !video.videoWidth || !video.videoHeight) return null;
+    const canvas = document.createElement('canvas');
+    const scale = Math.min(1, 720 / Math.max(video.videoWidth, video.videoHeight));
+    canvas.width = Math.round(video.videoWidth * scale);
+    canvas.height = Math.round(video.videoHeight * scale);
+    try {
+      const context = canvas.getContext('2d');
+      if (!context) return null;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      return canvas.toDataURL('image/jpeg', .86);
+    } catch {
+      return null;
+    }
+  }
+  async function showNomineeVideo(person, card, id, expectedPhase) {
     if (!['tiktok', 'situation'].includes(activeNomination.id) || !person.video || person.hidden) return;
     if (id !== run || phase !== expectedPhase) return;
     stopAudio(); stopVideo();
@@ -251,17 +266,24 @@
     action('skip').textContent = 'Пропустить ролик →'; action('skip').disabled = false;
     message(categoryTitle + ' · смотрим ролик');
     animate(overlay, [{ opacity: 0 }, { opacity: 1 }], { duration: 650, fill: 'none' });
-    await new Promise(resolve => {
+    let frame;
+    const result = await new Promise(resolve => {
       let settled = false;
       const finish = result => {
         if (settled) return; settled = true; clearTimeout(videoTimeout);
-        video.onended = video.onerror = video.onwaiting = video.onstalled = video.onplaying = null;
+        video.onended = video.onerror = video.onwaiting = video.onstalled = video.onplaying = video.ontimeupdate = null;
         video.pause(); if (videoFinish === finish) videoFinish = null;
         action('resume').hidden = true; resolve(result);
       };
       videoFinish = finish;
       const stalled = () => { clearTimeout(videoTimeout); videoTimeout = setTimeout(() => { message('Ролик недоступен · продолжаем объявление'); finish('unavailable'); }, 20000); };
-      video.onended = () => finish('ended');
+      video.ontimeupdate = () => {
+        if (!frame && video.currentTime >= video.duration / 2) frame = captureNomineeFrame(video);
+      };
+      video.onended = () => {
+        frame ||= captureNomineeFrame(video);
+        finish('ended');
+      };
       video.onerror = () => { message('Ролик не загрузился · продолжаем объявление'); finish('unavailable'); };
       video.onwaiting = video.onstalled = stalled;
       video.onplaying = () => { if (id === run && !settled) { clearTimeout(videoTimeout); action('resume').hidden = true; } };
@@ -275,6 +297,11 @@
       });
     });
     if (id !== run || phase !== expectedPhase) return;
+    if (result === 'ended' && frame) {
+      const image = card.querySelector('.award-live-portrait img');
+      image.classList.remove('award-symbol');
+      image.src = frame;
+    }
     animate(overlay, [{ opacity: 1 }, { opacity: 0 }], { duration: 450 });
     await pauseFor(reduceMotion.matches ? 0 : 450);
     if (id !== run || phase !== expectedPhase) return;
@@ -558,7 +585,7 @@
         if (!reduceMotion.matches) await pauseFor(1100);
       }
       if (id !== run || phase !== 'row') return;
-      await showNomineeVideo(person, id, 'row');
+      await showNomineeVideo(person, card, id, 'row');
       if (id !== run || phase !== 'row') return;
       let entrance;
       const highlight = () => {
@@ -603,9 +630,9 @@
   async function announcePodium(id, entrants) {
     for (const person of [...activeSnapshot.podium].reverse()) {
       if (id !== run || phase !== 'podium') return;
-      await showNomineeVideo(person, id, 'podium');
-      if (id !== run || phase !== 'podium') return;
       const card = entrants.get(person.rank);
+      await showNomineeVideo(person, card, id, 'podium');
+      if (id !== run || phase !== 'podium') return;
       let entrance;
       const reveal = () => {
         if (card.classList.contains('is-announced')) return;
@@ -654,7 +681,7 @@
   async function loadAudio() {
     const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 10000);
     try {
-      const response = await fetch('audio/slay-2026/manifest.json', { cache: 'no-store', signal: controller.signal });
+      const response = await fetch('audio/slay-2026/manifest.json?v=nominee-media20261110', { cache: 'no-store', signal: controller.signal });
       if (!response.ok) throw new Error('Audio manifest unavailable'); audios = model.audioMap(await response.json(), nominations);
     } catch { audios = new Map(); }
     finally { clearTimeout(timer); audioLoaded = true; renderCards(); }

@@ -34,7 +34,7 @@
     await load('presentation-model.js?v=daniil-tracks20261110');
     await load('playoff-model.js?v=20261108');
     await load('couple-film.js?v=daniil-tracks20261110');
-    await load('presentation.js?v=daniil-tracks20261110');
+    await load('presentation.js?v=nominee-media20261110');
     await load('playoff-store.js?v=admin-test20261108');
     await load('playoff.js?v=autosave20261108');
   })().catch(error => {
