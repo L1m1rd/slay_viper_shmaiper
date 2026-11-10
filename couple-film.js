@@ -4,7 +4,7 @@
   const rounds=['1/8 ФИНАЛА','1/4 ФИНАЛА','ПОЛУФИНАЛ','ФИНАЛ'];
   const position=(r,s)=>r===0?{x:s<4?40:3040,y:130+(s%4)*420}:r===1?{x:s<2?540:2540,y:340+(s%2)*840}:r===2?{x:s===0?1040:2040,y:760}:{x:1540,y:760};
   const word=n=>n%10===1&&n%100!==11?'голос':n%10>=2&&n%10<=4&&(n%100<12||n%100>14)?'голоса':'голосов';
-  function create({host,pairs,snapshot,mode,onMessage,onEnd}) {
+  function create({host,pairs,snapshot,mode,onMessage,onChampion,onEnd}) {
     const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
     const make=(tag,cls,text)=>{const e=document.createElement(tag);e.className=cls;if(text!==undefined)e.textContent=text;return e;};
     const root=make('section','couple-film'),world=make('div','couple-film-world');
@@ -98,7 +98,11 @@
         f.ghost.hidden=!(p>0&&p<1);f.ghost.style.transform=`translate3d(${f.from.x+(f.to.x-f.from.x)*e}px,${f.from.y+(f.to.y-f.from.y)*e}px,0) scale(${1+Math.sin(Math.PI*p)*.055})`;
       }
       for(const c of counts){const order=shots.find(s=>s.match===c.match);const reveal=order?clamp((elapsed-order.start-1700)/1550):0;const sum=Object.values(c.match.counts||{}).reduce((a,b)=>a+(Number.isFinite(b)?b:0),0);c.number.textContent=c.known?(reveal>0?Math.round(c.value*ease(reveal))+' '+word(Math.round(c.value*ease(reveal))):'Считаем голоса…'):'Голоса пока не раскрыты';c.meter.style.transform=`scaleX(${sum?c.value/sum*ease(reveal):0})`;c.row.classList.toggle('is-revealed',reveal>.9);}
-      if(lastShot!==idx){lastShot=idx;onMessage?.(shot.label+(mode==='test'?' · тестовые голоса':''));}
+      if (lastShot !== idx) {
+        lastShot = idx;
+        onMessage?.(shot.label + (mode === 'test' ? ' · тестовые голоса' : ''));
+        if (shot.final && champion && mode !== 'silhouette') onChampion?.(champion.name);
+      }
     }
     function tick(now){if(stopped||paused)return;renderAt((now-origin)*RATE);if(elapsed>=duration){paused=true;onEnd?.();return;}raf=requestAnimationFrame(tick);}
     function play(){if(stopped)return;paused=false;origin=performance.now()-elapsed/RATE;cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);}

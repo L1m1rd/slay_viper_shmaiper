@@ -187,9 +187,9 @@
     winnerMusic.onended = winnerMusic.onerror = winnerMusic.onplaying = null;
     winnerMusic.pause(); winnerMusic.removeAttribute('src'); winnerMusic.load(); winnerMusic = null;
   }
-  function playWinnerMusic(person, id) {
+  function playWinnerMusic(person, id, nominationId) {
     stopWinnerMusic();
-    const url = model.winnerMusicFor(person);
+    const url = model.winnerMusicFor(person, nominationId);
     if (!url || id !== run) return;
     const track = new Audio(); winnerMusic = track;
     track.loop = false; track.preload = 'auto'; track.muted = muted;
@@ -499,7 +499,13 @@
         if(id!==run||!dialog.open||!sectionOpen())return;
         coupleIntro=false;introSpeaking(false);
         phase='couple-film';action('sound').hidden=true;action('film-pause').hidden=false;action('film-pause').textContent='Пауза';action('skip').textContent='Следующий матч →';
-        coupleFilm=window.SlayCoupleFilm.create({host:dialog.querySelector('.award-stage-host'),...coupleData,onMessage:message,onEnd:()=>{if(id===run){action('skip').disabled=true;action('film-pause').hidden=true;message(coupleData.mode==='test'?'Репетиция завершена · тестовые голоса':'Показ завершён');}}});
+        const onChampion = name => {
+          const person = { identity: name, hidden: false };
+          if (id !== run || !model.winnerMusicFor(person, 'couple')) return;
+          action('sound').hidden = false;
+          playWinnerMusic(person, id, 'couple');
+        };
+        coupleFilm=window.SlayCoupleFilm.create({host:dialog.querySelector('.award-stage-host'),...coupleData,onMessage:message,onChampion,onEnd:()=>{if(id===run){action('skip').disabled=true;action('film-pause').hidden=true;message(coupleData.mode==='test'?'Репетиция завершена · тестовые голоса':'Показ завершён');}}});
         coupleFilm.play();return;
       }
       const lead = audios.get(n.id)?.lead;
@@ -606,7 +612,7 @@
         card.style.opacity = '1'; card.setAttribute('aria-hidden', 'false'); card.classList.add('is-announced', 'is-speaking');
         message(person.rank + ' место · ' + person.name);
         entrance = animate(card, [{ opacity: 0, transform: 'translateY(90px) scale(.97)' }, { opacity: 1, transform: 'translateY(0) scale(1)' }], { duration: 2400 });
-        if (person.rank === 1) { celebrateWinner(); playWinnerMusic(person, id); }
+        if (person.rank === 1) { celebrateWinner(); playWinnerMusic(person, id, activeNomination.id); }
       };
       const url = person.identity && audios.get(activeNomination.id)?.names.get(person.identity);
       const result = await playAudio(url, id, {

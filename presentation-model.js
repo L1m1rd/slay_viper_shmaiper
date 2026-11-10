@@ -2,16 +2,45 @@
   'use strict';
   const nameOf = p => typeof p === 'string' ? p : p.name || p.title;
   const titleOf = n => n.title.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+  const daniilName = 'Даниил Постоев';
+  const daniilDefault = 'audio/winner-music/daniil-default.m4a';
+  const daniilVictoryTracks = new Map([
+    ['bodybuilder', 'daniil-bodybuilder-fatness.m4a'],
+    ['fatness', 'daniil-bodybuilder-fatness.m4a'],
+    ['meme', 'daniil-meme.m4a'],
+    ['situation', 'daniil-situation.m4a'],
+    ['slayking', 'daniil-slayking.m4a']
+  ]);
+  const daniilEntries = new Map([
+    ['situation', new Set([
+      'Проект Z на ДР шурика',
+      'человек чекушка',
+      'Данил уснул в клубнике',
+      'Данил оставил граффити на Мариинской гимназии',
+      'У Шурика спиздили лавочку',
+      'Данил подстригся как Whole Lotta Swag',
+      'Рождение lil gin',
+      'Данил выложил яйца на стол сестры'
+    ])],
+    ['tiktok', new Set(['сююююююю'])],
+    ['couple', new Set(['Данил и Маринка', 'Данил и Женя Данилина'])]
+  ]);
   const winnerTracks = new Map([
     ['Андрей Владыко', 'audio/winner-music/andrey.m4a'],
-    ['Даниил Постоев', 'audio/winner-music/daniil.m4a?v=20261029'],
     ['Семён Ефремов', 'audio/winner-music/semen.m4a'],
     ['Александр Пеняев', 'audio/winner-music/penyaev.m4a'],
     ['Арсений Юсупов', 'audio/winner-music/arseniy.m4a'],
     ['Александр Шамбасов', 'audio/winner-music/shambasov.m4a'],
     ['Шурик', 'audio/winner-music/shurik.m4a']
   ]);
-  const winnerMusicFor = person => person && !person.hidden ? winnerTracks.get(person.identity) || null : null;
+  function winnerMusicFor(person, nominationId) {
+    if (!person || person.hidden) return null;
+    if (person.identity === daniilName || daniilEntries.get(nominationId)?.has(person.identity)) {
+      const track = daniilVictoryTracks.get(nominationId);
+      return track ? 'audio/winner-music/' + track : daniilDefault;
+    }
+    return winnerTracks.get(person.identity) || null;
+  }
   function snapshot(nomination, rows, reveal = true) {
     const scores = new Map((rows || []).map(row => [row.name, Number(row.total) || 0]));
     const seen = new Set();
